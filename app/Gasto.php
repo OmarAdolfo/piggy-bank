@@ -9,7 +9,7 @@ class Gasto extends Model
     protected $table = 'gastos';
 
     public function user() {
-        return $this->belongsTo('App\User', 'id_usuario');
+        return $this->belongsTo('App\User', 'id');
     }
 
     public function tipoGasto() {

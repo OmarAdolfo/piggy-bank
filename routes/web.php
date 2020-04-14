@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/api/register', 'UsuarioController@register');
-Route::post('/api/login', 'UsuarioController@login');
-// Route::resource('/api/...', '...Controller');
+Route::post('/api/register', 'UserController@register');
+Route::post('/api/login', 'UserController@login');
+
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::get('user', 'UserController@getAuthenticatedUser');
+});

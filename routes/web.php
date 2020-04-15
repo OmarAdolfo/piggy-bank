@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 Route::post('/api/register', 'UserController@register');
 Route::post('/api/login', 'UserController@login');
+Route::post('/api/get-token-email', 'UserController@getTokenByEmail');
+Route::post('/api/reset-password', 'UserController@resetPassword');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');

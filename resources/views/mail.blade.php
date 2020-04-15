@@ -1,0 +1,1 @@
+<p>Introduce el siguiente token en la web: <strong>{{$token}}</strong></p>

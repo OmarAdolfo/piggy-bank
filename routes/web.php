@@ -17,11 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/api/register', 'UserController@register');
-Route::post('/api/login', 'UserController@login');
-Route::post('/api/get-token-email', 'UserController@getTokenByEmail');
-Route::post('/api/reset-password', 'UserController@resetPassword');
+Route::post('/api/register', 'AuthController@register');
+Route::post('/api/login', 'AuthController@login');
+Route::post('/api/get-token-email', 'AuthController@getTokenByEmail');
+Route::post('/api/reset-password', 'AuthController@resetPassword');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::get('user', 'AuthController@getAuthenticatedUser');
+    
 });
+
+Route::resource('api/tipos-gastos', 'TipoGastoController');

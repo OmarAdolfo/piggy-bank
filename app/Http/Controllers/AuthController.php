@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [ 

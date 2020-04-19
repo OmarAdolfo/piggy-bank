@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-12">
+        <h1>Plantillas</h1>
+    </div>
+</div>
+<hr>
+<div class="row mt-3">
+    <div class="col-12">
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+            industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+            scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged.</p>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12 text-right">
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                    aria-describedby="emailHelp" placeholder="Año">
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                    aria-describedby="emailHelp" placeholder="Mes">
+            </div>
+            <button type="button" (click)="addTemplate()" class="btn btn-primary mr-1">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                <span> Añadir plantilla</span>
+            </button>
+            <button type="button" (click)="addTemplate()" class="btn btn-primary">
+                <i class="fas fa-plus" aria-hidden="true"></i>
+                <span> Copiar plantilla</span>
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12 col-md-3">
+        <h3 class="first">Seleccione un año:</h3>
+        <p-dropdown [options]="years" optionLabel="name">
+        </p-dropdown>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12 col-md-4 col-lg-3 mt-3" *ngFor="let month of months">
+        <div class="card bg-secondary border border-dark">
+            <div class="card-body d-flex justify-content-between">
+                <div>{{month.name}}</div>
+                <div>
+                    <button type="button" (click)="editTemplate()" class="btn btn-primary">
+                        <i class="fas fa-edit" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

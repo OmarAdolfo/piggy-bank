@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/Navbar/navbar.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -15,19 +15,29 @@ import { DropdownModule } from 'primeng/dropdown';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { HttpClientModule } from '@angular/common/http';
+import { NotificationService } from './services/notification.service';
+import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   imports: [
-    CommonModule, 
-    FormsModule, 
-    RouterModule, 
-    TableModule, 
-    DialogModule, 
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    TableModule,
+    DialogModule,
     ButtonModule,
     ToastModule,
     ConfirmDialogModule,
     DropdownModule,
-    AccordionModule
+    AccordionModule,
+    HttpClientModule,
+    MessagesModule,
+    MessageModule
   ],
   declarations: [
     NavbarComponent,
@@ -44,7 +54,22 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     AccordionModule,
     CheckboxModule,
-    TooltipModule
+    TooltipModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MessagesModule,
+    MessageModule,
+    ToastModule
   ]
 })
-export class SharedModule {}
+export class SharedModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SharedModule,
+      providers: [
+        NotificationService
+      ]
+    };
+  }
+}

@@ -10,9 +10,9 @@ import { SharedModule } from './shared/shared.module';
     AppComponent
   ],
   imports: [
+    SharedModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
-    SharedModule,
     AppRoutingModule
   ],
   providers: [],

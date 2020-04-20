@@ -9,36 +9,78 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Regístrate</h1>
                                 </div>
-                                <form class="user">
+                                <form class="user" [formGroup]="signinForm" (ngSubmit)="signin()">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Nombre"
-                                            required>
+                                        <label for="nombre">Nombre</label>
+                                        <input type="text" class="form-control form-control-user" id="nombre"
+                                            formControlName="nombre" required>
+                                        <div *ngIf="signinForm.controls.nombre.invalid && (signinForm.controls.nombre.dirty || signinForm.controls.nombre.touched)"
+                                            class="alert alert-danger mt-1">
+                                            <div *ngIf="signinForm.controls.nombre.errors.required">
+                                                El nombre es obligatorio
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Apellidos">
+                                        <label for="apellidos">Apellidos</label>
+                                        <input type="text" class="form-control form-control-user" id="apellidos"
+                                            formControlName="apellidos" required>
+                                        <div *ngIf="signinForm.controls.apellidos.invalid && (signinForm.controls.apellidos.dirty || signinForm.controls.apellidos.touched)"
+                                            class="alert alert-danger mt-1">
+                                            <div *ngIf="signinForm.controls.apellidos.errors.required">
+                                                Los apellidos son obligatorios
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user"
-                                            id="exampleInputEmail" aria-describedby="emailHelp"
-                                            placeholder="Correo electrónico">
+                                        <label for="email">Correo electrónico</label>
+                                        <input type="email" class="form-control form-control-user" id="email"
+                                            formControlName="email" required>
+                                        <div *ngIf="signinForm.controls.email.invalid && (signinForm.controls.email.dirty || signinForm.controls.email.touched)"
+                                            class="alert alert-danger mt-1">
+                                            <div *ngIf="signinForm.controls.email.errors.required">
+                                                El correo electrónico es obligatorio
+                                            </div>
+                                            <div *ngIf="signinForm.controls.email.errors.email">
+                                                El correo electrónico no tiene un formato correcto
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
+                                        <label for="password">Contraseña</label>
+                                        <input type="password" class="form-control form-control-user" id="password"
+                                            formControlName="password" required>
+                                        <div *ngIf="signinForm.controls.password.invalid && (signinForm.controls.password.dirty || signinForm.controls.password.touched)"
+                                            class="alert alert-danger mt-1">
+                                            <div *ngIf="signinForm.controls.password.errors.required">
+                                                La contraseña es obligatoria
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="repeatPassword">Confirmar contraseña</label>
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Contraseña">
+                                            id="repeatPassword" formControlName="repeatPassword" required>
+                                        <div *ngIf="signinForm.controls.repeatPassword.invalid && (signinForm.controls.repeatPassword.dirty || signinForm.controls.repeatPassword.touched)"
+                                            class="alert alert-danger mt-1">
+                                            <div *ngIf="signinForm.controls.repeatPassword.errors.required">
+                                                La confirmación de contraseña es obligatoria
+                                            </div>
+                                            <div *ngIf="signinForm.controls.repeatPassword.errors.notEquals">
+                                                La confirmación de contraseña debe ser igual a la contraseña
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Repetir contraseña">
-                                    </div>
-                                    <a [routerLink]="['/login']" class="btn btn-secondary btn-user btn-block">
+                                    <button type="submit"
+                                        [disabled]="signinForm.pristine || signinForm.invalid"
+                                        class="btn btn-secondary btn-user btn-block">
                                         Registrar usuario
-                                    </a>
+                                    </button>
                                 </form>
                                 <hr class="bg-white">
                                 <div class="text-center">
-                                    <a class="small text-white" [routerLink]="['/login']">Si ya tienes una cuenta,
+                                    <a class="small text-white" [routerLink]="['/login']">Si ya tienes una
+                                        cuenta,
                                         inicia sesión</a>
                                 </div>
                             </div>
@@ -49,3 +91,5 @@
         </div>
     </div>
 </div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

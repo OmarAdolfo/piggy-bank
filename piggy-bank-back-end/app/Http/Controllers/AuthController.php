@@ -25,22 +25,17 @@ class AuthController extends Controller
             'email' => 'required|email'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['error'=>$validator->errors()], 500);
         }
         $postArray = $request->all(); 
         $user_bd = User::where('email', '=', $postArray['email'])->first();
         if (is_null($user_bd)) {
             $postArray['password'] = Hash::make($postArray['password']); 
             $postArray['rol'] = 'USER';
-            $user = User::create($postArray);
-            return response()->json([
-                'status' => 'success',
-                'data' => $user,
-            ]); 
+            User::create($postArray);
+            return response()->json('Se ha registrado correctamente el usuario', 200); 
         } else {
-            return response()->json([
-                'error'=>'Usuario duplicado'
-            ]);
+            return response()->json('Usuario duplicado', 404);
         }
     }
 

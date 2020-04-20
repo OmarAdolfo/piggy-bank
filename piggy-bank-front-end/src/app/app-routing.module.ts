@@ -9,6 +9,12 @@ const routes: Routes = [
     pathMatch: "full"
   },
   {
+    path: "signin",
+    loadChildren: () =>
+      import("./views/signin/signin.module").then(m => m.SigninModule),
+    data: { title: "Registrarse" }
+  },
+  {
     path: "home",
     loadChildren: () =>
       import("./views/home/home.module").then(m => m.HomeModule),
@@ -78,6 +84,12 @@ const routes: Routes = [
         data: { title: "Plantillas" }
       }
     ]
+  },
+  {
+    path: "**",
+    loadChildren: () =>
+      import("./views/login/login.module").then(m => m.LoginModule),
+    data: { title: "Iniciar sesión" }
   },
 ];
 

@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::post('/api/register', 'AuthController@register');
 Route::post('/api/login', 'AuthController@login');
-Route::post('/api/get-token-email', 'AuthController@getTokenByEmail');
+Route::get('/api/get-token-email', 'AuthController@getTokenByEmail');
 Route::post('/api/reset-password', 'AuthController@resetPassword');
 
 Route::group(['middleware' => ['jwt.verify']], function() {

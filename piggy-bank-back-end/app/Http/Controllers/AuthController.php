@@ -35,7 +35,7 @@ class AuthController extends Controller
             User::create($postArray);
             return response()->json('Se ha registrado correctamente el usuario', 200); 
         } else {
-            return response()->json('Usuario duplicado', 404);
+            return response()->json('Usuario duplicado', 500);
         }
     }
 
@@ -44,10 +44,10 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Credenciales inválidas'], 401);
+                return response()->json('Credenciales inválidas', 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'El token no se ha podio crear'], 500);
+            return response()->json('El token no se ha podio crear', 500);
         }
         return response()->json(compact('token'), 200);
     }
@@ -77,21 +77,19 @@ class AuthController extends Controller
                 $tokenData = PasswordReset::create(
                     [
                         'email' => $request->email,
-                        'token' => Str::random(40),
+                        'token' => Str::random(5),
                         'created_at' => Carbon::now()
                     ]
                 );
             } else {
-                $tokenData['token'] = Str::random(40);
+                $tokenData['token'] = Str::random(5);
                 $tokenData['created_at'] = Carbon::now();
                 $tokenData->save();
             }
             Mail::to($request['email'])->send(new SendMail($tokenData->token));
             return response()->json('Se ha enviado el correo', 200);
         } else {
-            return response()->json([
-                'error'=>'Usuario con este correo no existe'
-            ]);
+            return response()->json('Usuario con este correo no existe', 500);
         }
     }
 
@@ -103,17 +101,17 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['error'=>$validator->errors()], 500);
         }
 
-        $tokenData = PasswordReset::where('token', $request->token)->first();
+        $tokenData = PasswordReset::where('token', '=', $request['token'])->first();
         if (!$tokenData) { 
-            return response()->json(['error'=> 'El token es inválido']);
+            return response()->json('El token es inválido', 500);
         }
 
         $user = User::where('email', '=', $tokenData->email)->first();
         if (!$user) {
-            return response()->json(['error'=> 'El usuario no existe']);
+            return response()->json('El usuario no existe', 500);
         }
 
         $user->password = \Hash::make($request->password);

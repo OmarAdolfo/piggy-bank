@@ -5,6 +5,8 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { LoginService } from './login.service';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Login } from 'src/app/shared/models/login';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +24,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private notificationService: NotificationService,
     private loginService: LoginService,
     private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +62,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
     const login: Login = Object.assign({}, this.loginForm.value);
     this.loginService.login(login).subscribe(
       (response: any) => {
-        this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });
+        this.authenticationService.saveToken(response.token);
+        this.authenticationService.getAuthenticatedUser().subscribe(
+          (response: any) => {
+            this.authenticationService.saveUser(response);
+            this.router.navigate([this.authenticationService.getUrlNavigation()]);
+          },
+          error => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+          }
+        );
       },
       error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });

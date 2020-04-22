@@ -23,8 +23,8 @@ Route::get('/api/get-token-email', 'AuthController@getTokenByEmail');
 Route::post('/api/reset-password', 'AuthController@resetPassword');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::get('user', 'AuthController@getAuthenticatedUser');
-    
+    Route::get('/api/validate-token', 'AuthController@validateToken');
+    Route::get('/api/user', 'AuthController@getAuthenticatedUser');
 });
 
 Route::resource('api/tipos-gastos', 'TipoGastoController');

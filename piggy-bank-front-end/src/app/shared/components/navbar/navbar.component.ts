@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener, ɵConsole } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,8 @@ export class NavbarComponent implements OnInit {
   logoUrl: string;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -33,24 +35,24 @@ export class NavbarComponent implements OnInit {
         }))
       .subscribe(
         url => {
-          if (url.includes('admin')) {
+          if (url.includes('home')) {
             this.menuOptions = [
-              { name: 'Perfil', url: '', icon: 'fas fa-user' },
-              { name: 'Cerrar sesión', url: '/home', icon: 'fas fa-sign-out-alt' }
+              { name: 'Perfil', url: '', icon: 'fas fa-user', logout: false },
+              { name: 'Cerrar sesión', url: '', icon: 'fas fa-sign-out-alt', logout: true }
             ]
             this.isLogged = true;
-            this.logoUrl = '/admin/dashboard';
-          } else if (url.includes('home')) {
+            this.logoUrl = this.authenticationService.getUrlNavigation();
+          } else if (url === '') {
             this.menuOptions = [
-              { name: 'Iniciar sesión', url: '/login', icon: 'fas fa-sign-in-alt' },
-              { name: 'Registrarse', url: '/signin', icon: 'fas fa-user-tag' }
+              { name: 'Iniciar sesión', url: '/login', icon: 'fas fa-sign-in-alt', logout: false },
+              { name: 'Registrarse', url: '/signin', icon: 'fas fa-user-tag', logout: false }
             ]
             this.isLogged = false;
-            this.logoUrl = 'home';
+            this.logoUrl = '';
           } else {
             this.menuOptions = [];
             this.isLogged = false;
-            this.logoUrl = 'home';
+            this.logoUrl = '';
           }
         }
       );
@@ -101,6 +103,11 @@ export class NavbarComponent implements OnInit {
       (elms[i] as HTMLElement).style.display = 'none';
     }
     this.collapsed = true;
+  }
+
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
   }
 
 }

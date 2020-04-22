@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/Navbar/navbar.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TableComponent } from './components/table/table.component';
 import { TableModule } from 'primeng/table';
@@ -15,12 +14,11 @@ import { DropdownModule } from 'primeng/dropdown';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
-import { HttpClientModule } from '@angular/common/http';
 import { NotificationService } from './services/notification.service';
 import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   imports: [
@@ -35,19 +33,18 @@ import { MessageService } from 'primeng/api';
     ConfirmDialogModule,
     DropdownModule,
     AccordionModule,
-    HttpClientModule,
     MessagesModule,
     MessageModule
   ],
   declarations: [
     NavbarComponent,
-    AdminComponent,
+    HomeComponent,
     SidebarComponent,
     TableComponent
   ],
   exports: [
     NavbarComponent,
-    AdminComponent,
+    HomeComponent,
     TableComponent,
     DropdownModule,
     CommonModule,
@@ -57,7 +54,6 @@ import { MessageService } from 'primeng/api';
     TooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     MessagesModule,
     MessageModule,
     ToastModule

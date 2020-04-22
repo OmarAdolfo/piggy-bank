@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { API } from 'src/app/shared/config/api';
 import { Login } from 'src/app/shared/models/login';
@@ -13,7 +13,9 @@ export class LoginService {
 
   constructor(
     private http: HttpClient,
+    private httpBackend: HttpBackend
   ) {
+    this.http = new HttpClient(this.httpBackend);
     this.url = API.url + 'login';
   }
 

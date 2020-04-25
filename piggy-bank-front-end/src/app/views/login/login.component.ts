@@ -63,15 +63,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.loginService.login(login).subscribe(
       (response: any) => {
         this.authenticationService.saveToken(response.token);
-        this.authenticationService.getAuthenticatedUser().subscribe(
-          (response: any) => {
-            this.authenticationService.saveUser(response);
-            this.router.navigate([this.authenticationService.getUrlNavigation()]);
-          },
-          error => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-          }
-        );
+        this.router.navigate([this.authenticationService.getUrlNavigation()]);
       },
       error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });

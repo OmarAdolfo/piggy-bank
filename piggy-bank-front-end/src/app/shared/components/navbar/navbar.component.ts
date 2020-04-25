@@ -37,7 +37,7 @@ export class NavbarComponent implements OnInit {
         url => {
           if (url.includes('home')) {
             this.menuOptions = [
-              { name: 'Perfil', url: '', icon: 'fas fa-user', logout: false },
+              { name: 'Perfil', url: 'home/profile', icon: 'fas fa-user', logout: false },
               { name: 'Cerrar sesión', url: '', icon: 'fas fa-sign-out-alt', logout: true }
             ]
             this.isLogged = true;

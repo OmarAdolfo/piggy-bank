@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { API } from '../config/api';
 import { Observable } from 'rxjs/internal/Observable';
 import { Role } from '../models/role';
-import { Router } from '@angular/router';
+import * as jwt_decode from "jwt-decode";
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
     providedIn: 'root'
@@ -11,27 +12,25 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
 
     public userUrl: string;
-    public validateTokenUrl: string;
+    private rol: string;
 
     constructor(
         private http: HttpClient,
-        private router: Router,
+        private jwtHelper: JwtHelperService
     ) {
         this.userUrl = API.url + 'user';
-        this.validateTokenUrl = API.url + 'validate-token';
+        if (this.isLogged()) {
+            this.rol = jwt_decode(this.getToken()).rol;
+        }
     }
 
     getAuthenticatedUser(): Observable<Response> {
         return this.http.get<Response>(this.userUrl);
     }
 
-    validateToken(): Observable<Response> {
-        return this.http.get<Response>(this.validateTokenUrl);
-    }
-
     getUrlNavigation() {
         let url: string;
-        if (Role.User.toString() === this.getUser().rol) {
+        if (Role.User.toString() === this.rol) {
             url = 'home/dashboard';
         } else {
             url = 'home/users';
@@ -41,27 +40,24 @@ export class AuthenticationService {
 
     saveToken(token: string) {
         localStorage.setItem('accestoken', token);
-    }
-
-    saveUser(user: any) {
-        localStorage.setItem('user', JSON.stringify(user));
+        this.rol = jwt_decode(this.getToken()).rol;
     }
 
     getToken() {
         return localStorage.getItem('accestoken');
     }
 
-    getUser() {
-        return JSON.parse(localStorage.getItem('user')).user;
+    getRol() {
+        return this.rol;
     }
 
     isLogged() {
-        return localStorage.getItem('accestoken') !== null && localStorage.getItem('user') !== null;
+        const token = localStorage.getItem('accestoken');
+        return !this.jwtHelper.isTokenExpired(token);
     }
 
     logout() {
         localStorage.removeItem('accestoken');
-        localStorage.removeItem('user');
     }
 
 }

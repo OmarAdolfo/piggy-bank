@@ -10,7 +10,6 @@ import { Role } from '../../models/role';
 export class HomeComponent implements OnInit {
 
   optionsMenu = [];
-  url: string;
 
   optionsMenuUser = [
     { name: 'Escritorio', icon: 'fas fa-home', url: 'dashboard' },
@@ -27,7 +26,7 @@ export class HomeComponent implements OnInit {
   ]
 
   optionsMenuAdmin = [
-    { name: 'Escritorio', icon: 'fas fa-home', url: 'dashboard' }
+    { name: 'Tipos de gastos', icon: 'fas fa-dollar-sign', url: 'type-expense' }
   ]
 
   constructor(
@@ -35,7 +34,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (Role.User.toString() === this.authenticationService.getUser().rol) {
+    if (Role.User.toString() === this.authenticationService.getRol()) {
       this.optionsMenu = this.optionsMenuUser;
     } else {
       this.optionsMenu = this.optionsMenuAdmin;

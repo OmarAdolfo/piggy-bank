@@ -13,7 +13,6 @@ class TipoGastoController extends Controller
     {
         $orderBy = !is_null($request['orderBy']) ? $request['orderBy'] : 'asc';
         $sortable = !is_null($request['sortable']) ? $request['sortable'] : 'id';
-        $pageSize = !is_null($request['pageSize']) ? $request['pageSize'] : 10;
 
         $tipos_gasto = new TipoGasto;
 
@@ -25,7 +24,7 @@ class TipoGastoController extends Controller
 
         $tipos_gasto = $tipos_gasto
                 ->orderBy($sortable, $orderBy)
-                ->paginate($pageSize);
+                ->paginate(10);
 
         return response()->json(array(
             'tipos_gasto' => $tipos_gasto
@@ -46,7 +45,10 @@ class TipoGastoController extends Controller
             $tipoGasto = new TipoGasto();
             $tipoGasto->valor = $postArray['valor']; 
             $tipoGasto->save();
-            return response()->json('Se ha creado un nuevo tipo de gasto', 200);
+            return response()->json([
+                'message' => 'Se ha creado un nuevo tipo de gasto',
+                'data' => $tipoGasto
+            ], 200);
         } else {
             return response()->json([
                 'error' => 'El tipo de gasto ya existe'

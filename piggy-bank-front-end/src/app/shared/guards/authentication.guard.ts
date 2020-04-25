@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵConsole } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
-import { mergeMap } from 'rxjs/internal/operators/mergeMap';
-import { catchError } from 'rxjs/internal/operators/catchError';
 
 @Injectable({
     providedIn: 'root'
@@ -15,47 +13,21 @@ export class AuthenticationGuard implements CanActivate {
         private router: Router,
     ) { }
 
-    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this.canActivateRouteByUser(state);
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+        if (!this.authenticationService.isLogged()) {
+            this.authenticationService.logout();
+            this.router.navigate(['login']);
+            return false;
+        } else {
+            if (state.url === '/home') {
+                this.router.navigate([this.authenticationService.getUrlNavigation()]);
+            }
+            if (!this.authenticationService.isLogged() || (route.data.rol && this.authenticationService.getRol() !== route.data.rol)) {
+                this.router.navigate(['login']);
+                return false;
+            }
+        }
+        return true;
     }
 
-    canActivateRouteByUser(state: RouterStateSnapshot) {
-        if (!this.authenticationService.isLogged()) {
-            this.router.navigate(['login']);
-            return of(false);
-        } else {
-            return this.authenticationService.validateToken().pipe(
-                mergeMap(() => {
-                    if (state.url === '/home') {
-                        this.router.navigate([this.authenticationService.getUrlNavigation()]);
-                    }
-                    return of(true);
-                }),
-                catchError(() => {
-                    this.authenticationService.logout();
-                    return of(false);
-                })
-            )
-        }
-    }
-
-    canActivateRouteByAdmin(state: RouterStateSnapshot) {
-        if (!this.authenticationService.isLogged()) {
-            this.router.navigate(['login']);
-            return of(false);
-        } else {
-            return this.authenticationService.validateToken().pipe(
-                mergeMap(() => {
-                    if (state.url === '/home') {
-                        this.router.navigate([this.authenticationService.getUrlNavigation()]);
-                    }
-                    return of(true);
-                }),
-                catchError(() => {
-                    this.authenticationService.logout();
-                    return of(false);
-                })
-            )
-        }
-    }
 }

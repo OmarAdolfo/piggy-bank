@@ -121,10 +121,5 @@ class AuthController extends Controller
         PasswordReset::where('email', $user->email)->delete();
         return response()->json('Se ha reseteado la contraseña', 200);
     }
-
-    public function validateToken() 
-    {
-        return response()->json('Éxito en la validación', 200);
-    }
     
 }

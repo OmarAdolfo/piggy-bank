@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthenticationGuard } from './shared/guards/authentication.guard';
 import { HomeComponent } from './shared/components/home/home.component';
 import { LoginGuard } from './shared/guards/login.guard';
+import { Role } from './shared/models/role';
 
 const routes: Routes = [
   {
@@ -35,21 +36,49 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard],
     children: [
       {
-        path: "dashboard",
+        path: "profile",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
-          import("./views/dashboard/dashboard.module").then(
-            m => m.DashboardModule
+          import("./views/profile/profile.module").then(
+            m => m.ProfileModule
           )
+      },
+      {
+        path: "type-expense",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/type-expense/type-expense.module").then(
+            m => m.TypeExpenseModule
+          ),
+        data: {
+          rol: Role.Admin.toString()
+        }
       },
       {
         path: "users",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/dashboard/dashboard.module").then(
             m => m.DashboardModule
-          )
+          ),
+        data: {
+          rol: Role.Admin.toString()
+        }
+      },
+      {
+        path: "dashboard",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/dashboard/dashboard.module").then(
+            m => m.DashboardModule
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
       },
       {
         path: "stats",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/stats/stats.module").then(
             m => m.StatsModule
@@ -57,6 +86,7 @@ const routes: Routes = [
       },
       {
         path: "savings-management",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/savings-management/savings-management.module").then(
             m => m.SavingManagementModule
@@ -64,6 +94,7 @@ const routes: Routes = [
       },
       {
         path: "add-savings",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/add-savings/add-savings.module").then(
             m => m.AddSavingsModule
@@ -71,6 +102,7 @@ const routes: Routes = [
       },
       {
         path: "templates",
+        canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/templates/templates.module").then(
             m => m.TemplatesModule

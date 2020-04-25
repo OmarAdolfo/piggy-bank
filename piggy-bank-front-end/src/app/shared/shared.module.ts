@@ -56,7 +56,10 @@ import { HomeComponent } from './components/home/home.component';
     ReactiveFormsModule,
     MessagesModule,
     MessageModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule,
+    DialogModule,
+    TableModule
   ]
 })
 export class SharedModule {
@@ -64,7 +67,7 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
-        NotificationService
+        NotificationService,
       ]
     };
   }

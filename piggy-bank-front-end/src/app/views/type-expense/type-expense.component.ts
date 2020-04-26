@@ -64,7 +64,6 @@ export class TypeExpenseComponent implements OnInit {
     this.typeExpenseService.get(this.typeExpenseForm.get('valor').value, sortable, orderBy).subscribe(
       (response: any) => {
         const array: TypeExpense[] = response.tipos_gasto.data;
-        console.log(array);
         this.typesExpense = array;
       }
     );

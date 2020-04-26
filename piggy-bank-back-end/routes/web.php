@@ -31,4 +31,5 @@ Route::group(['middleware' => 'jwt.verify:USER'], function() {
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {
     Route::resource('api/tipos-gastos', 'TipoGastoController');
+    Route::resource('api/tipos-ahorros', 'TipoAhorroController');
 });

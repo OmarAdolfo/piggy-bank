@@ -14,7 +14,7 @@ class CreateTiposAhorrosTable extends Migration
     public function up()
     {
         Schema::create('tipos_ahorros', function (Blueprint $table) {
-            $table->increments('id_tipo_ahorro');
+            $table->increments('id');
             $table->string('valor');
             $table->timestamps();
         });

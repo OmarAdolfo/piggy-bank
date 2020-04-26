@@ -26,7 +26,8 @@ export class HomeComponent implements OnInit {
   ]
 
   optionsMenuAdmin = [
-    { name: 'Tipos de gastos', icon: 'fas fa-dollar-sign', url: 'type-expense' }
+    { name: 'Tipos de gastos', icon: 'fas fa-dollar-sign', url: 'type-expense' },
+    { name: 'Tipos de ahorros', icon: 'fas fa-wallet', url: 'type-saving' }
   ]
 
   constructor(

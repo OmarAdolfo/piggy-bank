@@ -55,6 +55,17 @@ const routes: Routes = [
         }
       },
       {
+        path: "type-saving",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/type-saving/type-saving.module").then(
+            m => m.TypeSavingModule
+          ),
+        data: {
+          rol: Role.Admin.toString()
+        }
+      },
+      {
         path: "users",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>

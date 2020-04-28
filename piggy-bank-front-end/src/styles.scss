@@ -1,5 +1,7 @@
+$primary: #344955;
+
 $theme-colors: (
-  "primary": #344955,
+  "primary": $primary,
   "secondary": #F9AA33
 );
 @import '../node_modules/bootstrap/scss/bootstrap';
@@ -27,4 +29,23 @@ body {
 
 .ui-dropdown {
     width: 100%;
+}
+
+.ui-button {
+	background-color: $primary !important;
+    color: white !important;
+    border-color: white !important;
+}
+
+.ui-accordion-header a, .ui-accordion-header span {
+    background-color: $primary !important;
+    color: white !important;
+}
+
+.ui-paginator-page {
+    background-color: $primary !important;
+}
+
+td {
+    word-wrap: break-word;
 }

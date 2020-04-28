@@ -14,11 +14,11 @@ class CreateBuenasPracticasTable extends Migration
     public function up()
     {
         Schema::create('buenas_practicas', function (Blueprint $table) {
-            $table->increments('id_buena_practica');
-            $table->string('palabras_clave');
+            $table->increments('id');
+            $table->string('palabra_clave');
             $table->integer('porcentaje');
-            $table->integer('id')->unsigned();
-            $table->foreign('id')->references('id')->on('usuarios');    
+            $table->integer('id_usuario')->unsigned();
+            $table->foreign('id_usuario')->references('id')->on('usuarios');    
             $table->timestamps();
         });
     }

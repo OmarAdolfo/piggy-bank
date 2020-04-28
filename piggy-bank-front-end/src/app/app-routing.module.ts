@@ -69,8 +69,19 @@ const routes: Routes = [
         path: "users",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
-          import("./views/dashboard/dashboard.module").then(
-            m => m.DashboardModule
+          import("./views/user/user.module").then(
+            m => m.UserModule
+          ),
+        data: {
+          rol: Role.Admin.toString()
+        }
+      },
+      {
+        path: "good-practices",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/good-practice/good-practice.module").then(
+            m => m.GoodPracticeModule
           ),
         data: {
           rol: Role.Admin.toString()

@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "PiggyBank": {
@@ -131,6 +131,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "PiggyBank"
+    }
+  },
+  "defaultProject": "PiggyBank",
+  "cli": {
+    "analytics": "9f20ba89-ed0a-4dcd-9008-e0aaae2a55b4"
+  }
 }

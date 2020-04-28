@@ -22,7 +22,7 @@ class CreateGastosTable extends Migration
             $table->integer('id')->unsigned();
             $table->foreign('id')->references('id')->on('usuarios');   
             $table->integer('id_tipo_gasto')->unsigned();
-            $table->foreign('id_tipo_gasto')->references('id_tipo_gasto')->on('tipos_gastos');  
+            $table->foreign('id_tipo_gasto')->references('id')->on('tipos_gastos');  
             $table->timestamps();
         });
     }

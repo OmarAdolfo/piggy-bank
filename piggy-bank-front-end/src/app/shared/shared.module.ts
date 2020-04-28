@@ -19,6 +19,7 @@ import { ModuleWithProviders } from '@angular/compiler/src/core';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { HomeComponent } from './components/home/home.component';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { HomeComponent } from './components/home/home.component';
     ToastModule,
     ConfirmDialogModule,
     DialogModule,
-    TableModule
+    TableModule,
+    SelectButtonModule
   ]
 })
 export class SharedModule {

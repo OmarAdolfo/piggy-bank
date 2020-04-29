@@ -49,3 +49,19 @@ body {
 td {
     word-wrap: break-word;
 }
+
+.wrapper {
+    margin: auto 50px;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        margin: auto 30px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .wrapper {
+        margin: auto 20px;
+    }
+}

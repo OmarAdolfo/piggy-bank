@@ -35,6 +35,10 @@ export class TypeExpenseService {
     return this.http.get<TypeExpense[]>(this.url + query);
   }
 
+  findAll() {
+    return this.http.get<TypeExpense[]>(this.url + '/all');
+  }
+
   add(typeExpense: TypeExpense): Observable<Response> {
     return this.http.post<Response>(this.url, typeExpense);
   }

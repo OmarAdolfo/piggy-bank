@@ -1,0 +1,67 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Detalle gasto</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form" *ngIf="expense">
+                <div class="row">
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="nombre">Nombre</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <input type="text" class="form-control form-control-user" id="nombre" formControlName="nombre">
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="tipo_gasto">Tipo de gasto</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <p-dropdown [options]="typesExpense" formControlName="tipo_gasto"
+                            placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="recordar">Recordar</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <p-inputSwitch formControlName="recordar"></p-inputSwitch>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="flexible">Flexible</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <p-inputSwitch formControlName="flexible"></p-inputSwitch>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="fechaFin">Fecha fin</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <p-calendar formControlName="fechaFin">></p-calendar>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-1">
+                    <div class="col-12 text-right mt-2">
+                        <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                            class="btn btn-primary mr-1">
+                            <span *ngIf="newExpense"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
+                            <span *ngIf="!newExpense"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
+                        </button>
+                        <button type="button" (click)="back()" class="btn btn-secondary mr-1">
+                            <span><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

@@ -8,6 +8,10 @@ class Gasto extends Model
 {
     protected $table = 'gastos';
 
+    protected $fillable = [
+        'nombre', 'recordar', 'fecha_fin', 'flexible'
+    ];
+
     public function user() {
         return $this->belongsTo('App\User', 'id');
     }

@@ -69,7 +69,7 @@ class TipoGastoController extends Controller
             if (is_null($tipo_gasto_bd_repeat)) {
                 $tipo_gasto_bd->valor = $postArray['valor']; 
                 $tipo_gasto_bd->save();
-                return response()->json('Se ha actualiza el tipo de gasto', 200);
+                return response()->json('Se ha actualizado el tipo de gasto', 200);
             } else {
                 return response()->json([
                     'error' => 'El tipo de gasto ya existe'

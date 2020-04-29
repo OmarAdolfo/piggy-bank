@@ -15,7 +15,7 @@ class CreateBuenasPracticasTable extends Migration
     {
         Schema::create('buenas_practicas', function (Blueprint $table) {
             $table->increments('id_buena_practica');
-            $table->string('palabras_clave');
+            $table->string('palabra_clave');
             $table->integer('porcentaje');
             $table->integer('id')->unsigned();
             $table->foreign('id')->references('id')->on('usuarios');    

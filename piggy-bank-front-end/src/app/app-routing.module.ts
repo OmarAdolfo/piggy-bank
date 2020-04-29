@@ -99,6 +99,17 @@ const routes: Routes = [
         }
       },
       {
+        path: "expenses",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/expense/expense.module").then(
+            m => m.ExpenseModule
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
+      },
+      {
         path: "stats",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>

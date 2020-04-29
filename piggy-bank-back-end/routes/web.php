@@ -24,9 +24,11 @@ Route::post('/api/reset-password', 'AuthController@resetPassword');
 
 Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
     Route::get('/api/user', 'AuthController@getAuthenticatedUser');
+    Route::get('api/tipos-gastos/all', 'TipoGastoController@findAll');
 });
 
 Route::group(['middleware' => 'jwt.verify:USER'], function() {
+    Route::resource('api/gastos', 'GastoController');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

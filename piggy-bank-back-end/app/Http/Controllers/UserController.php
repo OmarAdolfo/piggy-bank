@@ -104,7 +104,7 @@ class UserController extends Controller
                 $user_bd->email = $postArray['email']; 
                 $user_bd->rol = $postArray['rol'];
                 $user_bd->save();
-                return response()->json('Se ha actualiza el usuario', 200);
+                return response()->json('Se ha actualizado el usuario', 200);
             } else {
                 return response()->json([
                     'error' => 'El usuario con ese email ya existe'

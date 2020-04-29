@@ -20,6 +20,8 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { HomeComponent } from './components/home/home.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   imports: [
@@ -61,7 +63,9 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     ConfirmDialogModule,
     DialogModule,
     TableModule,
-    SelectButtonModule
+    SelectButtonModule,
+    InputSwitchModule,
+    CalendarModule
   ]
 })
 export class SharedModule {

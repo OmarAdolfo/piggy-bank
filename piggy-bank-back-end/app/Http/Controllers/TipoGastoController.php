@@ -9,6 +9,13 @@ use Validator;
 class TipoGastoController extends Controller
 {
 
+    public function findAll() {
+        $tipos_gasto = TipoGasto::all();
+        return response()->json(array(
+            'tipos_gasto' => $tipos_gasto
+        ), 200);
+    }
+    
     public function index(Request $request)
     {
         $orderBy = !is_null($request['orderBy']) ? $request['orderBy'] : 'asc';

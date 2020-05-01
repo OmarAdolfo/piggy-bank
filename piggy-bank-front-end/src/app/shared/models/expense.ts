@@ -1,5 +1,6 @@
 import { User } from './user';
 import { TypeExpense } from './type-expense';
+import { Payment } from './payment';
 
 export class Expense {
     id: number;
@@ -11,4 +12,5 @@ export class Expense {
     tipo_gasto: TypeExpense;
     created_at: Date;
     updated_at: Date;
+    pagos: Payment[];
 }

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cobro extends Model
+class Pago extends Model
 {
-    protected $table = 'cobros';
+    protected $table = 'pagos';
 
     public function user() {
         return $this->belongsTo('App\Gasto', 'id_gasto');

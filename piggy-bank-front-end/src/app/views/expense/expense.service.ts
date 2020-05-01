@@ -20,7 +20,6 @@ export class ExpenseService {
   get(form: any, sortable?: string, orderBy?: number): Observable<Expense[]> {
     let params: string[] = [];
     let query = '';
-    console.log(form.nombre);
     if (form.nombre) {
       params.push('nombre=' + form.nombre);
     }

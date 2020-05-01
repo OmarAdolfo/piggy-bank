@@ -19,7 +19,6 @@ export class ExpenseComponent implements OnInit {
   expenses: Expense[];
   cols: any[];
   roles: any[];
-  selectedExpense: Expense;
   typesExpense: TypeExpense[] = [];
 
   constructor(

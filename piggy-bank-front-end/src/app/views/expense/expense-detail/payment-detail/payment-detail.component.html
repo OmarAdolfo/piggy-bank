@@ -1,0 +1,47 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Detalle pago</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="form" *ngIf="payment">
+                <div class="row">
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="cantidad">Cantidad</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <input type="textbox" formControlName="cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <label for="fecha">Fecha del pago</label>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <p-calendar formControlName="fecha" dateFormat="yy-mm-dd"></p-calendar>
+                    </div>
+                </div>
+                <hr>
+                <div class="row mt-1">
+                    <div class="col-12 text-right mt-2">
+                        <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                            class="btn btn-primary mr-1">
+                            <span *ngIf="newPayment"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
+                            <span *ngIf="!newPayment"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 text-right">
+            <button type="button" (click)="back()" class="btn btn-secondary mr-1">
+                <span><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

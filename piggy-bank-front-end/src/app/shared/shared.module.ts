@@ -22,6 +22,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
+import { TwoDigitDecimaNumberDirective } from './directives/decimal.directive';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { CalendarModule } from 'primeng/calendar';
     NavbarComponent,
     HomeComponent,
     SidebarComponent,
-    TableComponent
+    TableComponent,
+    TwoDigitDecimaNumberDirective
   ],
   exports: [
     NavbarComponent,
@@ -65,7 +67,8 @@ import { CalendarModule } from 'primeng/calendar';
     TableModule,
     SelectButtonModule,
     InputSwitchModule,
-    CalendarModule
+    CalendarModule,
+    TwoDigitDecimaNumberDirective
   ]
 })
 export class SharedModule {

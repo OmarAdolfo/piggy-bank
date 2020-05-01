@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ExpenseService } from '../expense.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Expense } from 'src/app/shared/models/expense';
 import { TypeExpenseService } from '../../type-expense/type-expense.service';
 import { TypeExpense } from 'src/app/shared/models/type-expense';
 import { Location } from '@angular/common';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { PaymentService } from './payment-detail/payment.service';
 
 @Component({
   selector: 'app-expense-detail',
   templateUrl: './expense-detail.component.html',
   styleUrls: ['./expense-detail.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class ExpenseDetailComponent implements OnInit {
 
@@ -20,6 +21,7 @@ export class ExpenseDetailComponent implements OnInit {
   newExpense: boolean;
   expense: Expense;
   typesExpense: TypeExpense[] = [];
+  cols: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,8 +29,17 @@ export class ExpenseDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private typeExpenseService: TypeExpenseService,
     private location: Location,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private router: Router,
+    private paymentService: PaymentService
+  ) {
+    this.cols = [
+      { field: 'cantidad', header: 'Cantidad' },
+      { field: 'fecha', header: 'Fecha' },
+      { field: '', header: 'Opciones' }
+    ];
+  }
 
   ngOnInit(): void {
     this.newExpense = this.activatedRoute.snapshot.params.id === 'new' ? true : false;
@@ -69,7 +80,7 @@ export class ExpenseDetailComponent implements OnInit {
     if (this.expense.id) {
       this.expenseService.update(expense, this.expense.id).subscribe(
         (response: any) => {
-          this.back();
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response });
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
@@ -89,6 +100,34 @@ export class ExpenseDetailComponent implements OnInit {
 
   back() {
     this.location.back();
+  }
+
+  confirm(id: number) {
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de que deseas borrar?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.delete(id);
+      }
+    });
+  }
+
+  delete(id: number) {
+    this.paymentService.delete(id).subscribe(
+      () => {
+        this.expense.pagos = this.expense.pagos.filter(pago => pago.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el pago' })
+      }
+    );
+  }
+
+  add() {
+    this.router.navigate(['/home/expenses/' + this.expense.id + '/payment/new']);
+  }
+
+  onRowSelect(id: number) {
+    this.router.navigate(['/home/expenses/' + this.expense.id + '/payment/' + id]);
   }
 
 }

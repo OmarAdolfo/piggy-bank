@@ -29,6 +29,7 @@ Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
 
 Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/gastos', 'GastoController');
+    Route::resource('api/pagos', 'PagoController');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

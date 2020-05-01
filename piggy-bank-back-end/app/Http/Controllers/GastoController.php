@@ -43,7 +43,7 @@ class GastoController extends Controller
     public function show($id) {
         $gasto = Gasto::find($id);
         return response()->json(array(
-            'data' => $gasto->load('tipoGasto')
+            'data' => $gasto->load('tipoGasto')->load('pagos')
         ), 200);
     }
 

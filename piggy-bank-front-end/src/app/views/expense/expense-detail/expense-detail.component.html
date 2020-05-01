@@ -43,7 +43,7 @@
                         <label for="fechaFin">Fecha fin</label>
                     </div>
                     <div class="col-6 col-md-3">
-                        <p-calendar formControlName="fechaFin">></p-calendar>
+                        <p-calendar formControlName="fechaFin"></p-calendar>
                     </div>
                 </div>
                 <hr>
@@ -54,14 +54,58 @@
                             <span *ngIf="newExpense"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
                             <span *ngIf="!newExpense"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
                         </button>
-                        <button type="button" (click)="back()" class="btn btn-secondary mr-1">
-                            <span><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver</span>
-                        </button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <div class="row" *ngIf="expense">
+        <div class="col-12">
+            <h2>Listado de pagos</h2>
+            <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [rows]="5" [responsive]="true"
+                [lazy]="true">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td>
+                            {{rowData['cantidad']}}
+                        </td>
+                        <td>
+                            {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            <button type="button" (click)="onRowSelect(rowData['id'])" class="btn btn-secondary mr-1">
+                                <span><i class="fas fa-edit" aria-hidden="true"></i></span>
+                            </button>
+                            <button type="button" (click)="confirm(rowData['id'])" class="btn btn-secondary mr-1">
+                                <span><i class="fas fa-trash" aria-hidden="true"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-rowData>
+                    <div style="text-align:left">
+                        <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
+                    </div>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 text-right">
+            <button type="button" (click)="back()" class="btn btn-secondary mr-1">
+                <span><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver</span>
+            </button>
+        </div>
+    </div>
 </div>
 
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

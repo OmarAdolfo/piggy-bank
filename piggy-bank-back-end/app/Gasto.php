@@ -19,4 +19,8 @@ class Gasto extends Model
     public function tipoGasto() {
         return $this->belongsTo('App\TipoGasto', 'id_tipo_gasto');
     }
+
+    public function pagos() {
+        return $this->hasMany('App\Pago');
+    }
 }

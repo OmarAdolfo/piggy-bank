@@ -50,8 +50,7 @@ class PagoController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'cantidad' => 'required', 
-            'fecha' => 'required',
-            'gasto_id' => 'required'
+            'fecha' => 'required'
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -61,12 +60,6 @@ class PagoController extends Controller
         if (!is_null($pago_bd)) {
             $pago_bd->cantidad = $postArray['cantidad']; 
             $pago_bd->fecha = date('Y-m-d h:i:s', strtotime($postArray['fecha'])); 
-            $pago_bd->gasto_id = $postArray['gasto_id'];
-            if ($request->has('pagado')) {
-                $pago_bd->pagado = $postArray['pagado'];
-            } else {
-                $pago_bd->pagado = 1; 
-            }
             $pago_bd->save();
             return response()->json('Se ha actualizado el pago', 200);
         } else {

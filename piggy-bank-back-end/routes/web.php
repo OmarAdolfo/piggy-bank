@@ -30,6 +30,8 @@ Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
 Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/gastos', 'GastoController');
     Route::resource('api/pagos', 'PagoController');
+    Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
+    Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

@@ -25,8 +25,8 @@ export class PaymentService {
     return this.http.post<Response>(this.url, payment);
   }
 
-  update(payment: Payment, id: number): Observable<Response> {
-    return this.http.put<Response>(this.url + '/' + id, payment);
+  update(payment: Payment): Observable<Response> {
+    return this.http.put<Response>(this.url + '/' + payment.id, payment);
   }
 
   delete(id: number): Observable<Response> {

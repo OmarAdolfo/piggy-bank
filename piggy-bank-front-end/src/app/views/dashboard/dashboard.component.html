@@ -42,7 +42,7 @@
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Cuenta Ahorros</div>
                     </div>
                     <div class="col-auto">
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1000</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{savings}}</div>
                     </div>
                 </div>
             </div>
@@ -74,10 +74,12 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-secondary text-dark" role="alert">
-                    El pago con nombre <a (click)="editTemplate()"><strong>Agua</strong></a> del mes de Marzo de 2020 aún no se ha pagado
+                    El pago con nombre <a (click)="editTemplate()"><strong>Agua</strong></a> del mes de Marzo de 2020
+                    aún no se ha pagado
                 </div>
                 <div class="alert alert-secondary text-dark" role="alert">
-                    El pago con nombre <a (click)="editTemplate()"><strong>Spotify</strong></a> del mes de Marzo de 2020 aún no se ha pagado
+                    El pago con nombre <a (click)="editTemplate()"><strong>Spotify</strong></a> del mes de Marzo de 2020
+                    aún no se ha pagado
                 </div>
             </div>
         </div>
@@ -90,9 +92,14 @@
                 Recordatorios Anuales
             </div>
             <div class="card-body">
-                <div class="alert alert-info text-dark" role="alert">
-                    El pago con nombre <strong>Rodaje</strong> fue realizado el mes de Abril de 2019.
+                <div *ngIf="annualReminders.length > 0; else noAnnualReminders">
+                    <div class="alert alert-info text-dark" role="alert" *ngFor="let annualReminder of annualReminders">
+                        <span [innerHTML]="annualReminder"></span>
+                    </div>
                 </div>
+                <ng-template #noAnnualReminders>
+                    No existen recordatorios
+                </ng-template>
             </div>
         </div>
     </div>

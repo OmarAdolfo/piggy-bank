@@ -59,7 +59,7 @@
             </form>
         </div>
     </div>
-    <div class="row" *ngIf="expense">
+    <div class="row" *ngIf="expense && expense.id">
         <div class="col-12">
             <h2>Listado de pagos</h2>
             <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [rows]="5" [responsive]="true"

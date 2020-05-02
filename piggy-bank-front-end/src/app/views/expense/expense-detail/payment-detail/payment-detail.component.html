@@ -13,13 +13,14 @@
                         <label for="cantidad">Cantidad</label>
                     </div>
                     <div class="col-6 col-md-3">
-                        <input type="textbox" formControlName="cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
+                        <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
+                            placeholder="XX.XX" appTwoDigitDecimaNumber>
                     </div>
                     <div class="col-6 col-md-3 text-center">
                         <label for="fecha">Fecha del pago</label>
                     </div>
                     <div class="col-6 col-md-3">
-                        <p-calendar formControlName="fecha" dateFormat="yy-mm-dd"></p-calendar>
+                        <p-calendar formControlName="fecha" [locale]="es" dateFormat="yy-mm-dd" [dataType]="'string'"></p-calendar>
                     </div>
                 </div>
                 <hr>

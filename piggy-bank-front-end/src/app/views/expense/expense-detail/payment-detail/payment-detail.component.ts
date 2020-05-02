@@ -17,6 +17,7 @@ export class PaymentDetailComponent implements OnInit {
   newPayment: boolean;
   payment: Payment;
   form: FormGroup;
+  es: any;
 
   constructor(
     private location: Location,
@@ -24,7 +25,18 @@ export class PaymentDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.es = {
+      firstDayOfWeek: 1,
+      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+      today: 'Hoy',
+      clear: 'Borrar'
+    }
+  }
 
   ngOnInit(): void {
     this.newPayment = this.activatedRoute.snapshot.params.idpayment === 'new' ? true : false;
@@ -46,14 +58,6 @@ export class PaymentDetailComponent implements OnInit {
       cantidad: new FormControl(this.payment.cantidad, Validators.required),
       fecha: new FormControl(this.payment.fecha, Validators.required)
     });
-
-    this.form.get('cantidad').valueChanges.subscribe(
-      (data: string) => {
-        if (data && data.includes(',')) {
-          this.form.get('cantidad').setValue(data.replace(',', '.'), { emitEvent: false });
-        }
-      }
-    )
   }
 
   back() {
@@ -61,9 +65,9 @@ export class PaymentDetailComponent implements OnInit {
   }
 
   save() {
-    if (this.payment.id) {
+    if (!this.newPayment) {
       const payment: Payment = Object.assign(this.payment, this.form.value);
-      this.paymentService.update(payment, this.payment.id).subscribe(
+      this.paymentService.update(payment).subscribe(
         () => {
           this.back();
         },

@@ -89,7 +89,7 @@ export class ExpenseDetailComponent implements OnInit {
     } else {
       this.expenseService.add(expense).subscribe(
         (response: any) => {
-          this.back();
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response });
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });

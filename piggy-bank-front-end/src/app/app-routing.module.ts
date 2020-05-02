@@ -110,27 +110,22 @@ const routes: Routes = [
         }
       },
       {
+        path: "objectives",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/meta-saving/meta-saving.module").then(
+            m => m.MetaSavingModule
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
+      },
+      {
         path: "stats",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/stats/stats.module").then(
             m => m.StatsModule
-          )
-      },
-      {
-        path: "savings-management",
-        canActivate: [AuthenticationGuard],
-        loadChildren: () =>
-          import("./views/savings-management/savings-management.module").then(
-            m => m.SavingManagementModule
-          )
-      },
-      {
-        path: "add-savings",
-        canActivate: [AuthenticationGuard],
-        loadChildren: () =>
-          import("./views/add-savings/add-savings.module").then(
-            m => m.AddSavingsModule
           )
       },
       {

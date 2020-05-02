@@ -14,8 +14,7 @@ export class HomeComponent implements OnInit {
   optionsMenuUser = [
     { name: 'Escritorio', icon: 'fas fa-home', url: 'dashboard' },
     { name: 'Gastos', icon: 'fas fa-dollar-sign', url: 'expenses' },
-    { name: 'Objetivos', icon: 'fas fa-wallet', url: 'savings-management' },
-    { name: 'Añadir ahorros', icon: 'fas fa-piggy-bank', url: 'add-savings' },
+    { name: 'Objetivos', icon: 'fas fa-wallet', url: 'objectives' },
     { name: 'Plantillas', icon: 'fas fa-file-archive', url: 'templates' },
     { name: 'Ingresos', icon: 'fas fa-file-invoice-dollar' },
     { name: 'Estadísticas', icon: 'fas fa-signal', url: 'stats' },

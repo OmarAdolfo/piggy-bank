@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SavingsManagementComponent } from './savings-management.component';
+import { MetaSavingDetailComponent } from './meta-saving-detail.component';
 
-describe('SavingsManagementComponent', () => {
-  let component: SavingsManagementComponent;
-  let fixture: ComponentFixture<SavingsManagementComponent>;
+describe('MetaSavingDetailComponent', () => {
+  let component: MetaSavingDetailComponent;
+  let fixture: ComponentFixture<MetaSavingDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SavingsManagementComponent ]
+      declarations: [ MetaSavingDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SavingsManagementComponent);
+    fixture = TestBed.createComponent(MetaSavingDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

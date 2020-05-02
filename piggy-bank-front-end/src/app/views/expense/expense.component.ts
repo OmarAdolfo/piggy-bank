@@ -105,12 +105,4 @@ export class ExpenseComponent implements OnInit {
     this.router.navigate(['/home/expenses/' + id]);
   }
 
-  cloneCar(c: Expense) {
-    let expense = new Expense();
-    for (let prop in c) {
-      expense[prop] = c[prop];
-    }
-    return expense;
-  }
-
 }

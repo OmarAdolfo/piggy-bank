@@ -17,6 +17,7 @@ export class MetaSavingComponent implements OnInit {
   metasSaving: MetaSaving[];
   cols: any[];
   statuses: any[];
+  yearlySavings: any[];
 
   constructor(
     private metaSavingService: MetaSavingService,
@@ -28,8 +29,8 @@ export class MetaSavingComponent implements OnInit {
     this.cols = [
       { field: 'anno', header: 'Año' },
       { field: 'cantidad', header: 'Objetivo' },
-      { field: '', header: 'Estado' },
       { field: '', header: 'Ahorrado' },
+      { field: '', header: 'Estado' },
       { field: '', header: 'Opciones' }
     ];
     this.statuses = [
@@ -39,7 +40,28 @@ export class MetaSavingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getYearlySaving();
     this.buildForm();
+  }
+
+  getYearlySaving() {
+    this.metaSavingService.getYearlySaving().subscribe(
+      (data: any) => {
+        this.yearlySavings = data.pagos;
+      }
+    )
+  }
+
+  getSavings(anno: number) {
+    const gastos = this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno);
+    const totalGastos = gastos ? this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    return -totalGastos;
+  }
+
+  getStatus(cantidad: number, anno: number) {
+    const gastos = this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno);
+    const totalGastos = gastos ? this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    return cantidad >= totalGastos;
   }
 
   buildForm() {

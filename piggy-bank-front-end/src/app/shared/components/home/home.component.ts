@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     { name: 'Gastos', icon: 'fas fa-dollar-sign', url: 'expenses' },
     { name: 'Objetivos', icon: 'fas fa-wallet', url: 'objectives' },
     { name: 'Plantillas', icon: 'fas fa-file-archive', url: 'templates' },
-    { name: 'Ingresos', icon: 'fas fa-file-invoice-dollar' },
+    { name: 'Ganancias', icon: 'fas fa-file-invoice-dollar' },
     { name: 'Estadísticas', icon: 'fas fa-signal', url: 'stats' },
     { name: 'Ayuda', icon: 'fas fa-question' }
   ]

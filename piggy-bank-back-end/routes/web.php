@@ -31,6 +31,7 @@ Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/gastos', 'GastoController');
     Route::resource('api/pagos', 'PagoController');
     Route::resource('api/meta-ahorros', 'MetaAhorroController');
+    Route::get('api/ahorros-anuales', 'AhorrosAnualesController@savingsAndExpensesByYear');
     Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
     Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
 });

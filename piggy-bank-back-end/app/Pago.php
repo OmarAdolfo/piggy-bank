@@ -8,7 +8,4 @@ class Pago extends Model
 {
     protected $table = 'pagos';
 
-    public function user() {
-        return $this->belongsTo('App\Gasto', 'id_gasto');
-    }
 }

@@ -9,12 +9,14 @@ import { MetaSaving } from 'src/app/shared/models/meta-saving';
 })
 export class MetaSavingService {
 
-  public url: string;
+  url: string;
+  urlYearlySaving: string;
 
   constructor(
     private http: HttpClient
   ) {
     this.url = API.url + 'meta-ahorros';
+    this.urlYearlySaving = API.url + 'ahorros-anuales';
   }
 
   get(form: any, sortable?: string, orderBy?: number): Observable<MetaSaving[]> {
@@ -29,7 +31,7 @@ export class MetaSavingService {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<MetaSaving[]>(this.url + query);
@@ -49,6 +51,10 @@ export class MetaSavingService {
 
   delete(id: number): Observable<Response> {
     return this.http.delete<Response>(this.url + '/' + id);
+  }
+
+  getYearlySaving(): Observable<Response> {
+    return this.http.get<Response>(this.urlYearlySaving);
   }
   
 }

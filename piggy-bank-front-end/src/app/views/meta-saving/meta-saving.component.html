@@ -47,10 +47,11 @@
                         {{rowData['cantidad']}}
                     </td>
                     <td>
-                        <!--<span [class]="'customer-badge status-' + option.value">a</span>-->
+                        {{getSavings(rowData['anno'])}}
                     </td>
                     <td>
-                       
+                        <span *ngIf="getStatus(rowData['cantidad'], rowData['anno'])" [class]="'customer-badge status-qualified'">SUPERADO</span>
+                        <span *ngIf="!getStatus(rowData['cantidad'], rowData['anno'])" [class]="'customer-badge status-unqualified'">NO SUPERADO</span>
                     </td>
                     <td>
                         <button type="button" (click)="onRowSelect(rowData['id'])" class="btn btn-secondary mr-1">

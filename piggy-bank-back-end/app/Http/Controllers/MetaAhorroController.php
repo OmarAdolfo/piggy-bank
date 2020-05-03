@@ -8,6 +8,7 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JWTAuth;
+use App\Pago;
 
 class MetaAhorroController extends Controller
 {

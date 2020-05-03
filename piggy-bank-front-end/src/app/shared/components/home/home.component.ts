@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     { name: 'Gastos', icon: 'fas fa-dollar-sign', url: 'expenses' },
     { name: 'Objetivos', icon: 'fas fa-wallet', url: 'objectives' },
     { name: 'Plantillas', icon: 'fas fa-file-archive', url: 'templates' },
-    { name: 'Ganancias', icon: 'fas fa-file-invoice-dollar' },
+    { name: 'Ganancias', icon: 'fas fa-file-invoice-dollar', url: 'profits' },
     { name: 'Estadísticas', icon: 'fas fa-signal', url: 'stats' },
     { name: 'Ayuda', icon: 'fas fa-question' }
   ]
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
   optionsMenuAdmin = [
     { name: 'Usuarios', icon: 'fas fa-users', url: 'users' },
     { name: 'Tipos de gastos', icon: 'fas fa-dollar-sign', url: 'type-expense' },
-    { name: 'Tipos de ahorros', icon: 'fas fa-wallet', url: 'type-saving' },
+    { name: 'Tipos de ganancias', icon: 'fas fa-wallet', url: 'type-saving' },
     { name: 'Buenas prácticas', icon: 'fas fa-coins', url: 'good-practices' }
   ]
 

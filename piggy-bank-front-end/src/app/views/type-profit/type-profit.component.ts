@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { TypeSaving } from 'src/app/shared/models/type-saving';
+import { TypeProfit } from 'src/app/shared/models/type-profit';
 import { LazyLoadEvent, MessageService } from 'primeng/api';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { TypeSavingService } from './type-saving.service';
+import { TypeProfitService } from './type-profit.service';
 
 @Component({
-  selector: 'app-type-saving',
-  templateUrl: './type-saving.component.html',
-  styleUrls: ['./type-saving.component.scss'],
+  selector: 'app-type-profit',
+  templateUrl: './type-profit.component.html',
+  styleUrls: ['./type-profit.component.scss'],
   providers: [MessageService]
 })
-export class TypeSavingComponent implements OnInit {
+export class TypeProfitComponent implements OnInit {
 
-  typeSavingForm: FormGroup;
-  typesSaving: TypeSaving[];
+  form: FormGroup;
+  typesProfit: TypeProfit[];
   cols: any[];
   displayDialog: boolean;
-  newTypeSaving: boolean;
-  typeSaving: TypeSaving;
+  newTypeProfit: boolean;
+  typeProfit: TypeProfit;
 
   constructor(
-    private typeSavingService: TypeSavingService,
+    private typeProfitService: TypeProfitService,
     private formBuilder: FormBuilder,
     private messageService: MessageService
   ) {
@@ -36,18 +36,18 @@ export class TypeSavingComponent implements OnInit {
   }
 
   buildForm() {
-    this.typeSavingForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       valor: new FormControl('', Validators.required)
     });
   }
 
   save() {
-    this.typeSavingService.add(this.typeSaving).subscribe(
+    this.typeProfitService.add(this.typeProfit).subscribe(
       (response: any) => {
-        let typesSaving = [...this.typesSaving];
-        typesSaving.push(response.data);
-        this.typesSaving = typesSaving;
-        this.typeSaving = null;
+        let typesProfit = [...this.typesProfit];
+        typesProfit.push(response.data);
+        this.typesProfit = typesProfit;
+        this.typeProfit = null;
         this.displayDialog = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
       }
@@ -55,16 +55,16 @@ export class TypeSavingComponent implements OnInit {
   }
 
   showDialogToAdd() {
-    this.newTypeSaving = true;
-    this.typeSaving = new TypeSaving();
+    this.newTypeProfit = true;
+    this.typeProfit = new TypeProfit();
     this.displayDialog = true;
   }
 
   search(sortable?: string, orderBy?: number) {
-    this.typeSavingService.get(this.typeSavingForm.get('valor').value, sortable, orderBy).subscribe(
+    this.typeProfitService.get(this.form.get('valor').value, sortable, orderBy).subscribe(
       (response: any) => {
-        const array: TypeSaving[] = response.tipos_ahorro.data;
-        this.typesSaving = array;
+        const array: TypeProfit[] = response.tipos_ganancia.data;
+        this.typesProfit = array;
       }
     );
   }

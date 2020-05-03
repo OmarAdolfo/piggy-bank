@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeSavingComponent } from './type-saving.component';
+import { RevenueDetailComponent } from './revenue-detail.component';
 
-describe('TypeSavingComponent', () => {
-  let component: TypeSavingComponent;
-  let fixture: ComponentFixture<TypeSavingComponent>;
+describe('RevenueDetailComponent', () => {
+  let component: RevenueDetailComponent;
+  let fixture: ComponentFixture<RevenueDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TypeSavingComponent ]
+      declarations: [ RevenueDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TypeSavingComponent);
+    fixture = TestBed.createComponent(RevenueDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

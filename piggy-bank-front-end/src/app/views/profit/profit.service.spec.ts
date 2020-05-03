@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TypeSavingService } from './type-saving.service';
+import { ProfitService } from './profit.service';
 
-describe('TypeSavingService', () => {
-  let service: TypeSavingService;
+describe('ProfitService', () => {
+  let service: ProfitService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TypeSavingService);
+    service = TestBed.inject(ProfitService);
   });
 
   it('should be created', () => {

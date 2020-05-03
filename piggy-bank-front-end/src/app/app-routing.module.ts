@@ -58,8 +58,8 @@ const routes: Routes = [
         path: "type-saving",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
-          import("./views/type-saving/type-saving.module").then(
-            m => m.TypeSavingModule
+          import("./views/type-profit/type-profit.module").then(
+            m => m.TypeProfitModule
           ),
         data: {
           rol: Role.Admin.toString()
@@ -115,6 +115,17 @@ const routes: Routes = [
         loadChildren: () =>
           import("./views/meta-saving/meta-saving.module").then(
             m => m.MetaSavingModule
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
+      },
+      {
+        path: "profits",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/profit/profit.module").then(
+            m => m.ProfitModule
           ),
         data: {
           rol: Role.User.toString()

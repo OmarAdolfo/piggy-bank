@@ -15,12 +15,17 @@ class AhorroController extends Controller
 
     public function cuentaAhorro() 
     {
+        $ingresos = DB::table('ingresos')
+        ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
+        ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->sum('ingresos.cantidad');
         $pagos = DB::table('pagos')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
         ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
         ->sum('pagos.cantidad');
-        $cuenta = - $pagos;
+        $cuenta = $ingresos - $pagos;
         return response()->json(array(
             'data' => $cuenta
         ), 200);

@@ -25,12 +25,15 @@ Route::post('/api/reset-password', 'AuthController@resetPassword');
 Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
     Route::get('/api/user', 'AuthController@getAuthenticatedUser');
     Route::get('api/tipos-gastos/all', 'TipoGastoController@findAll');
+    Route::get('api/tipos-ganancias/all', 'TipoGananciaController@findAll');
 });
 
 Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/gastos', 'GastoController');
     Route::resource('api/pagos', 'PagoController');
     Route::resource('api/meta-ahorros', 'MetaAhorroController');
+    Route::resource('api/ganancias', 'GananciaController');
+    Route::resource('api/ingresos', 'IngresoController');
     Route::get('api/ahorros-anuales', 'AhorrosAnualesController@savingsAndExpensesByYear');
     Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
     Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
@@ -38,7 +41,7 @@ Route::group(['middleware' => 'jwt.verify:USER'], function() {
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {
     Route::resource('api/tipos-gastos', 'TipoGastoController');
-    Route::resource('api/tipos-ahorros', 'TipoAhorroController');
+    Route::resource('api/tipos-ganancias', 'TipoGananciaController');
     Route::resource('api/usuarios', 'UserController');
     Route::resource('api/buenas-practicas', 'BuenaPracticaController');
 });

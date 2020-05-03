@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TypeSavingComponent } from './type-saving.component';
+import { TypeProfitComponent } from './type-profit.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TypeSavingComponent
+    component: TypeProfitComponent
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TypeSavingRoutingModule {}
+export class TypeProfitRoutingModule {}

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTiposAhorrosTable extends Migration
+class CreateTiposGananciasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateTiposAhorrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_ahorros', function (Blueprint $table) {
-            $table->increments('id_tipo_ahorro');
+        Schema::create('tipos_ganancias', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('valor');
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ class CreateTiposAhorrosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipos_ahorros');
+        Schema::dropIfExists('tipos_ganancias');
     }
 }

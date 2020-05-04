@@ -8,7 +8,7 @@ const routes: Routes = [
     component: TemplatesComponent
   },
   {
-    path: ':id',
+    path: 'anno/:anno/mes/:month',
     component: CreateTemplateComponent
   }
 ];

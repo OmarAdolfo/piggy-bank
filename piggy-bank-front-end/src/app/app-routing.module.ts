@@ -132,19 +132,22 @@ const routes: Routes = [
         }
       },
       {
-        path: "stats",
-        canActivate: [AuthenticationGuard],
-        loadChildren: () =>
-          import("./views/stats/stats.module").then(
-            m => m.StatsModule
-          )
-      },
-      {
         path: "templates",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/templates/templates.module").then(
             m => m.TemplatesModule
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
+      },
+      {
+        path: "stats",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/stats/stats.module").then(
+            m => m.StatsModule
           )
       }
     ]

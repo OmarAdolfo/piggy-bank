@@ -37,6 +37,7 @@ Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::get('api/ahorros-anuales', 'AhorrosAnualesController@savingsAndExpensesByYear');
     Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
     Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
+    Route::resource('api/plantillas', 'PlantillaController');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

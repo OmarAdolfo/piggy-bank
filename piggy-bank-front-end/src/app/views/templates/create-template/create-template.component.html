@@ -1,169 +1,229 @@
-<div class="row">
-    <div class="col-12">
-        <h1 *ngIf="isNewTemplate">Crear plantilla</h1>
-        <h1 *ngIf="!isNewTemplate">Editar plantilla</h1>
+<div class="wrapper" *ngIf="template">
+    <div class="row">
+        <div class="col-12">
+            <h1>Plantilla {{getMonth(template.mes)}} {{template.anno}}</h1>
+        </div>
     </div>
-</div>
-<hr>
-<div class="row mt-3">
-    <div class="col-12 mt-3 mt-md-0">
-        <form>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Tipo de recurso</label>
-                <p-dropdown [options]="types" optionLabel="name">
-                </p-dropdown>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Tipo de gasto</label>
-                <p-dropdown [options]="spendings" optionLabel="name">
-                </p-dropdown>
-            </div>
-            <div class="form-group">
-                Si desea añadir un nuevo gasto acceda <a href="#" (click)="goExpenses()">aquí</a>
-            </div>
-            <div class="form-group text-right">
-                <button type="button" (click)="addSpending()" class="btn btn-primary">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
-                    <span> Añadir recurso existente</span>
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="row mt-3">
-    <div class="col-12">
-        <h2>Plantilla Abril 2020</h2>
-    </div>
-</div>
-<div class="row mx-1 mt-3">
-    <div class="col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Nombre
-    </div>
-    <div class="col-4 col-md-2 p-2 text-center border border-dark">
-        Valor
-    </div>
-    <div class="col-4 col-md-2 p-2 text-center border border-dark">
-        Opciones
-    </div>
-</div>
-<div class="row mx-1 text-white">
-    <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Ingresos
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-        1000
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-    </div>
-</div>
-<div class="row mx-1">
-    <div class="resource-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Nómina
-    </div>
-    <div class="resource-row col-4 col-md-2 p-2 text-center border border-dark">
-        1000
-    </div>
-    <div class="resource-row col-2 col-md-1 p-2 text-center border border-dark border-right-0"></div>
-    <div class="resource-row col-2 col-md-1 text-center border border-dark border-left-0">
-        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
-            <i class="fas fa-trash-alt" aria-hidden="true"></i>
-        </button>
-    </div>
-</div>
-<div class="row mx-1 text-white">
-    <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Gastos primarios
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-        500
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-    </div>
-</div>
-<div class="row mx-1">
-    <div class="resource-row col-4 col-md-3 p-2 offset-md-2 text-center border border-dark">
-        Alquiler
-    </div>
-    <div class="resource-row col-4 col-md-2 p-2 text-center border border-dark">
-        200
-    </div>
-    <div class="resource-row col-2 col-md-1 p-2 text-center border border-dark border-right-0">
-        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" tooltipPosition="top" name="groupname" value="val1">
-        </p-checkbox>
-    </div>
-    <div class="resource-row col-2 col-md-1 primary-expense-item text-center border border-dark border-left-0">
-        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
-            <i class="fas fa-trash-alt" aria-hidden="true"></i>
-        </button>
-    </div>
-</div>
-<div class="row mx-1 text-white">
-    <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Gastos secundarios
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-        300
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-    </div>
-</div>
-<div class="row mx-1">
-    <div class="resource-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Portátil
-    </div>
-    <div class="resource-row col-4 col-md-2 p-2 text-center border border-dark">
-        30
-    </div>
-    <div class="resource-row col-2 col-md-1 p-2 text-center border border-dark border-right-0">
-        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" tooltipPosition="top" name="groupname" value="val1">
-        </p-checkbox>
-    </div>
-    <div class="resource-row col-2 col-md-1 text-center border border-dark border-left-0">
-        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
-            <i class="fas fa-trash-alt" aria-hidden="true"></i>
-        </button>
-    </div>
-</div>
-<div class="row mx-1 text-white">
-    <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
-        Ahorros
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-        200
-    </div>
-    <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
-    </div>
-</div>
-<div class="row mt-3 text-right">
-    <div class="col-12">
-        <button type="button" (click)="save()" class="btn btn-primary">
-            <i class="fas fa-save" aria-hidden="true"></i>
-            <span> Guardar</span>
-        </button>
-    </div>
-</div>
-<div class="row mt-3">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                Buenas prácticas
-            </div>
-            <div class="card-body">
-                <div class="alert alert-success text-dark" role="alert">
-                    Lore ipsum
+    <hr>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Gestor de recursos
+        </div>
+        <div class="card-body">
+            <div class="row mt-3">
+                <div class="form-group col-6">
+                    <label for="exampleInputPassword1">Tipo de recurso</label>
+                    <p-dropdown [options]="types" optionLabel="name" (onChange)="selectResource($event)">
+                    </p-dropdown>
                 </div>
-                <div class="alert alert-danger text-dark" role="alert">
-                    Lore ipsum
+                <div class="form-group col-6">
+                    <label for="exampleInputPassword1">Recurso</label>
+                    <p-dropdown [options]="resources" optionLabel="nombre" [(ngModel)]="selectedResource"
+                        placeholder="Elige el recurso...">
+                    </p-dropdown>
+                </div>
+                <div *ngIf="!isProfit" class="form-group offset-6 col-3">
+                    Si desea añadir un nuevo gasto acceda <a [routerLink]="['/home/expenses/new']">aquí</a>
+                </div>
+                <div *ngIf="isProfit" class="form-group offset-6 col-3">
+                    Si desea añadir una nueva ganancia acceda <a [routerLink]="['/home/profits/new']">aquí</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-12 text-right">
+                    <button type="button" (click)="addResouce()"
+                        [disabled]="!selectedResource || selectedResource === ''" class="btn btn-primary">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        <span> Añadir recurso</span>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="row mt-3 text-right">
-    <div class="col-12">
-        <button type="button" (click)="back()" class="btn btn-primary">
-            <i class="fas fa-arrow-left" aria-hidden="true"></i>
-            <span> Volver</span>
-        </button>
+
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-white">
+            Plantilla
+        </div>
+        <div class="card-body">
+            <div class="row mx-1 mt-5">
+                <div class="col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Nombre
+                </div>
+                <div class="col-4 col-md-2 p-2 text-center border border-dark">
+                    Valor
+                </div>
+                <div class="col-4 col-md-2 p-2 text-center border border-dark">
+                    Opciones
+                </div>
+            </div>
+            <div class="row mx-1 text-white">
+                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Ingresos
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                    {{revenues}}
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                </div>
+            </div>
+            <div class="row mx-1" *ngFor="let ingreso of template.ingresos">
+                <div
+                    class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                    {{ingreso.ganancia_id.nombre}}
+                </div>
+                <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                    <input type="textbox" (input)="calculate()" class="form-control form-control-user"
+                        [(ngModel)]="ingreso.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
+                </div>
+                <div class="resource-row col-4 col-md-2 text-center border border-dark border-left-0">
+                    <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row mx-1 text-white">
+                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Disponible Gastos primarios
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                    {{primaryExpenses}}
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                </div>
+            </div>
+            <div *ngFor="let pago of template.pagos">
+                <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios'">
+                    <div
+                        class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                        {{pago.gasto_id.nombre}}
+                    </div>
+                    <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                        <input type="textbox" (input)="calculate()" class="form-control form-control-user"
+                            [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
+                    </div>
+                    <div
+                        class="resource-row col-2 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center">
+                        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
+                            name="groupname" binary="true">
+                        </p-checkbox>
+                    </div>
+                    <div
+                        class="resource-row col-2 col-md-1 primary-expense-item text-center border border-dark border-left-0">
+                        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mx-1 text-white">
+                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Disponible Gastos secundarios
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                    {{secondaryExpenses}}
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                </div>
+            </div>
+            <div *ngFor="let pago of template.pagos">
+                <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios'">
+                    <div
+                        class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                        {{pago.gasto_id.nombre}}
+                    </div>
+                    <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                        <input type="textbox" (input)="calculate()" class="form-control form-control-user"
+                            [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
+                    </div>
+                    <div
+                        class="resource-row col-2 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center">
+                        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
+                            name="groupname" binary="true">
+                        </p-checkbox>
+                    </div>
+                    <div class="resource-row col-2 col-md-1 text-center border border-dark border-left-0">
+                        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mx-1 text-white">
+                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Ahorros esperados
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                    {{promiseSavings}}
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                </div>
+            </div>
+            <div class="row mx-1 text-white">
+                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                    Ahorros reales
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                    {{realSavings}}
+                </div>
+                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                </div>
+            </div>
+            <div class="row mt-3 text-right">
+                <div class="col-12">
+                    <button type="button" (click)="save()" class="btn btn-primary">
+                        <i class="fas fa-save" aria-hidden="true"></i>
+                        <span> Guardar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="row mt-3">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Tips
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let tip of tips">
+                        <div class="alert text-dark"
+                            [ngClass]="{'alert-success': tip.status, 'alert-danger': !tip.status}"
+                            role="alert">
+                            {{tip.message}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Buenas prácticas
+                </div>
+                <div class="card-body">
+                    <div *ngFor="let goodPracticeUsed of goodPracticesUsed">
+                        <div class="alert text-dark"
+                            [ngClass]="{'alert-success': goodPracticeUsed.status, 'alert-danger': !goodPracticeUsed.status}"
+                            role="alert">
+                            {{goodPracticeUsed.message}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3 text-right">
+        <div class="col-12">
+            <button type="button" (click)="back()" class="btn btn-primary">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                <span> Volver</span>
+            </button>
+        </div>
+    </div>
+    <p-toast [style]="{marginTop: '80px'}"></p-toast>
+    <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 </div>

@@ -8,7 +8,13 @@ class Ingreso extends Model
 {
     protected $table = 'ingresos';
 
-    public function user() {
-        return $this->belongsTo('App\User', 'id');
+    protected $fillable = [
+        'ingreso'
+    ];
+
+    protected $with = ['ganancia_id'];
+
+    public function ganancia_id() {
+        return $this->belongsTo('App\Ganancia', 'ganancia_id');
     }
 }

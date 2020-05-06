@@ -17,6 +17,10 @@ export class ProfitService {
     this.url = API.url + 'ganancias';
   }
 
+  findAllMonthlyProfits(): Observable<any> {
+    return this.http.get<Profit[]>(this.url + '-mensuales');
+  }
+
   get(form: any, sortable?: string, orderBy?: number): Observable<Profit[]> {
     let params: string[] = [];
     let query = '';

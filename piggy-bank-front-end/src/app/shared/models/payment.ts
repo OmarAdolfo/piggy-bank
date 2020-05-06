@@ -8,4 +8,5 @@ export class Payment {
     gasto_id: Expense;
     created_at: Date;
     updated_at: Date;
+    plantilla_id: number;
 }

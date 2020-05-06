@@ -7,4 +7,5 @@ export class Revenue {
     ganancia_id: Profit;
     created_at: Date;
     updated_at: Date;
+    plantilla_id: number;
 }

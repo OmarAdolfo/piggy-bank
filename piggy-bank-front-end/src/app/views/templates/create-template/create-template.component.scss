@@ -5,3 +5,10 @@
 .resource-row {
     background-color: rgb(240, 177, 83);
 }
+
+input, input:focus {
+    background: #f0b153;
+    text-align: center;
+    border: none !important;
+    box-shadow: none;
+}

@@ -27,7 +27,7 @@ class AhorroController extends Controller
         ->sum('pagos.cantidad');
         $cuenta = $ingresos - $pagos;
         return response()->json(array(
-            'data' => $cuenta
+            'data' => round($cuenta, 2)
         ), 200);
     }
 

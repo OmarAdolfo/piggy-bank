@@ -16,10 +16,12 @@ class CreatePagosTable extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->increments('id');
             $table->double('cantidad', 8, 2);
-            $table->date('fecha');
+            $table->date('fecha')->nullable();
             $table->boolean('pagado');
             $table->integer('gasto_id')->unsigned();
             $table->foreign('gasto_id')->references('id')->on('gastos');  
+            $table->integer('plantilla_id')->unsigned();
+            $table->foreign('plantilla_id')->references('id')->on('plantillas');  
             $table->timestamps();
         });
     }

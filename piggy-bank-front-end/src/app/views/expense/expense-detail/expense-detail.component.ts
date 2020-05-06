@@ -68,7 +68,7 @@ export class ExpenseDetailComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       nombre: new FormControl(this.expense.nombre, Validators.required),
-      tipo_gasto: new FormControl(this.expense.tipo_gasto ? this.expense.tipo_gasto : '', Validators.required),
+      id_tipo_gasto: new FormControl(this.expense.id_tipo_gasto ? this.expense.id_tipo_gasto : '', Validators.required),
       recordar: new FormControl(this.expense.recordar && this.expense.recordar === 1 ? true : false),
       fechaFin: new FormControl(this.expense.fecha_fin),
       flexible: new FormControl(this.expense.flexible && this.expense.flexible === 1 ? true : false)
@@ -80,7 +80,8 @@ export class ExpenseDetailComponent implements OnInit {
     if (this.expense.id) {
       this.expenseService.update(expense, this.expense.id).subscribe(
         (response: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.expense = response.data;
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
@@ -89,7 +90,8 @@ export class ExpenseDetailComponent implements OnInit {
     } else {
       this.expenseService.add(expense).subscribe(
         (response: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response });
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.expense = response.data;
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });

@@ -10,11 +10,17 @@ import { Observable } from 'rxjs/internal/Observable';
 export class TemplateService {
 
   public url: string;
+  public urlTemplateActual: string;
 
   constructor(
     private http: HttpClient
   ) {
     this.url = API.url + 'plantillas';
+    this.urlTemplateActual = API.url + 'plantilla-actual';
+  }
+
+  getTemplateActual(): Observable<Response> {
+    return this.http.get<Response>(this.urlTemplateActual);
   }
 
   get(): Observable<Template[]> {
@@ -27,6 +33,14 @@ export class TemplateService {
 
   delete(id: number): Observable<Response> {
     return this.http.delete<Response>(this.url + '/' + id);
+  }
+
+  find(id: number): Observable<any> {
+    return this.http.get<Response>(this.url + '/' + id);
+  }
+
+  update(template: Template): Observable<Response> {
+    return this.http.put<Response>(this.url + '/' + template.id, template);
   }
   
 }

@@ -8,9 +8,23 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JWTAuth;
+use DB;
 
 class GananciaController extends Controller
 {
+
+    public function findAllProfits() {
+        $ganancias = DB::table('ganancias')
+        ->select('ganancias.*')
+        ->join('tipos_ganancias', 'ganancias.id_tipo_ganancia', '=', 'tipos_ganancias.id')
+        ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->where('tipos_ganancias.valor', '=', 'Mensuales')
+        ->get();
+        return response()->json(array(
+            'data' => $ganancias
+        ), 200);
+    }
 
     public function index(Request $request)
     {
@@ -25,10 +39,10 @@ class GananciaController extends Controller
                 ->orWhere('nombre', 'like', '%' . $request['nombre'] . '%');
         }
 
-        if ($request->has('tipo_ganancia')) {
+        if ($request->has('id_tipo_ganancia')) {
             $ganancias = $ganancias
-                ->where('id_tipo_ganancia', $request['tipo_ganancia'])
-                ->orWhere('id_tipo_ganancia', 'like', '%' . $request['tipo_ganancia'] . '%');
+                ->where('id_tipo_ganancia', $request['id_tipo_ganancia'])
+                ->orWhere('id_tipo_ganancia', 'like', '%' . $request['id_tipo_ganancia'] . '%');
         }
 
         $ganancias = $ganancias
@@ -51,7 +65,7 @@ class GananciaController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
-            'tipo_ganancia' => 'required'
+            'id_tipo_ganancia' => 'required'
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -61,7 +75,7 @@ class GananciaController extends Controller
         if (is_null($ganancias_bd)) {
             $ganancia = new Ganancia();
             $ganancia->nombre = $postArray['nombre']; 
-            $ganancia->id_tipo_ganancia = $postArray['tipo_ganancia']['id']; 
+            $ganancia->id_tipo_ganancia = $postArray['id_tipo_ganancia']['id']; 
             $ganancia->id_usuario = JWTAuth::user()->id;
             $ganancia->save();
             return response()->json([
@@ -79,7 +93,7 @@ class GananciaController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
-            'tipo_ganancia' => 'required'
+            'id_tipo_ganancia' => 'required'
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -90,7 +104,7 @@ class GananciaController extends Controller
             $ganancia_bd_repeat = Ganancia::where('nombre', '=', $postArray['nombre'])->first();
             if (is_null($ganancia_bd_repeat) || $ganancia_bd_repeat->id == $ganancia_bd->id ) {
                 $ganancia_bd->nombre = $postArray['nombre'];
-                $ganancia_bd->id_tipo_ganancia = $postArray['tipo_ganancia']['id']; 
+                $ganancia_bd->id_tipo_ganancia = $postArray['id_tipo_ganancia']['id']; 
                 $ganancia_bd->save();
                 return response()->json(['message' => 'Se ha actualizado la ganancia'], 200);
             } else {

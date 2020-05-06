@@ -9,7 +9,7 @@ export class Expense {
     fecha_fin: Date;
     flexible: number;
     user: User;
-    tipo_gasto: TypeExpense;
+    id_tipo_gasto: TypeExpense;
     created_at: Date;
     updated_at: Date;
     pagos: Payment[];

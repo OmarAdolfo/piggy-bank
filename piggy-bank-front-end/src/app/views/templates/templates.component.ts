@@ -4,6 +4,7 @@ import { TemplateService } from './template.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Template } from 'src/app/shared/models/template';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { MonthService } from 'src/app/shared/services/month-service.service';
 
 @Component({
   selector: 'app-templates',
@@ -26,22 +27,10 @@ export class TemplatesComponent implements OnInit {
     private templateService: TemplateService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private monthService: MonthService
   ) {
-    this.months = [
-      { name: 'Enero', value: 1 },
-      { name: 'Febrero', value: 2 },
-      { name: 'Marzo', value: 3 },
-      { name: 'Abril', value: 4 },
-      { name: 'Mayo', value: 5 },
-      { name: 'Junio', value: 6 },
-      { name: 'Julio', value: 7 },
-      { name: 'Agosto', value: 8 },
-      { name: 'Septiembre', value: 9 },
-      { name: 'Octubre', value: 10 },
-      { name: 'Noviembre', value: 11 },
-      { name: 'Diciembre', value: 12 },
-    ];
+    this.months = this.monthService.getMonths();
   }
 
   ngOnInit(): void {
@@ -61,20 +50,23 @@ export class TemplatesComponent implements OnInit {
       (response: any) => {
         this.templatesTotal = response.data;
         this.years = response.years;
+        if (this.years && this.years.length > 0) {
+          this.calculateTemplates(this.years[0]);
+        }
       }
     );
   }
 
   getMonth(monthValue: number) {
-    return this.months.find(month => month.value === monthValue).name;
+    return this.monthService.getMonths().find(month => month.value === monthValue).name;
   }
 
   selectYear(eve: any) {
     this.calculateTemplates();
   }
 
-  editTemplate() {
-    this.router.navigate(['/admin/templates/1']);
+  editTemplate(id: number) {
+    this.router.navigate(['/home/templates/' + id]);
   }
 
   addTemplate() {
@@ -97,13 +89,11 @@ export class TemplatesComponent implements OnInit {
     );
   }
 
-  calculateTemplates() {
-    console.log(this.selectedYear);
-    if (this.selectedYear) {
-      this.templates = this.templatesTotal
+  calculateTemplates(yearSelected?: number) {
+    this.selectedYear = yearSelected ? yearSelected : this.selectedYear;
+    this.templates = this.templatesTotal
       .filter(template => template.anno === this.selectedYear.anno)
       .sort((a: Template, b: Template) => a.mes > b.mes ? 1 : -1);
-    }
   }
 
   confirm(id: number) {

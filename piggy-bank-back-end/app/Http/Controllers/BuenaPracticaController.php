@@ -12,6 +12,13 @@ use JWTAuth;
 class BuenaPracticaController extends Controller
 {
 
+    public function findAll() {
+        $buenas_practicas = BuenaPractica::all();
+        return response()->json(array(
+            'buenas_practicas' => $buenas_practicas
+        ), 200);
+    }
+
     public function index(Request $request)
     {
         $orderBy = !is_null($request['orderBy']) ? $request['orderBy'] : 'asc';

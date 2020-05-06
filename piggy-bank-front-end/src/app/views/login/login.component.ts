@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this._document.body.style.background = '#FFF';
+    this._document.body.style.background = '#F7F8FB';
   }
 
   buildForm() {

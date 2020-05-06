@@ -26,18 +26,23 @@ Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
     Route::get('/api/user', 'AuthController@getAuthenticatedUser');
     Route::get('api/tipos-gastos/all', 'TipoGastoController@findAll');
     Route::get('api/tipos-ganancias/all', 'TipoGananciaController@findAll');
+    Route::get('api/buenas-practicas/all', 'BuenaPracticaController@findAll');
 });
 
 Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/gastos', 'GastoController');
+    Route::get('api/gastos-primarios', 'GastoController@findAllPrimaryMonthlyExpenses');
+    Route::get('api/gastos-secundarios', 'GastoController@findAllSecondaryMonthlyExpenses');
     Route::resource('api/pagos', 'PagoController');
     Route::resource('api/meta-ahorros', 'MetaAhorroController');
     Route::resource('api/ganancias', 'GananciaController');
+    Route::get('api/ganancias-mensuales', 'GananciaController@findAllProfits');
     Route::resource('api/ingresos', 'IngresoController');
     Route::get('api/ahorros-anuales', 'AhorrosAnualesController@savingsAndExpensesByYear');
     Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
     Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
     Route::resource('api/plantillas', 'PlantillaController');
+    Route::get('api/plantilla-actual', 'PlantillaController@getTemplateMonthActual');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

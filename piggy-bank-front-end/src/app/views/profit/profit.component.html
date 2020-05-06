@@ -18,7 +18,7 @@
                     <label for="nombre">Apellidos</label>
                 </div>
                 <div class="col-6 col-md-3">
-                    <p-dropdown [options]="typesProfit" formControlName="tipo_ganancia"
+                    <p-dropdown [options]="typesProfit" formControlName="id_tipo_ganancia"
                         placeholder="Seleccione tipo de ganancia" optionLabel="valor" [showClear]="true">
                     </p-dropdown>
                 </div>
@@ -55,7 +55,7 @@
                         {{rowData['fecha_fin'] | date: 'dd/MM/yyyy'}}
                     </td>
                     <td>
-                        {{rowData['tipo_ganancia'].valor}}
+                        {{rowData['id_tipo_ganancia'].valor}}
                     </td>
                     <td>
                         {{rowData['created_at'] | date: 'dd/MM/yyyy'}}

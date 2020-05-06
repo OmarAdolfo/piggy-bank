@@ -68,7 +68,7 @@ export class ProfitDetailComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       nombre: new FormControl(this.profit.nombre, Validators.required),
-      tipo_ganancia: new FormControl(this.profit.tipo_ganancia ? this.profit.tipo_ganancia : '', Validators.required)
+      id_tipo_ganancia: new FormControl(this.profit.id_tipo_ganancia ? this.profit.id_tipo_ganancia : '', Validators.required)
     });
   }
 
@@ -120,7 +120,6 @@ export class ProfitDetailComponent implements OnInit {
   }
 
   add() {
-    console.log('/home/profits/' + this.profit.id + '/revenue/new');
     this.router.navigate(['/home/profits/' + this.profit.id + '/revenue/new']);
   }
 

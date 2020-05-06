@@ -55,7 +55,7 @@ export class ProfitComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       nombre: new FormControl(''),
-      tipo_ganancia: new FormControl('')
+      id_tipo_ganancia: new FormControl('')
     });
   }
 

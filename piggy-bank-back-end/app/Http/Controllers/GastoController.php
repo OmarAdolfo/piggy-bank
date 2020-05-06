@@ -8,9 +8,34 @@ use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JWTAuth;
+use DB;
 
 class GastoController extends Controller
 {
+
+    public function findAllPrimaryMonthlyExpenses() {
+        $gastos_primarios = Gasto::select('gastos.*')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->where('tipos_gastos.valor', '=', 'Mensuales Primarios')
+        ->get();
+        return response()->json(array(
+            'data' => $gastos_primarios
+        ), 200);
+    }
+
+    public function findAllSecondaryMonthlyExpenses() {
+        $gastos_secundarios = Gasto::select('gastos.*')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->where('tipos_gastos.valor', '=', 'Mensuales Secundarios')
+        ->get();
+        return response()->json(array(
+            'data' => $gastos_secundarios
+        ), 200);
+    }
 
     public function index(Request $request)
     {
@@ -36,14 +61,14 @@ class GastoController extends Controller
                 ->paginate(10);
 
         return response()->json(array(
-            'data' => $gastos->load('tipoGasto')
+            'data' => $gastos->load('idTipoGasto')
         ), 200);
     }
 
     public function show($id) {
         $gasto = Gasto::find($id);
         return response()->json(array(
-            'data' => $gasto->load('tipoGasto')->load('pagos')
+            'data' => $gasto->load('idTipoGasto')->load('pagos')
         ), 200);
     }
 

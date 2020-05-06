@@ -38,6 +38,14 @@ export class ExpenseService {
     return this.http.get<Expense[]>(this.url + query);
   }
 
+  findAllPrimaryMonthlyExpenses(): Observable<any> {
+    return this.http.get<Expense[]>(this.url + '-primarios');
+  }
+
+  findAllSecondaryMonthlyExpenses(): Observable<any> {
+    return this.http.get<Expense[]>(this.url + '-secundarios');
+  }
+
   find(id: number) {
     return this.http.get<Response>(this.url + '/' + id);
   }

@@ -50,4 +50,8 @@ export class GoodPracticeService {
     return this.http.delete<Response>(this.url + '/' + goodPractice.id);
   }
 
+  findAll(): Observable<any> {
+    return this.http.get<GoodPractice[]>(this.url + '/all');
+  }
+
 }

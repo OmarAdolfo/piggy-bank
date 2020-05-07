@@ -148,7 +148,10 @@ const routes: Routes = [
         loadChildren: () =>
           import("./views/stats/stats.module").then(
             m => m.StatsModule
-          )
+          ),
+        data: {
+          rol: Role.User.toString()
+        }
       }
     ]
   },

@@ -18,9 +18,11 @@ export class TemplatesComponent implements OnInit {
   templatesTotal: Template[];
   templates: Template[];
   months: any[];
-  form: FormGroup;
+  addForm: FormGroup;
+  cloneForm: FormGroup;
   annoRegex = /^(\d{4})$/;
   selectedYear: any;
+  optionCreation: string = 'Añadir plantilla';
 
   constructor(
     private router: Router,
@@ -39,9 +41,16 @@ export class TemplatesComponent implements OnInit {
   }
 
   buildForm() {
-    this.form = this.formBuilder.group({
+    this.addForm = this.formBuilder.group({
       anno: new FormControl('', [Validators.required, Validators.pattern(this.annoRegex)]),
       mes: new FormControl('', Validators.required)
+    });
+
+    this.cloneForm = this.formBuilder.group({
+      anno: new FormControl('', [Validators.required, Validators.pattern(this.annoRegex)]),
+      mes: new FormControl('', Validators.required),
+      newAnno: new FormControl('', [Validators.required, Validators.pattern(this.annoRegex)]),
+      newMes: new FormControl('', Validators.required)
     });
   }
 
@@ -71,8 +80,8 @@ export class TemplatesComponent implements OnInit {
 
   addTemplate() {
     const template: Template = new Template();
-    template.anno = this.form.get('anno').value;
-    template.mes = this.form.get('mes').value.value;
+    template.anno = this.addForm.get('anno').value;
+    template.mes = this.addForm.get('mes').value.value;
     this.templateService.add(template).subscribe(
       (response: any) => {
         let templatesTotal: Template[] = [...this.templatesTotal];
@@ -83,7 +92,28 @@ export class TemplatesComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
       },
       response => {
-        console.log(response);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
+      }
+    );
+  }
+
+  clone() {
+    const template = {
+      anno: this.cloneForm.get('anno').value,
+      mes: this.cloneForm.get('mes').value.value,
+      newAnno: this.cloneForm.get('newAnno').value,
+      newMes: this.cloneForm.get('newMes').value.value,
+    }
+    this.templateService.clone(template).subscribe(
+      (response: any) => {
+        let templatesTotal: Template[] = [...this.templatesTotal];
+        templatesTotal.push(response.data);
+        this.templatesTotal = templatesTotal;
+        this.years = response.years;
+        this.calculateTemplates();
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+      },
+      response => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );

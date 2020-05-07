@@ -66,7 +66,7 @@ export class ProfitComponent implements OnInit {
   search(sortable?: string, orderBy?: number) {
     this.profitService.get(this.form.value, sortable, orderBy).subscribe(
       (response: any) => {
-        const array: Profit[] = response.data;
+        const array: Profit[] = response.data.data;
         this.profits = array;
       }
     );

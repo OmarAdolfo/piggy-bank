@@ -58,17 +58,18 @@ class GastoController extends Controller
 
         $gastos = $gastos
                 ->orderBy($sortable, $orderBy)
+                ->where('id_usuario', '=', JWTAuth::user()->id)
                 ->paginate(10);
 
         return response()->json(array(
-            'data' => $gastos->load('idTipoGasto')
+            'data' => $gastos
         ), 200);
     }
 
     public function show($id) {
         $gasto = Gasto::find($id);
         return response()->json(array(
-            'data' => $gasto->load('idTipoGasto')->load('pagos')
+            'data' => $gasto->load('pagos')
         ), 200);
     }
 
@@ -77,21 +78,17 @@ class GastoController extends Controller
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
             'tipo_gasto' => 'required',
-            'flexible' => 'required',
-            'recordar' => 'required'
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
         }
         $postArray = $request->all();
-        $gastos_bd = Gasto::where('nombre', '=', $postArray['nombre'])->first();
+        $gastos_bd = Gasto::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($gastos_bd)) {
             $gasto = new Gasto();
             $gasto->nombre = $postArray['nombre']; 
             $gasto->id_tipo_gasto = $postArray['tipo_gasto']['id']; 
             $gasto->id_usuario = JWTAuth::user()->id; 
-            $gasto->flexible = $postArray['flexible']; 
-            $gasto->recordar = $postArray['recordar']; 
             if ($request->has('fecha_fin')) {
                 $gasto->fecha_fin = $postArray['fecha_fin']; 
             }
@@ -112,8 +109,6 @@ class GastoController extends Controller
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
             'tipo_gasto' => 'required',
-            'flexible' => 'required',
-            'recordar' => 'required'
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -121,12 +116,10 @@ class GastoController extends Controller
         $postArray = $request->all();
         $gasto_bd = Gasto::where('id', '=', $id)->first();
         if (!is_null($gasto_bd)) {
-            $gasto_bd_repeat = Gasto::where('nombre', '=', $postArray['nombre'])->first();
+            $gasto_bd_repeat = Gasto::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
             if (is_null($gasto_bd_repeat) || $gasto_bd_repeat->id == $gasto_bd->id ) {
                 $gasto_bd->nombre = $postArray['nombre'];
                 $gasto_bd->id_tipo_gasto = $postArray['tipo_gasto']['id']; 
-                $gasto_bd->flexible = $postArray['flexible']; 
-                $gasto_bd->recordar = $postArray['recordar']; 
                 $gasto_bd->save();
                 return response()->json('Se ha actualizado el gasto', 200);
             } else {

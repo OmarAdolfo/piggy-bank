@@ -78,6 +78,7 @@ export class ProfitDetailComponent implements OnInit {
       this.profitService.update(profit, this.profit.id).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.profit = response.data;
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
@@ -87,6 +88,7 @@ export class ProfitDetailComponent implements OnInit {
       this.profitService.add(profit).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.profit = response.data;
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });

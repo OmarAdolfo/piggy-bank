@@ -16,9 +16,7 @@ class CreateGastosTable extends Migration
         Schema::create('gastos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->boolean('recordar');
             $table->date('fecha_fin')->nullable();
-            $table->boolean('flexible');
             $table->integer('id_usuario')->unsigned();
             $table->foreign('id_usuario')->references('id')->on('usuarios');   
             $table->integer('id_tipo_gasto')->unsigned();

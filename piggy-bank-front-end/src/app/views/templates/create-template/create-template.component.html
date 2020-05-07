@@ -188,13 +188,17 @@
                     Tips
                 </div>
                 <div class="card-body">
-                    <div *ngFor="let tip of tips">
-                        <div class="alert text-dark"
-                            [ngClass]="{'alert-success': tip.status, 'alert-danger': !tip.status}"
-                            role="alert">
+                    <div *ngIf="tips?.length > 0; else noTips">
+                        <div *ngFor="let tip of tips" class="alert text-dark"
+                            [ngClass]="{'alert-success': tip.status, 'alert-danger': !tip.status}" role="alert">
                             {{tip.message}}
                         </div>
                     </div>
+                    <ng-template #noTips>
+                        <div class="alert alert-secondary" role="alert">
+                            No existen tips que aportar
+                        </div>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -204,13 +208,18 @@
                     Buenas prácticas
                 </div>
                 <div class="card-body">
-                    <div *ngFor="let goodPracticeUsed of goodPracticesUsed">
-                        <div class="alert text-dark"
+                    <div *ngIf="goodPracticesUsed?.length > 0; else noGoodPractice">
+                        <div *ngFor="let goodPracticeUsed of goodPracticesUsed" class="alert text-dark"
                             [ngClass]="{'alert-success': goodPracticeUsed.status, 'alert-danger': !goodPracticeUsed.status}"
                             role="alert">
                             {{goodPracticeUsed.message}}
                         </div>
                     </div>
+                    <ng-template #noGoodPractice>
+                        <div class="alert alert-secondary" role="alert">
+                            No existen buenas prácticas que aplicar
+                        </div>
+                    </ng-template>
                 </div>
             </div>
         </div>

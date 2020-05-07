@@ -28,6 +28,7 @@ class MetaAhorroController extends Controller
 
         $metas_ahorros = $metas_ahorros
                 ->orderBy($sortable, $orderBy)
+                ->where('id_usuario', '=', JWTAuth::user()->id)
                 ->paginate(10);
 
         return response()->json(array(
@@ -45,7 +46,7 @@ class MetaAhorroController extends Controller
             return response()->json(['message' => 'Validaciones erróneas'], 500);
         }
         $postArray = $request->all();
-        $metas_ahorro_bd = MetaAhorro::where('anno', '=', $postArray['anno'])->first();
+        $metas_ahorro_bd = MetaAhorro::where('anno', '=', $postArray['anno'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($metas_ahorro_bd)) {
             $meta_ahorro = new MetaAhorro();
             $meta_ahorro->anno = $postArray['anno']; 
@@ -87,7 +88,7 @@ class MetaAhorroController extends Controller
         $postArray = $request->all();
         $meta_ahorro_bd = MetaAhorro::where('id', '=', $id)->first();
         if (!is_null($meta_ahorro_bd)) {
-            $meta_ahorro_bd_repeat = MetaAhorro::where('anno', '=', $postArray['anno'])->first();
+            $meta_ahorro_bd_repeat = MetaAhorro::where('anno', '=', $postArray['anno'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
             if (is_null($meta_ahorro_bd_repeat) || $meta_ahorro_bd_repeat->id == $meta_ahorro_bd->id ) {
                 $meta_ahorro_bd->cantidad = $postArray['cantidad'];
                 $meta_ahorro_bd->anno = $postArray['anno'];

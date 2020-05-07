@@ -82,7 +82,7 @@ export class GoodPracticeComponent implements OnInit {
   search(sortable?: string, orderBy?: number) {
     this.goodPracticeService.get(this.form.get('palabraClave').value, this.form.get('porcentaje').value, sortable, orderBy).subscribe(
       (response: any) => {
-        const array: GoodPractice[] = response.data;
+        const array: GoodPractice[] = response.data.data;
         this.goodPractices = array;
       }
     );

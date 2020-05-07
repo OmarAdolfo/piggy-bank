@@ -12,11 +12,13 @@ class Ganancia extends Model
         'nombre'
     ];
 
+    protected $with = ['id_tipo_ganancia'];
+
     public function user() {
         return $this->belongsTo('App\User', 'id');
     }
 
-    public function tipoGanancia() {
+    public function id_tipo_ganancia() {
         return $this->belongsTo('App\TipoGanancia', 'id_tipo_ganancia');
     }
     

@@ -48,4 +48,28 @@ class AhorroController extends Controller
         ), 200);
     }
 
+    public function savingsAndExpensesByYear() 
+    {
+        $pagosAmount = DB::table('pagos')
+            ->select(DB::raw('YEAR(fecha) as anno'), DB::raw('sum(cantidad) as total'))
+            ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
+            ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+            ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+            ->where('tipos_gastos.valor', '<>', 'Importantes')
+            ->where('usuarios.id', '=', JWTAuth::user()->id)
+            ->groupBy(DB::raw('YEAR(fecha)') )
+            ->get();
+        $ingresosAmount = DB::table('ingresos')
+            ->select(DB::raw('YEAR(fecha) as anno'), DB::raw('sum(cantidad) as total'))
+            ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
+            ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
+            ->where('usuarios.id', '=', JWTAuth::user()->id)
+            ->groupBy(DB::raw('YEAR(fecha)') )
+            ->get();
+        return response()->json(array(
+            'pagos' => $pagosAmount,
+            'ingresos' => $ingresosAmount
+        ), 200);
+    }
+
 }

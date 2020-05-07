@@ -5,99 +5,106 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-12">
-            <form [formGroup]="form" *ngIf="expense">
-                <div class="row">
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="nombre">Nombre</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <input type="text" class="form-control form-control-user" id="nombre" formControlName="nombre">
-                    </div>
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="id_tipo_gasto">Tipo de gasto</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <p-dropdown [options]="typesExpense" formControlName="id_tipo_gasto"
-                            placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true">
-                        </p-dropdown>
-                    </div>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Diseñador gasto
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="form" *ngIf="expense">
+                        <div class="row">
+                            <div class="col-6 col-md-3 text-center">
+                                <label for="nombre">Nombre</label>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <input type="text" class="form-control form-control-user" id="nombre"
+                                    formControlName="nombre">
+                            </div>
+                            <div class="col-6 col-md-3 text-center">
+                                <label for="tipo_gasto">Tipo de gasto</label>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <p-dropdown [options]="typesExpense" formControlName="tipo_gasto"
+                                    placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-6 col-md-3 text-center">
+                                <label for="fechaFin">Fecha fin</label>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <p-calendar formControlName="fechaFin"></p-calendar>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mt-1">
+                            <div class="col-12 text-right mt-2">
+                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                                    class="btn btn-primary mr-1">
+                                    <span *ngIf="newExpense"> <i class="fas fa-plus" aria-hidden="true"></i>
+                                        Añadir</span>
+                                    <span *ngIf="!newExpense"> <i class="fas fa-edit" aria-hidden="true"></i>
+                                        Editar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="row mt-5">
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="recordar">Recordar</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <p-inputSwitch formControlName="recordar"></p-inputSwitch>
-                    </div>
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="flexible">Flexible</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <p-inputSwitch formControlName="flexible"></p-inputSwitch>
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="fechaFin">Fecha fin</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <p-calendar formControlName="fechaFin"></p-calendar>
-                    </div>
-                </div>
-                <hr>
-                <div class="row mt-1">
-                    <div class="col-12 text-right mt-2">
-                        <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                            class="btn btn-primary mr-1">
-                            <span *ngIf="newExpense"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
-                            <span *ngIf="!newExpense"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-    <div class="row" *ngIf="expense && expense.id">
-        <div class="col-12">
-            <h2>Listado de pagos</h2>
-            <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [rows]="5" [responsive]="true"
-                [lazy]="true">
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                            {{col.header}}
-                            <p-sortIcon [field]="col.field"></p-sortIcon>
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-columns="columns">
-                    <tr [pSelectableRow]="rowData">
-                        <td>
-                            {{rowData['cantidad']}}
-                        </td>
-                        <td>
-                            {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
-                        </td>
-                        <td>
-                            <button type="button" (click)="onRowSelect(rowData['id'])" class="btn btn-secondary mr-1">
-                                <span><i class="fas fa-edit" aria-hidden="true"></i></span>
-                            </button>
-                            <button type="button" (click)="confirm(rowData['id'])" class="btn btn-secondary mr-1">
-                                <span><i class="fas fa-trash" aria-hidden="true"></i></span>
-                            </button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="summary" let-rowData>
-                    <div style="text-align:left">
-                        <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
-                    </div>
-                </ng-template>
-            </p-table>
+
+    <div class="card mt-3" *ngIf="expense && expense.id">
+        <div class="card-header bg-primary text-white">
+            Listado de pagos
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [rows]="5" [responsive]="true"
+                        [lazy]="true">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td>
+                                    {{rowData['cantidad']}}
+                                </td>
+                                <td>
+                                    {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    <button type="button" (click)="onRowSelect(rowData['id'])"
+                                        class="btn btn-secondary mr-1">
+                                        <span><i class="fas fa-edit" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button type="button" (click)="confirm(rowData['id'])"
+                                        class="btn btn-secondary mr-1">
+                                        <span><i class="fas fa-trash" aria-hidden="true"></i></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary" let-rowData>
+                            <div style="text-align:left">
+                                <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="row mt-3">
         <div class="col-12 text-right">
             <button type="button" (click)="back()" class="btn btn-secondary mr-1">

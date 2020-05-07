@@ -38,11 +38,13 @@ Route::group(['middleware' => 'jwt.verify:USER'], function() {
     Route::resource('api/ganancias', 'GananciaController');
     Route::get('api/ganancias-mensuales', 'GananciaController@findAllProfits');
     Route::resource('api/ingresos', 'IngresoController');
-    Route::get('api/ahorros-anuales', 'AhorrosAnualesController@savingsAndExpensesByYear');
+    Route::get('api/ahorros-anuales', 'AhorroController@savingsAndExpensesByYear');
     Route::get('api/ahorros/cuenta-ahorro', 'AhorroController@cuentaAhorro');
     Route::get('api/ahorros/recordatorios-anuales', 'AhorroController@recordatoriosAnuales');
     Route::resource('api/plantillas', 'PlantillaController');
     Route::get('api/plantilla-actual', 'PlantillaController@getTemplateMonthActual');
+    Route::post('api/plantilla-clone', 'PlantillaController@clone');
+    Route::get('api/estadisticas', 'EstadisticasController@getStats');
 });
 
 Route::group(['middleware' => 'jwt.verify:ADMIN'], function() {

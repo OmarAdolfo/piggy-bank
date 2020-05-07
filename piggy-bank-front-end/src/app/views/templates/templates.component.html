@@ -5,66 +5,136 @@
         </div>
     </div>
     <hr>
-    <h2 class="mb-4">Creador de plantillas</h2>
-    <form [formGroup]="form">
-        <div class="row mt-3">
-            <div class="col-12 col-md-4 form-group">
-                <label for="anno">Año</label>
-                <input type="number" class="form-control form-control-user" id="anno" formControlName="anno">
-            </div>
-            <div class="col-12 col-md-4 form-group">
-                <label for="mes">Mes</label>
-                <p-dropdown [options]="months" formControlName="mes" placeholder="Seleccione un mes" optionLabel="name"
-                    [showClear]="true">
-                </p-dropdown>
-            </div>
-            <div class="col-12 col-md-4 form-group text-right d-flex align-items-end">
-                <button [disabled]="form.pristine || form.invalid" type="button" (click)="addTemplate()"
-                    class="btn btn-primary mr-4">
-                    <i class="fas fa-plus" aria-hidden="true"></i>
-                    <span> Añadir plantilla</span>
-                </button>
-                <button [disabled]="form.pristine || form.invalid" type="button" (click)="addTemplate()"
-                    class="btn btn-primary">
-                    <i class="fas fa-edit" aria-hidden="true"></i>
-                    <span> Copiar plantilla</span>
-                </button>
-            </div>
-        </div>
-    </form>
-    <h2 class="mt-5 mb-2">Listado de plantillas</h2>
-    <div *ngIf="templatesTotal?.length > 0; else noTemplates">
-        <div class="row mt-3">
-            <div class="col-12 col-md-3 form-group">
-                <label for="exampleInputEmail1">Seleccione un año:</label>
-                <p-dropdown [(ngModel)]="selectedYear" [options]="years" optionLabel="anno"
-                    placeholder="Seleccione un año" (onChange)="selectYear($event)"></p-dropdown>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-12 col-md-4 col-lg-3 mt-3" *ngFor="let template of templates">
-                <div class="card bg-secondary border border-dark">
-                    <div class="card-body d-flex justify-content-between">
-                        <div>{{getMonth(template.mes)}}</div>
-                        <div>
-                            <button type="button" (click)="editTemplate(template.id)" class="btn btn-primary">
-                                <i class="fas fa-edit" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" (click)="confirm(template.id)" class="ml-1 btn btn-primary">
-                                <i class="fas fa-trash" aria-hidden="true"></i>
-                            </button>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Creador de plantillas
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="ui-g" style="width:250px;margin-bottom:10px">
+                                <div class="ui-g-12">
+                                    <p-radioButton name="group1" value="Añadir plantilla" label="Añadir plantilla"
+                                        [(ngModel)]="optionCreation" inputId="opt1">
+                                    </p-radioButton>
+                                </div>
+                                <div class="ui-g-12">
+                                    <p-radioButton name="group1" value="Copiar plantilla" label="Copiar plantilla"
+                                        [(ngModel)]="optionCreation" inputId="opt2">
+                                    </p-radioButton>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <form *ngIf="optionCreation === 'Añadir plantilla'" [formGroup]="addForm">
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="anno">Año</label>
+                                <input type="number" class="form-control form-control-user" id="anno"
+                                    formControlName="anno">
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="mes">Mes</label>
+                                <p-dropdown [options]="months" formControlName="mes" placeholder="Seleccione un mes"
+                                    optionLabel="name" [showClear]="true">
+                                </p-dropdown>
+                            </div>
+                            <div class="col-12 col-md-4 form-group text-right d-flex align-items-end">
+                                <button [disabled]="addForm.pristine || addForm.invalid" type="button"
+                                    (click)="addTemplate()" class="btn btn-primary mr-4">
+                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <span> Añadir plantilla</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <form *ngIf="optionCreation === 'Copiar plantilla'" [formGroup]="cloneForm">
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="anno">Año</label>
+                                <input type="number" class="form-control form-control-user" id="anno"
+                                    formControlName="anno">
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="mes">Mes</label>
+                                <p-dropdown [options]="months" formControlName="mes" placeholder="Seleccione un mes"
+                                    optionLabel="name" [showClear]="true">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="anno">Nuevo año</label>
+                                <input type="number" class="form-control form-control-user" id="anno"
+                                    formControlName="newAnno">
+                            </div>
+                            <div class="col-12 col-md-4 form-group">
+                                <label for="mes">Nuevo mes</label>
+                                <p-dropdown [options]="months" formControlName="newMes" placeholder="Seleccione un mes"
+                                    optionLabel="name" [showClear]="true">
+                                </p-dropdown>
+                            </div>
+                            <div class="col-12 col-md-4 form-group text-right d-flex align-items-end">
+                                <button [disabled]="cloneForm.pristine || cloneForm.invalid" type="button"
+                                    (click)="clone()" class="btn btn-primary">
+                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                    <span> Copiar plantilla</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <ng-template #noTemplates>
-        <div class="alert alert-secondary" role="alert">
-            No existen plantillas
-        </div>
-    </ng-template>
 
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    Listado de plantillas
+                </div>
+                <div class="card-body">
+                    <div *ngIf="templatesTotal?.length > 0; else noTemplates">
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-3 form-group">
+                                <label for="exampleInputEmail1">Seleccione un año:</label>
+                                <p-dropdown [(ngModel)]="selectedYear" [options]="years" optionLabel="anno"
+                                    placeholder="Seleccione un año" (onChange)="selectYear($event)"></p-dropdown>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-4 col-lg-3 mt-3" *ngFor="let template of templates">
+                                <div class="card bg-secondary border border-dark">
+                                    <div class="card-body d-flex justify-content-between">
+                                        <div>{{getMonth(template.mes)}}</div>
+                                        <div>
+                                            <button type="button" (click)="editTemplate(template.id)"
+                                                class="btn btn-primary">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" (click)="confirm(template.id)"
+                                                class="ml-1 btn btn-primary">
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #noTemplates>
+                        <div class="alert alert-secondary" role="alert">
+                            No existen plantillas
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
     <p-toast [style]="{marginTop: '80px'}"></p-toast>
     <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 </div>

@@ -20,7 +20,7 @@ class CreatePagosTable extends Migration
             $table->boolean('pagado');
             $table->integer('gasto_id')->unsigned();
             $table->foreign('gasto_id')->references('id')->on('gastos');  
-            $table->integer('plantilla_id')->unsigned();
+            $table->integer('plantilla_id')->unsigned()->nullable();
             $table->foreign('plantilla_id')->references('id')->on('plantillas');  
             $table->timestamps();
         });

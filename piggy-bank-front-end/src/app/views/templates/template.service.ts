@@ -11,16 +11,22 @@ export class TemplateService {
 
   public url: string;
   public urlTemplateActual: string;
+  public urlclone: string;
 
   constructor(
     private http: HttpClient
   ) {
     this.url = API.url + 'plantillas';
     this.urlTemplateActual = API.url + 'plantilla-actual';
+    this.urlclone = API.url + 'plantilla-clone';
   }
 
   getTemplateActual(): Observable<Response> {
     return this.http.get<Response>(this.urlTemplateActual);
+  }
+
+  clone(template: any): Observable<Response> {
+    return this.http.post<Response>(this.urlclone, template);
   }
 
   get(): Observable<Template[]> {

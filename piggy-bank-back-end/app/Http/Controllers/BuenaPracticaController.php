@@ -42,7 +42,7 @@ class BuenaPracticaController extends Controller
                 ->paginate(10);
 
         return response()->json(array(
-            'data' => $buenas_practicas->load('user')
+            'data' => $buenas_practicas
         ), 200);
     }
 

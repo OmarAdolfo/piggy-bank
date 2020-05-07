@@ -23,6 +23,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { TwoDigitDecimaNumberDirective } from './directives/decimal.directive';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { TwoDigitDecimaNumberDirective } from './directives/decimal.directive';
     SelectButtonModule,
     InputSwitchModule,
     CalendarModule,
-    TwoDigitDecimaNumberDirective
+    TwoDigitDecimaNumberDirective,
+    RadioButtonModule
   ]
 })
 export class SharedModule {

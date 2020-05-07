@@ -56,9 +56,7 @@ export class ExpenseComponent implements OnInit {
     this.form = this.formBuilder.group({
       nombre: new FormControl(''),
       tipo_gasto: new FormControl(''),
-      recordar: new FormControl(''),
       fechaFin: new FormControl(''),
-      flexible: new FormControl(''),
     });
   }
 
@@ -69,7 +67,7 @@ export class ExpenseComponent implements OnInit {
   search(sortable?: string, orderBy?: number) {
     this.expenseService.get(this.form.value, sortable, orderBy).subscribe(
       (response: any) => {
-        const array: Expense[] = response.data;
+        const array: Expense[] = response.data.data;
         this.expenses = array;
       }
     );

@@ -5,9 +5,7 @@ import { Payment } from './payment';
 export class Expense {
     id: number;
     nombre: string;
-    recordar: number;
     fecha_fin: Date;
-    flexible: number;
     user: User;
     id_tipo_gasto: TypeExpense;
     created_at: Date;

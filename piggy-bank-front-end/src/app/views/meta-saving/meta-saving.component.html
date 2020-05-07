@@ -4,6 +4,7 @@
     </div>
 </div>
 <hr>
+
 <p-accordion>
     <p-accordionTab header="Búsqueda">
         <form [formGroup]="form">
@@ -26,7 +27,8 @@
         </form>
     </p-accordionTab>
 </p-accordion>
-<div class="row mt-2">
+
+<div class="row mt-2" *ngIf="pagos && ingresos">
     <div class="col-12">
         <p-table [columns]="cols" [value]="metasSaving" [paginator]="true" [rows]="10" [responsive]="true"
             (onLazyLoad)="customSort($event)" [lazy]="true">

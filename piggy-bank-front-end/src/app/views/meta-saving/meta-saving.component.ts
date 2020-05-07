@@ -17,7 +17,8 @@ export class MetaSavingComponent implements OnInit {
   metasSaving: MetaSaving[];
   cols: any[];
   statuses: any[];
-  yearlySavings: any[];
+  pagos: any[];
+  ingresos: any[];
 
   constructor(
     private metaSavingService: MetaSavingService,
@@ -47,21 +48,27 @@ export class MetaSavingComponent implements OnInit {
   getYearlySaving() {
     this.metaSavingService.getYearlySaving().subscribe(
       (data: any) => {
-        this.yearlySavings = data.pagos;
+        this.pagos = data.pagos;
+        this.ingresos = data.ingresos;
       }
     )
   }
 
   getSavings(anno: number) {
-    const gastos = this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno);
-    const totalGastos = gastos ? this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno).total : 0;
-    return -totalGastos;
+    const gastos = this.pagos.find(yearlySaving => yearlySaving.anno === anno);
+    const ingresos = this.ingresos.find(yearlySaving => yearlySaving.anno === anno);
+    const totalGastos = gastos ? this.pagos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    const totalIngresos = ingresos ? this.ingresos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    return totalIngresos - totalGastos;
   }
 
   getStatus(cantidad: number, anno: number) {
-    const gastos = this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno);
-    const totalGastos = gastos ? this.yearlySavings.find(yearlySaving => yearlySaving.anno === anno).total : 0;
-    return cantidad >= totalGastos;
+    const gastos = this.pagos.find(yearlySaving => yearlySaving.anno === anno);
+    const ingresos = this.ingresos.find(yearlySaving => yearlySaving.anno === anno);
+    const totalGastos = gastos ? this.pagos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    const totalIngresos = ingresos ? this.ingresos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
+    console.log(totalIngresos - totalGastos);
+    return cantidad <= (totalIngresos - totalGastos);
   }
 
   buildForm() {

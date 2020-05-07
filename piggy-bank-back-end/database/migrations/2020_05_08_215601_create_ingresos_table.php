@@ -19,7 +19,7 @@ class CreateIngresosTable extends Migration
             $table->date('fecha')->nullable();
             $table->integer('ganancia_id')->unsigned();
             $table->foreign('ganancia_id')->references('id')->on('ganancias');  
-            $table->integer('plantilla_id')->unsigned();
+            $table->integer('plantilla_id')->unsigned()->nullable();
             $table->foreign('plantilla_id')->references('id')->on('plantillas');  
             $table->timestamps();
         });

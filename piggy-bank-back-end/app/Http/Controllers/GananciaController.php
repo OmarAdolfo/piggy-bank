@@ -47,17 +47,18 @@ class GananciaController extends Controller
 
         $ganancias = $ganancias
                 ->orderBy($sortable, $orderBy)
+                ->where('id_usuario', '=', JWTAuth::user()->id)
                 ->paginate(10);
 
         return response()->json(array(
-            'data' => $ganancias->load('tipoGanancia')
+            'data' => $ganancias
         ), 200);
     }
 
     public function show($id) {
         $ganancia = Ganancia::find($id);
         return response()->json(array(
-            'data' => $ganancia->load('tipoGanancia')->load('ingresos')
+            'data' => $ganancia->load('ingresos')
         ), 200);
     }
 

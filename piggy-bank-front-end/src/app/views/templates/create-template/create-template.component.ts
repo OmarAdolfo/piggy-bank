@@ -165,42 +165,48 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   calculateTemplate() {
-    this.revenues = this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => a + b);
-    const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
-    let primaryExpenses = 0;
-    if (primaryExpensesFilter.length > 0) {
-      primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);
+    if (this.template.ingresos.length > 0) {
+      this.revenues = this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => a + b);
+      const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
+      let primaryExpenses = 0;
+      if (primaryExpensesFilter.length > 0) {
+        primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);
+      }
+      const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
+      let secondaryExpenses = 0;
+      if (secondaryExpensesFilter.length > 0) {
+        secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);;
+      }
+      this.primaryExpenses = (Math.round((this.revenues * 0.5) * 100) / 100) - primaryExpenses;
+      this.secondaryExpenses = (Math.round((this.revenues * 0.3) * 100) / 100) - secondaryExpenses;
+      this.promiseSavings = (Math.round(((this.revenues * 0.2)) * 100) / 100);
+      this.realSavings = (Math.round(((this.revenues * 0.2) + this.primaryExpenses + this.secondaryExpenses) * 100) / 100);
     }
-    const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
-    let secondaryExpenses = 0;
-    if (secondaryExpensesFilter.length > 0) {
-      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);;
-    }
-    this.primaryExpenses = (Math.round((this.revenues * 0.5) * 100) / 100) - primaryExpenses;
-    this.secondaryExpenses = (Math.round((this.revenues * 0.3) * 100) / 100) - secondaryExpenses;
-    this.promiseSavings = (Math.round(((this.revenues * 0.2)) * 100) / 100);
-    this.realSavings = (Math.round(((this.revenues * 0.2) + this.primaryExpenses + this.secondaryExpenses) * 100) / 100);
   }
 
   calculateGoodPractices() {
-    this.goodPracticesUsed = [];
-    for (let goodPractices of this.goodPractices) {
-      const pago = this.template.pagos.find(pago => goodPractices.palabra_clave === pago.gasto_id.nombre);
-      const goodPracticaAmount = (goodPractices.porcentaje * 0.01) * this.revenues;
-      if (pago.cantidad > goodPracticaAmount) {
-        this.goodPracticesUsed.push({ message: 'Es recomendable no sobrepasar el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: false });
-      } else {
-        this.goodPracticesUsed.push({ message: 'No sobrepasas el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: true });
+    if (this.template.pagos.length > 0) {
+      this.goodPracticesUsed = [];
+      for (let goodPractices of this.goodPractices) {
+        const pago = this.template.pagos.find(pago => goodPractices.palabra_clave === pago.gasto_id.nombre);
+        const goodPracticaAmount = (goodPractices.porcentaje * 0.01) * this.revenues;
+        if (pago.cantidad > goodPracticaAmount) {
+          this.goodPracticesUsed.push({ message: 'Es recomendable no sobrepasar el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: false });
+        } else {
+          this.goodPracticesUsed.push({ message: 'No sobrepasas el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: true });
+        }
       }
     }
   }
 
   calculateTips() {
-    this.tips = [];
-    if (this.promiseSavings < this.realSavings) {
-      this.tips.push({ message: 'Perfecto! Ahorras este mes más de lo esperado', status: true });
-    } else {
-      this.tips.push({ message: 'No es aconsejable ahorrar menos de lo esperado', status: false });
+    if (this.promiseSavings !== 0) {
+      this.tips = [];
+      if (this.promiseSavings < this.realSavings) {
+        this.tips.push({ message: 'Perfecto! Ahorras este mes más de lo esperado', status: true });
+      } else {
+        this.tips.push({ message: 'No es aconsejable ahorrar menos de lo esperado', status: false });
+      }
     }
   }
 

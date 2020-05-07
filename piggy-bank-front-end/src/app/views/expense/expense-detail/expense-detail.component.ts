@@ -68,10 +68,8 @@ export class ExpenseDetailComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       nombre: new FormControl(this.expense.nombre, Validators.required),
-      id_tipo_gasto: new FormControl(this.expense.id_tipo_gasto ? this.expense.id_tipo_gasto : '', Validators.required),
-      recordar: new FormControl(this.expense.recordar && this.expense.recordar === 1 ? true : false),
+      tipo_gasto: new FormControl(this.expense.id_tipo_gasto ? this.expense.id_tipo_gasto : '', Validators.required),
       fechaFin: new FormControl(this.expense.fecha_fin),
-      flexible: new FormControl(this.expense.flexible && this.expense.flexible === 1 ? true : false)
     });
   }
 

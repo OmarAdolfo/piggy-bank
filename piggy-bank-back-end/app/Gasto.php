@@ -8,9 +8,7 @@ class Gasto extends Model
 {
     protected $table = 'gastos';
 
-    protected $fillable = [
-        'nombre', 'recordar', 'fecha_fin', 'flexible'
-    ];
+    protected $fillable = ['nombre', 'fecha_fin'];
 
     protected $with = ['id_tipo_gasto'];
 

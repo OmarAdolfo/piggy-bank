@@ -152,7 +152,7 @@ export class CreateTemplateComponent implements OnInit {
       this.template.ingresos.forEach(ingreso => ingreso.cantidad = +ingreso.cantidad);
       this.templateService.update(this.template).subscribe(
         (response: any) => {
-
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha actualizado la plantilla' });
         }
       );
     }

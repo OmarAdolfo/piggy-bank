@@ -72,7 +72,7 @@ class GananciaController extends Controller
             return response()->json(['message' => 'Validaciones erróneas'], 500);
         }
         $postArray = $request->all();
-        $ganancias_bd = Ganancia::where('nombre', '=', $postArray['nombre'])->first();
+        $ganancias_bd = Ganancia::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($ganancias_bd)) {
             $ganancia = new Ganancia();
             $ganancia->nombre = $postArray['nombre']; 
@@ -102,7 +102,7 @@ class GananciaController extends Controller
         $postArray = $request->all();
         $ganancia_bd = Ganancia::where('id', '=', $id)->first();
         if (!is_null($ganancia_bd)) {
-            $ganancia_bd_repeat = Ganancia::where('nombre', '=', $postArray['nombre'])->first();
+            $ganancia_bd_repeat = Ganancia::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
             if (is_null($ganancia_bd_repeat) || $ganancia_bd_repeat->id == $ganancia_bd->id ) {
                 $ganancia_bd->nombre = $postArray['nombre'];
                 $ganancia_bd->id_tipo_ganancia = $postArray['id_tipo_ganancia']['id']; 

@@ -90,6 +90,7 @@ export class ExpenseDetailComponent implements OnInit {
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.expense = response.data;
+          this.router.navigate(['/home/expenses/' + this.expense.id]);
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });

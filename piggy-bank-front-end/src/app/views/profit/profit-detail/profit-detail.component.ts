@@ -89,6 +89,7 @@ export class ProfitDetailComponent implements OnInit {
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.profit = response.data;
+          this.router.navigate(['/home/profits/' + this.profit.id]);
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });

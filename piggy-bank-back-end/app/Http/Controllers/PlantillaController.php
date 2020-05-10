@@ -34,17 +34,28 @@ class PlantillaController extends Controller
         ->sum('pagos.cantidad');
         $pagosTotalesQuery = Pago::select('pagos.*')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('gastos.id_usuario', '=', JWTAuth::user()->id);
         $pagosTotales = $pagosTotalesQuery->count();
         $pagosNoPagadosQuery = Pago::select('pagos.*')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
         ->where('pagos.pagado', '=', 0);
         $pagosNoPagados = $pagosNoPagadosQuery->count();
+        $pagosPagadosQuery = Pago::select('pagos.*')
+        ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
+        ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
+        ->where('pagos.pagado', '=', 1);
+        $pagosPagados = $pagosPagadosQuery->count();
         return response()->json(array(
             'cuentaGastos' => $ingresos - $pagos,
             'noPagados' => $pagosNoPagadosQuery->get(),
-            'porcentajePagados' => round($pagosNoPagados === 0 ? 0 : ($pagosNoPagados / $pagosTotales) * 100, 2)
+            'porcentajePagados' => round($pagosPagados === 0 ? 0 : ($pagosPagados / $pagosTotales) * 100, 2)
         ), 200);
     }
 

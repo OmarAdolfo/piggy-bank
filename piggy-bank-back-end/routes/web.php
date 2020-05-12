@@ -27,6 +27,7 @@ Route::group(['middleware' => 'jwt.verify:ADMIN,USER'], function() {
     Route::get('api/tipos-gastos/all', 'TipoGastoController@findAll');
     Route::get('api/tipos-ganancias/all', 'TipoGananciaController@findAll');
     Route::get('api/buenas-practicas/all', 'BuenaPracticaController@findAll');
+    Route::post('api/change-password', 'AuthController@changePassword');
 });
 
 Route::group(['middleware' => 'jwt.verify:USER'], function() {

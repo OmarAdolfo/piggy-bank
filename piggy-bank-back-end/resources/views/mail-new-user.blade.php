@@ -1,0 +1,1 @@
+<p>Se ha creado un nuevo usuario en la aplicación asignado a este correo. Esta es la contraseña para acceder a la aplicación {{$password}}. Si desea modificarla, acceda su perfil de usuario una vez haya iniciado sesión.</p>

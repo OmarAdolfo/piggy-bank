@@ -7,6 +7,8 @@ use App\User;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailNewUser;
 
 class UserController extends Controller
 {
@@ -69,9 +71,11 @@ class UserController extends Controller
             $user->nombre = $postArray['nombre']; 
             $user->apellidos = $postArray['apellidos']; 
             $user->email = $postArray['email']; 
-            $user->rol = $postArray['rol']; 
-            $user->password = Hash::make(Str::random(10)); 
+            $user->rol = $postArray['rol'];
+            $password = Str::random(10);
+            $user->password = Hash::make($password); 
             $user->save();
+            Mail::to($request['email'])->send(new SendMailNewUser($password));
             return response()->json([
                 'message' => 'Se ha creado un nuevo usuario',
                 'data' => $user

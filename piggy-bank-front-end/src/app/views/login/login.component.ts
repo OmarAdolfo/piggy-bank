@@ -7,7 +7,6 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Login } from 'src/app/shared/models/login';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { Router } from '@angular/router';
-import { EncrypteService } from 'src/app/shared/services/encrypte.service';
 
 @Component({
   selector: 'app-login',
@@ -26,8 +25,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private loginService: LoginService,
     private formBuilder: FormBuilder,
     private authenticationService: AuthenticationService,
-    private router: Router,
-    private encrypteService: EncrypteService
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +60,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   login() {
     const login: Login = Object.assign({}, this.loginForm.value);
-    login.password = this.encrypteService.set(login.password);
     this.loginService.login(login).subscribe(
       (response: any) => {
         this.authenticationService.saveToken(response.token);

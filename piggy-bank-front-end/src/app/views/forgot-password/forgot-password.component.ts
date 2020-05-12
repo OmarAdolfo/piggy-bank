@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ResetPassword } from 'src/app/shared/models/resetPassword';
-import { EncrypteService } from 'src/app/shared/services/encrypte.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -26,8 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private notificationService: NotificationService,
-    private formBuilder: FormBuilder,
-    private encrypteService: EncrypteService
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +63,6 @@ export class ForgotPasswordComponent implements OnInit {
   ressetPassword() {
     const resetPassword: ResetPassword = Object.assign({}, this.resetPasswordForm.value);
     resetPassword.email = this.sendTokenEmailForm.get('email').value;
-    resetPassword.password = this.encrypteService.set(resetPassword.password);
     this.forgotPasswordService.resetPassword(resetPassword).subscribe(
       (response: any) => {
         this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });

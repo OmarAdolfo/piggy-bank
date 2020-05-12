@@ -52,6 +52,28 @@ class AuthController extends Controller
         return response()->json(compact('token'), 200);
     }
 
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [ 
+            'password' => 'required'
+        ]);
+        if ($validator->fails()) { 
+            return response()->json(['error'=>$validator->errors()], 500);
+        }
+        $user = JWTAuth::user();
+        $user->password = Hash::make($request['password']); 
+        $user->save();
+        JWTAuth::parseToken()->invalidate();
+        try {
+            if (! $token = JWTAuth::fromUser($user)) {
+                return response()->json('Credenciales inválidas', 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json('El token no se ha podio crear', 500);
+        }
+        return response()->json($token, 200);
+    }
+
     public function getAuthenticatedUser()
     {
         try {

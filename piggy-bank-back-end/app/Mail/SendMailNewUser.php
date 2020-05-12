@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class SendMail extends Mailable
+class SendMailNewUser extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $token;
+    public $password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($password)
     {
-        $this->token = $token;
+        $this->password = $password;
     }
 
     /**
@@ -30,6 +30,6 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->from('piggybankwebapphelp@gmail.com')->subject('Contraseña reseteada')->view('mail')->with('token', $this->token);
+        return $this->from('piggybankwebapphelp@gmail.com')->subject('Nueva cuenta')->view('mail-new-user')->with('token', $this->password);
     }
 }

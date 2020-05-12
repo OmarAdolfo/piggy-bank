@@ -12,6 +12,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class AuthenticationService {
 
     public userUrl: string;
+    public changePasswordUrl: string;
     private rol: string;
 
     constructor(
@@ -19,6 +20,7 @@ export class AuthenticationService {
         private jwtHelper: JwtHelperService
     ) {
         this.userUrl = API.url + 'user';
+        this.changePasswordUrl = API.url + 'change-password';
         if (this.isLogged()) {
             this.rol = jwt_decode(this.getToken()).rol;
         }
@@ -26,6 +28,10 @@ export class AuthenticationService {
 
     getAuthenticatedUser(): Observable<Response> {
         return this.http.get<Response>(this.userUrl);
+    }
+
+    changePassword(password: any): Observable<string> {
+        return this.http.post<string>(this.changePasswordUrl, password);
     }
 
     getUrlNavigation() {

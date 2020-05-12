@@ -7,6 +7,7 @@ import { SigninService } from './signin.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { EncrypteService } from 'src/app/shared/services/encrypte.service';
 
 @Component({
   selector: 'app-signin',
@@ -24,7 +25,8 @@ export class SigninComponent implements OnInit {
     private signinService: SigninService,
     private notificationService: NotificationService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private encrypteService: EncrypteService
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class SigninComponent implements OnInit {
 
   signin() {
     const signIn: SignIn = Object.assign({}, this.signinForm.value);
+    signIn.password = this.encrypteService.set(signIn.password);
     this.signinService.signIn(signIn).subscribe(
       (response: any) => {
         this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });

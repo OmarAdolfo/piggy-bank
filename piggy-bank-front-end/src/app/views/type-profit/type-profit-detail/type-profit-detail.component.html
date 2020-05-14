@@ -1,0 +1,73 @@
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Detalle usuario</h1>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row" *ngIf="!typeProfit">
+        <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
+    </div>
+
+    <div class="card" *ngIf="typeProfit">
+        <div class="card-header bg-primary text-white">
+            Diseñador tipo de gasto
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="valor">Valor</label>
+                                <input type="text" class="form-control form-control-user" id="valor"
+                                    formControlName="valor">
+                                <div *ngIf="form.controls.valor.invalid && (form.controls.valor.dirty || form.controls.valor.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.valor.errors.required">
+                                        El valor es obligatorio
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control form-control-user" id="descripcion"
+                                    formControlName="descripcion">
+                                <div *ngIf="form.controls.descripcion.invalid && (form.controls.descripcion.dirty || form.controls.descripcion.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.descripcion.errors.required">
+                                        La descripción es obligatoria
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mt-1">
+                            <div class="col-12 text-right mt-2">
+                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                                    class="btn btn-primary mr-1">
+                                    <span *ngIf="newTypeProfit"> <i class="fas fa-save" aria-hidden="true"></i>
+                                        Guardar</span>
+                                    <span *ngIf="!newTypeProfit"> <i class="fas fa-edit" aria-hidden="true"></i>
+                                        Editar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12 text-right">
+            <button type="button" (click)="back()" class="btn btn-secondary mr-1">
+                <span><i class="fas fa-arrow-left" aria-hidden="true"></i> Volver</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<p-toast [style]="{marginTop: '80px'}"></p-toast>

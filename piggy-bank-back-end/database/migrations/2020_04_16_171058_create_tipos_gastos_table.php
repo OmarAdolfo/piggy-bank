@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBuenasPracticasTable extends Migration
+class CreateTiposGastosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateBuenasPracticasTable extends Migration
      */
     public function up()
     {
-        Schema::create('buenas_practicas', function (Blueprint $table) {
+        Schema::create('tipos_gastos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('palabra_clave');
-            $table->integer('porcentaje');
+            $table->string('valor');
+            $table->string('descripcion');
             $table->integer('id_usuario')->unsigned();
-            $table->foreign('id_usuario')->references('id')->on('usuarios');    
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateBuenasPracticasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('buenas_practicas');
+        Schema::dropIfExists('tipos_gastos');
     }
 }

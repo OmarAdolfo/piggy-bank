@@ -14,11 +14,11 @@ class CreatePlantillasTable extends Migration
     public function up()
     {
         Schema::create('plantillas', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->integer('anno');
             $table->integer('mes');
             $table->integer('id_usuario')->unsigned();
-            $table->foreign('id_usuario')->references('id')->on('usuarios');   
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');;   
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ export class ExpenseService {
     this.url = API.url + 'gastos';
   }
 
-  get(form: any, sortable?: string, orderBy?: number): Observable<Expense[]> {
+  get(form: any, sortField?: string, sortOrder?: number, page?: number): Observable<Expense[]> {
     let params: string[] = [];
     let query = '';
     if (form.nombre) {
@@ -26,13 +26,16 @@ export class ExpenseService {
     if (form.tipo_gasto) {
       params.push('tipo_gasto=' + form.tipo_gasto.id);
     }
-    if (sortable) {
-      params.push('sortable=' + sortable);
-      if (orderBy) {
-        params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
+    if (sortField) {
+      params.push('sortField=' + sortField);
+      if (sortOrder) {
+        params.push(sortOrder === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (page) {
+      params.push('page=' + page);
+    }
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<Expense[]>(this.url + query);

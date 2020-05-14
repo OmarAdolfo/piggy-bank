@@ -17,20 +17,20 @@ export class UserService {
     this.url = API.url + 'usuarios';
   }
 
-  get(nombre?: string, apellidos?: string, email?: string, rol?: string, sortable?: string, orderBy?: number): Observable<User[]> {
+  get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<User[]> {
     let params: string[] = [];
     let query = '';
-    if (nombre) {
-      params.push('nombre=' + nombre);
+    if (form.nombre) {
+      params.push('nombre=' + form.nombre);
     }
-    if (apellidos) {
-      params.push('apellidos=' + apellidos);
+    if (form.apellidos) {
+      params.push('apellidos=' + form.apellidos);
     }
-    if (email) {
-      params.push('email=' + email);
+    if (form.email) {
+      params.push('email=' + form.email);
     }
-    if (rol) {
-      params.push('rol=' + rol);
+    if (form.rol) {
+      params.push('rol=' + form.rol);
     }
     if (sortable) {
       params.push('sortable=' + sortable);
@@ -38,7 +38,10 @@ export class UserService {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (page) {
+      params.push('page=' + page);
+    }
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<User[]>(this.url + query);
@@ -52,8 +55,12 @@ export class UserService {
     return this.http.put<Response>(this.url + '/' + user.id, user);
   }
 
-  delete(user: User): Observable<Response> {
-    return this.http.delete<Response>(this.url + '/' + user.id);
+  delete(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + '/' + id);
+  }
+
+  find(id: number) {
+    return this.http.get<Response>(this.url + '/' + id);
   }
 
 }

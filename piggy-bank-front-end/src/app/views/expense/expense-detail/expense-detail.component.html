@@ -6,7 +6,11 @@
     </div>
     <hr>
 
-    <div class="card">
+    <div class="row" *ngIf="!expense">
+        <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
+    </div>
+
+    <div class="card" *ngIf="expense && expense.id">
         <div class="card-header bg-primary text-white">
             Diseñador gasto
         </div>

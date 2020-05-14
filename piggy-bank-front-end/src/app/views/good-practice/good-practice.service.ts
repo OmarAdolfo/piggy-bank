@@ -17,14 +17,14 @@ export class GoodPracticeService {
     this.url = API.url + 'buenas-practicas';
   }
 
-  get(palabraClave?: string, porcentaje?: string, sortable?: string, orderBy?: number): Observable<GoodPractice[]> {
+  get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<GoodPractice[]> {
     let params: string[] = [];
     let query = '';
-    if (palabraClave) {
-      params.push('palabraClave=' + palabraClave);
+    if (form.palabraClave) {
+      params.push('palabraClave=' + form.palabraClave);
     }
-    if (porcentaje) {
-      params.push('porcentaje=' + porcentaje);
+    if (form.porcentaje) {
+      params.push('porcentaje=' + form.porcentaje);
     }
     if (sortable) {
       params.push('sortable=' + sortable);
@@ -32,7 +32,10 @@ export class GoodPracticeService {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (page) {
+      params.push('page=' + page);
+    }
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<GoodPractice[]>(this.url + query);
@@ -46,12 +49,16 @@ export class GoodPracticeService {
     return this.http.put<Response>(this.url + '/' + goodPractice.id, goodPractice);
   }
 
-  delete(goodPractice: GoodPractice): Observable<Response> {
-    return this.http.delete<Response>(this.url + '/' + goodPractice.id);
+  delete(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + '/' + id);
   }
 
   findAll(): Observable<any> {
     return this.http.get<GoodPractice[]>(this.url + '/all');
+  }
+
+  find(id: number) {
+    return this.http.get<Response>(this.url + '/' + id);
   }
 
 }

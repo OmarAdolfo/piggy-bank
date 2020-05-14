@@ -1,33 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { TypeProfit } from 'src/app/shared/models/type-profit';
-import { LazyLoadEvent, MessageService } from 'primeng/api';
+import { LazyLoadEvent, MessageService, ConfirmationService } from 'primeng/api';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { TypeProfitService } from './type-profit.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-type-profit',
   templateUrl: './type-profit.component.html',
   styleUrls: ['./type-profit.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class TypeProfitComponent implements OnInit {
 
   form: FormGroup;
   typesProfit: TypeProfit[];
   cols: any[];
-  displayDialog: boolean;
-  newTypeProfit: boolean;
-  typeProfit: TypeProfit;
+  totalRecords: number;
 
   constructor(
     private typeProfitService: TypeProfitService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private authenticationService: AuthenticationService
   ) {
     this.cols = [
       { field: 'valor', header: 'Valor' },
+      { field: 'descripcion', header: 'Descripción' },
       { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' }
+      { field: 'updated_at', header: 'Fecha de actualización' },
+      { field: '', header: 'Opciones' }
     ];
   }
 
@@ -37,34 +42,21 @@ export class TypeProfitComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      valor: new FormControl('', Validators.required)
+      valor: new FormControl('', Validators.required),
+      descripcion: new FormControl(''),
     });
   }
 
-  save() {
-    this.typeProfitService.add(this.typeProfit).subscribe(
-      (response: any) => {
-        let typesProfit = [...this.typesProfit];
-        typesProfit.push(response.data);
-        this.typesProfit = typesProfit;
-        this.typeProfit = null;
-        this.displayDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-      }
-    );
+  add() {
+    this.router.navigate(['/home/type-profit/new']);
   }
 
-  showDialogToAdd() {
-    this.newTypeProfit = true;
-    this.typeProfit = new TypeProfit();
-    this.displayDialog = true;
-  }
-
-  search(sortable?: string, orderBy?: number) {
-    this.typeProfitService.get(this.form.get('valor').value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    this.typeProfitService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
-        const array: TypeProfit[] = response.tipos_ganancia.data;
+        const array: TypeProfit[] = response.data.data;
         this.typesProfit = array;
+        this.totalRecords = response.data.total;
       }
     );
   }
@@ -72,7 +64,39 @@ export class TypeProfitComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
+  }
+
+  confirm(id: number) {
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de que deseas borrar?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.delete(id);
+      }
+    });
+  }
+
+  delete(id: number) {
+    this.typeProfitService.delete(id).subscribe(
+      () => {
+        this.typesProfit = this.typesProfit.filter(typeProfit => typeProfit.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el tipo de ganancia' })
+      },
+      () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el tipo de ganancia' })
+      }
+    );
+  }
+
+  onRowSelect(id: number) {
+    this.router.navigate(['/home/type-profit/' + id]);
+  }
+
+  checkProperty(id: number) {
+    return id === parseInt(this.authenticationService.getSub());
   }
 
 }

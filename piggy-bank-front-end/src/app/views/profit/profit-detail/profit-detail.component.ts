@@ -89,7 +89,7 @@ export class ProfitDetailComponent implements OnInit {
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.profit = response.data;
-          this.router.navigate(['/home/profits/' + this.profit.id]);
+          this.location.replaceState('/home/profits/' + this.profit.id);
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
@@ -105,7 +105,7 @@ export class ProfitDetailComponent implements OnInit {
   confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete(id);

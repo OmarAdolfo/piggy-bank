@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TiposGanancias extends Migration
+class CreateMetasAhorrosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class TiposGanancias extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_ganancias', function (Blueprint $table) {
+        Schema::create('metas_ahorros', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('valor');
+            $table->double('cantidad', 8, 2);
+            $table->integer('anno');
+            $table->integer('id_usuario')->unsigned();
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');;   
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class TiposGanancias extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipos_ganancias');
+        Schema::dropIfExists('metas_ahorros');
     }
 }

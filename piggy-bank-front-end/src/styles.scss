@@ -39,7 +39,7 @@ body {
     border-color: white !important;
 }
 
-.ui-state-active {
+.ui-selectbutton > .ui-state-active {
     background-color: $secondary !important;
     color: black !important;
     border-color: white !important;
@@ -50,8 +50,10 @@ body {
     color: white !important;
 }
 
-.ui-paginator-page {
+.ui-state-active {
     background-color: $primary !important;
+    color: white !important;
+    border-color: white !important;
 }
 
 td {
@@ -76,4 +78,9 @@ td {
     .wrapper {
         margin: auto 20px;
     }
+}
+
+.img-not-found {
+    max-width: 100%;
+    height: auto;
 }

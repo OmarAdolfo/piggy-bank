@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ExpenseService } from '../expense.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Expense } from 'src/app/shared/models/expense';
 import { TypeExpenseService } from '../../type-expense/type-expense.service';
 import { TypeExpense } from 'src/app/shared/models/type-expense';
@@ -22,6 +22,8 @@ export class ExpenseDetailComponent implements OnInit {
   expense: Expense;
   typesExpense: TypeExpense[] = [];
   cols: any[];
+  previousUrl: string;
+  firstTimeAccess: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,7 +92,7 @@ export class ExpenseDetailComponent implements OnInit {
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.expense = response.data;
-          this.router.navigate(['/home/expenses/' + this.expense.id]);
+          this.location.replaceState('/home/expenses/' + this.expense.id);
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
@@ -106,7 +108,7 @@ export class ExpenseDetailComponent implements OnInit {
   confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete(id);

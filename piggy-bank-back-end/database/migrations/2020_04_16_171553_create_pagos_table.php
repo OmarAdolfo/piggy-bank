@@ -19,9 +19,9 @@ class CreatePagosTable extends Migration
             $table->date('fecha')->nullable();
             $table->boolean('pagado');
             $table->integer('gasto_id')->unsigned();
-            $table->foreign('gasto_id')->references('id')->on('gastos');  
+            $table->foreign('gasto_id')->references('id')->on('gastos')->onDelete('cascade');;  
             $table->integer('plantilla_id')->unsigned()->nullable();
-            $table->foreign('plantilla_id')->references('id')->on('plantillas');  
+            $table->foreign('plantilla_id')->references('id')->on('plantillas')->onDelete('cascade');;  
             $table->timestamps();
         });
     }

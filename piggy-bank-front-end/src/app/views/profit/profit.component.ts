@@ -81,7 +81,7 @@ export class ProfitComponent implements OnInit {
   confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete(id);

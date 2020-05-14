@@ -114,7 +114,7 @@ export class TableComponent implements OnInit {
   confirm() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete();

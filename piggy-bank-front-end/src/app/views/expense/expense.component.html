@@ -37,7 +37,7 @@
 <div class="row mt-2">
     <div class="col-12">
         <p-table [columns]="cols" [value]="expenses" [paginator]="true" [rows]="10" [responsive]="true"
-            (onLazyLoad)="customSort($event)" [lazy]="true">
+            (onLazyLoad)="customSort($event)" [lazy]="true" [totalRecords]="totalRecords">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field">

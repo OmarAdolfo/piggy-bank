@@ -3,6 +3,8 @@ import { MessageService, ConfirmationService, LazyLoadEvent } from 'primeng/api'
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { GoodPractice } from 'src/app/shared/models/good-practice';
 import { GoodPracticeService } from './good-practice.service';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-good-practice',
@@ -15,24 +17,22 @@ export class GoodPracticeComponent implements OnInit {
   form: FormGroup;
   goodPractices: GoodPractice[];
   cols: any[];
-  roles: any[];
-  displayDialog: boolean;
-  newGoodPractice: boolean;
-  goodPractice: GoodPractice;
-  selectedGoodPractice: GoodPractice;
+  totalRecords: number;
 
   constructor(
     private goodPracticeService: GoodPracticeService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {
     this.cols = [
       { field: 'palabra_clave', header: 'Palabra clave' },
       { field: 'porcentaje', header: 'Porcentaje' },
       { field: 'user', header: 'Creado/Actualizado por' },
       { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' }
+      { field: 'updated_at', header: 'Fecha de actualización' },
+      { field: '', header: 'Opciones' }
     ];
   }
 
@@ -47,43 +47,16 @@ export class GoodPracticeComponent implements OnInit {
     });
   }
 
-  save() {
-    if (this.goodPractice.id) {
-      this.goodPracticeService.update(this.goodPractice).subscribe(
-        (response: any) => {
-          let goodPractices = [...this.goodPractices];
-          goodPractices[this.goodPractices.indexOf(this.selectedGoodPractice)] = this.goodPractice;
-          this.goodPractices = goodPractices;
-          this.goodPractice = null;
-          this.displayDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-        }
-      );
-    } else {
-      this.goodPracticeService.add(this.goodPractice).subscribe(
-        (response: any) => {
-          let goodPractices = [...this.goodPractices];
-          goodPractices.push(response.data);
-          this.goodPractices = goodPractices;
-          this.goodPractice = null;
-          this.displayDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-        }
-      );
-    }
+  add() {
+    this.router.navigate(['/home/good-practices/new']);
   }
 
-  showDialogToAdd() {
-    this.newGoodPractice = true;
-    this.goodPractice = new GoodPractice();
-    this.displayDialog = true;
-  }
-
-  search(sortable?: string, orderBy?: number) {
-    this.goodPracticeService.get(this.form.get('palabraClave').value, this.form.get('porcentaje').value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    this.goodPracticeService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: GoodPractice[] = response.data.data;
         this.goodPractices = array;
+        this.totalRecords = response.data.total;
       }
     );
   }
@@ -91,43 +64,35 @@ export class GoodPracticeComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
   }
 
-  confirm() {
+  confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.delete();
+        this.delete(id);
       }
     });
   }
 
-  delete() {
-    this.goodPracticeService.delete(this.goodPractice).subscribe(
+  delete(id: number) {
+    this.goodPracticeService.delete(id).subscribe(
       () => {
-        let index = this.goodPractices.indexOf(this.selectedGoodPractice);
-        this.goodPractices = this.goodPractices.filter((val, i) => i != index);
-        this.goodPractice = null;
-        this.displayDialog = false;
+        this.goodPractices = this.goodPractices.filter(goodPractice => goodPractice.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado la buena práctica' })
+      },
+      () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar la buena práctica' })
       }
     );
   }
 
-  onRowSelect(event) {
-    this.newGoodPractice = false;
-    this.goodPractice = this.cloneCar(event.data);
-    this.displayDialog = true;
-  }
-
-  cloneCar(c: GoodPractice) {
-    let goodPractice = new GoodPractice();
-    for (let prop in c) {
-      goodPractice[prop] = c[prop];
-    }
-    return goodPractice;
+  onRowSelect(id: number) {
+    this.router.navigate(['/home/good-practices/' + id]);
   }
 
 }

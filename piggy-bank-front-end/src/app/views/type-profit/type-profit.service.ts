@@ -17,11 +17,14 @@ export class TypeProfitService {
     this.url = API.url + 'tipos-ganancias';
   }
 
-  get(valor?: string, sortable?: string, orderBy?: number): Observable<TypeProfit[]> {
+  get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<TypeProfit[]> {
     let params: string[] = [];
     let query = '';
-    if (valor) {
-      params.push('valor=' + valor);
+    if (form.valor) {
+      params.push('valor=' + form.valor);
+    }
+    if (form.descripcion) {
+      params.push('descripcion=' + form.descripcion);
     }
     if (sortable) {
       params.push('sortable=' + sortable);
@@ -29,7 +32,10 @@ export class TypeProfitService {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (page) {
+      params.push('page=' + page);
+    }
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<TypeProfit[]>(this.url + query);
@@ -41,6 +47,18 @@ export class TypeProfitService {
 
   findAll() {
     return this.http.get<TypeProfit[]>(this.url + '/all');
+  }
+
+  update(typeProfit: TypeProfit): Observable<Response> {
+    return this.http.put<Response>(this.url + '/' + typeProfit.id, typeProfit);
+  }
+
+  delete(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + '/' + id);
+  }
+
+  find(id: number) {
+    return this.http.get<Response>(this.url + '/' + id);
   }
   
 }

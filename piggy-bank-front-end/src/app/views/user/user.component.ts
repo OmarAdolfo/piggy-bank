@@ -4,6 +4,7 @@ import { User } from 'src/app/shared/models/user';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UserService } from './user.service';
 import { Role } from 'src/app/shared/models/role';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -17,16 +18,14 @@ export class UserComponent implements OnInit {
   users: User[];
   cols: any[];
   roles: any[];
-  displayDialog: boolean;
-  newUser: boolean;
-  user: User;
-  selectedUser: User;
+  totalRecords: number;
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private router: Router
   ) {
     this.cols = [
       { field: 'nombre', header: 'Nombre' },
@@ -34,7 +33,8 @@ export class UserComponent implements OnInit {
       { field: 'email', header: 'Correo electrónico' },
       { field: 'rol', header: 'Rol' },
       { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' }
+      { field: 'updated_at', header: 'Fecha de actualización' },
+      { field: '', header: 'Opciones' }
     ];
     this.roles = [
       { label: Role.Admin, value: Role.Admin.toString() },
@@ -55,43 +55,16 @@ export class UserComponent implements OnInit {
     });
   }
 
-  save() {
-    if (this.user.id) {
-      this.userService.update(this.user).subscribe(
-        (response: any) => {
-          let users = [...this.users];
-          users[this.users.indexOf(this.selectedUser)] = this.user;
-          this.users = users;
-          this.user = null;
-          this.displayDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-        }
-      );
-    } else {
-      this.userService.add(this.user).subscribe(
-        (response: any) => {
-          let users = [...this.users];
-          users.push(response.data);
-          this.users = users;
-          this.user = null;
-          this.displayDialog = false;
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-        }
-      );
-    }
+  add() {
+    this.router.navigate(['/home/users/new']);
   }
 
-  showDialogToAdd() {
-    this.newUser = true;
-    this.user = new User();
-    this.displayDialog = true;
-  }
-
-  search(sortable?: string, orderBy?: number) {
-    this.userService.get(this.form.get('nombre').value, this.form.get('apellidos').value, this.form.get('email').value, this.form.get('rol').value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    this.userService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: User[] = response.data.data;
         this.users = array;
+        this.totalRecords = response.data.total;
       }
     );
   }
@@ -99,43 +72,35 @@ export class UserComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
   }
 
-  confirm() {
+  confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.delete();
+        this.delete(id);
       }
     });
   }
 
-  delete() {
-    this.userService.delete(this.user).subscribe(
+  delete(id: number) {
+    this.userService.delete(id).subscribe(
       () => {
-        let index = this.users.indexOf(this.selectedUser);
-        this.users = this.users.filter((val, i) => i != index);
-        this.user = null;
-        this.displayDialog = false;
+        this.users = this.users.filter(user => user.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el usuario' })
+      },
+      () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el usuario' })
       }
     );
   }
 
-  onRowSelect(event) {
-    this.newUser = false;
-    this.user = this.cloneCar(event.data);
-    this.displayDialog = true;
-  }
-
-  cloneCar(c: User) {
-    let user = new User();
-    for (let prop in c) {
-      user[prop] = c[prop];
-    }
-    return user;
+  onRowSelect(id: number) {
+    this.router.navigate(['/home/users/' + id]);
   }
 
 }

@@ -1,33 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService, LazyLoadEvent } from 'primeng/api';
+import { MessageService, LazyLoadEvent, ConfirmationService } from 'primeng/api';
 import { TypeExpenseService } from './type-expense.service';
 import { TypeExpense } from 'src/app/shared/models/type-expense';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-type-expense',
   templateUrl: './type-expense.component.html',
   styleUrls: ['./type-expense.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class TypeExpenseComponent implements OnInit {
 
   typeExpenseForm: FormGroup;
   typesExpense: TypeExpense[];
   cols: any[];
-  displayDialog: boolean;
-  newTypeExpense: boolean;
-  typeExpense: TypeExpense;
+  totalRecords: number;
 
   constructor(
     private typeExpenseService: TypeExpenseService,
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private authenticationService: AuthenticationService
   ) {
     this.cols = [
       { field: 'valor', header: 'Valor' },
+      { field: 'descripcion', header: 'Descripción' },
       { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' }
+      { field: 'updated_at', header: 'Fecha de actualización' },
+      { field: '', header: 'Opciones' }
     ];
   }
 
@@ -37,34 +42,21 @@ export class TypeExpenseComponent implements OnInit {
 
   buildForm() {
     this.typeExpenseForm = this.formBuilder.group({
-      valor: new FormControl('', Validators.required)
+      valor: new FormControl(''),
+      descripcion: new FormControl(''),
     });
   }
 
-  save() {
-    this.typeExpenseService.add(this.typeExpense).subscribe(
-      (response: any) => {
-        let typesExpense = [...this.typesExpense];
-        typesExpense.push(response.data);
-        this.typesExpense = typesExpense;
-        this.typeExpense = null;
-        this.displayDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
-      }
-    );
+  add() {
+    this.router.navigate(['/home/type-expense/new']);
   }
 
-  showDialogToAdd() {
-    this.newTypeExpense = true;
-    this.typeExpense = new TypeExpense();
-    this.displayDialog = true;
-  }
-
-  search(sortable?: string, orderBy?: number) {
-    this.typeExpenseService.get(this.typeExpenseForm.get('valor').value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    this.typeExpenseService.get(this.typeExpenseForm.value, sortable, orderBy, page).subscribe(
       (response: any) => {
-        const array: TypeExpense[] = response.tipos_gasto.data;
+        const array: TypeExpense[] = response.data.data;
         this.typesExpense = array;
+        this.totalRecords = response.data.total;
       }
     );
   }
@@ -72,7 +64,39 @@ export class TypeExpenseComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
+  }
+
+  confirm(id: number) {
+    this.confirmationService.confirm({
+      message: '¿Estás seguro de que deseas borrar?',
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.delete(id);
+      }
+    });
+  }
+
+  delete(id: number) {
+    this.typeExpenseService.delete(id).subscribe(
+      () => {
+        this.typesExpense = this.typesExpense.filter(typeExpense => typeExpense.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el tipo de gasto' })
+      },
+      () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el tipo de gasto' })
+      }
+    );
+  }
+
+  onRowSelect(id: number) {
+    this.router.navigate(['/home/type-expense/' + id]);
+  }
+
+  checkProperty(id: number) {
+    return id === parseInt(this.authenticationService.getSub());
   }
 
 }

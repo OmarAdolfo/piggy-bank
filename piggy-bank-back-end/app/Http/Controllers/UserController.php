@@ -62,7 +62,7 @@ class UserController extends Controller
             'email' => 'required|email'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['message'=>$validator->errors()], 500);
         }
         $postArray = $request->all();
         $users_bd = User::where('email', '=', $postArray['email'])->first();
@@ -82,8 +82,8 @@ class UserController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'error' => 'El usuario ya existe'
-            ]);
+                'message' => 'El usuario ya existe'
+            ], 500);
         }
     }
 
@@ -96,7 +96,7 @@ class UserController extends Controller
             'email' => 'required|email'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 500);
+            return response()->json(['message'=>$validator->errors()], 500);
         }
         $postArray = $request->all();
         $user_bd = User::where('id', '=', $id)->first();
@@ -111,12 +111,12 @@ class UserController extends Controller
                 return response()->json('Se ha actualizado el usuario', 200);
             } else {
                 return response()->json([
-                    'error' => 'El usuario con ese email ya existe'
+                    'message' => 'El usuario con ese email ya existe'
                 ], 500);
             }
         } else {
             return response()->json([
-                'error' => 'El usuario no existe'
+                'message' => 'El usuario no existe'
             ], 500);
         }
     }
@@ -128,8 +128,15 @@ class UserController extends Controller
             return response()->json('Se ha eliminado el usuario', 200);
         } else {
             return response()->json([
-                'error' => 'El usuario no existe'
-            ]);
+                'message' => 'El usuario no existe'
+            ], 500);
         }
+    }
+
+    public function show($id) {
+        $user = User::find($id);
+        return response()->json(array(
+            'data' => $user
+        ), 200);
     }
 }

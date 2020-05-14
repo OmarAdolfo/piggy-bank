@@ -16,6 +16,9 @@ class CreateTiposGananciasTable extends Migration
         Schema::create('tipos_ganancias', function (Blueprint $table) {
             $table->increments('id');
             $table->string('valor');
+            $table->string('descripcion');
+            $table->integer('id_usuario')->unsigned();
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->timestamps();
         });
     }

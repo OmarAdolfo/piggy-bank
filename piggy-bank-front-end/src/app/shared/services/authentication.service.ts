@@ -14,6 +14,7 @@ export class AuthenticationService {
     public userUrl: string;
     public changePasswordUrl: string;
     private rol: string;
+    private sub: string;
 
     constructor(
         private http: HttpClient,
@@ -23,6 +24,7 @@ export class AuthenticationService {
         this.changePasswordUrl = API.url + 'change-password';
         if (this.isLogged()) {
             this.rol = jwt_decode(this.getToken()).rol;
+            this.sub = jwt_decode(this.getToken()).sub;
         }
     }
 
@@ -47,6 +49,7 @@ export class AuthenticationService {
     saveToken(token: string) {
         localStorage.setItem('accestoken', token);
         this.rol = jwt_decode(this.getToken()).rol;
+        this.sub = jwt_decode(this.getToken()).sub;
     }
 
     getToken() {
@@ -55,6 +58,10 @@ export class AuthenticationService {
 
     getRol() {
         return this.rol;
+    }
+
+    getSub() {
+        return this.sub;
     }
 
     isLogged() {

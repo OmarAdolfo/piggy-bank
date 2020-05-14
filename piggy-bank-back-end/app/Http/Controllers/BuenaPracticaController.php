@@ -50,7 +50,7 @@ class BuenaPracticaController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'palabra_clave' => 'required', 
-            'porcentaje' => 'required'
+            'porcentaje' => 'required|min:1|max:100'
         ]);
         if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()]);
@@ -78,7 +78,7 @@ class BuenaPracticaController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'palabra_clave' => 'required', 
-            'porcentaje' => 'required'
+            'porcentaje' => 'required|min:1|max:100'
         ]);
         if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 500);
@@ -115,5 +115,12 @@ class BuenaPracticaController extends Controller
                 'error' => 'La buena práctica no existe'
             ]);
         }
+    }
+
+    public function show($id) {
+        $buena_practica = BuenaPractica::find($id);
+        return response()->json(array(
+            'data' => $buena_practica
+        ), 200);
     }
 }

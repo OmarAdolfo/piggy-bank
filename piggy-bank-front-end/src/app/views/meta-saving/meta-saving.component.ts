@@ -67,7 +67,6 @@ export class MetaSavingComponent implements OnInit {
     const ingresos = this.ingresos.find(yearlySaving => yearlySaving.anno === anno);
     const totalGastos = gastos ? this.pagos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
     const totalIngresos = ingresos ? this.ingresos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
-    console.log(totalIngresos - totalGastos);
     return cantidad <= (totalIngresos - totalGastos);
   }
 
@@ -99,7 +98,7 @@ export class MetaSavingComponent implements OnInit {
   confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete(id);

@@ -17,11 +17,14 @@ export class TypeExpenseService {
     this.url = API.url + 'tipos-gastos';
   }
 
-  get(valor?: string, sortable?: string, orderBy?: number): Observable<TypeExpense[]> {
+  get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<TypeExpense[]> {
     let params: string[] = [];
     let query = '';
-    if (valor) {
-      params.push('valor=' + valor);
+    if (form.valor) {
+      params.push('valor=' + form.valor);
+    }
+    if (form.descripcion) {
+      params.push('descripcion=' + form.descripcion);
     }
     if (sortable) {
       params.push('sortable=' + sortable);
@@ -29,7 +32,10 @@ export class TypeExpenseService {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
     }
-    if (params) {
+    if (page) {
+      params.push('page=' + page);
+    }
+    if (params.length > 0) {
       query = '?' + params.join('&');
     }
     return this.http.get<TypeExpense[]>(this.url + query);
@@ -41,6 +47,18 @@ export class TypeExpenseService {
 
   add(typeExpense: TypeExpense): Observable<Response> {
     return this.http.post<Response>(this.url, typeExpense);
+  }
+
+  update(typeExpense: TypeExpense): Observable<Response> {
+    return this.http.put<Response>(this.url + '/' + typeExpense.id, typeExpense);
+  }
+
+  delete(id: number): Observable<Response> {
+    return this.http.delete<Response>(this.url + '/' + id);
+  }
+
+  find(id: number) {
+    return this.http.get<Response>(this.url + '/' + id);
   }
 
 }

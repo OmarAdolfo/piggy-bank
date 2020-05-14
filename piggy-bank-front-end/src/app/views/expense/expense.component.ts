@@ -20,6 +20,7 @@ export class ExpenseComponent implements OnInit {
   cols: any[];
   roles: any[];
   typesExpense: TypeExpense[] = [];
+  totalRecords: number;
 
   constructor(
     private expenseService: ExpenseService,
@@ -64,25 +65,27 @@ export class ExpenseComponent implements OnInit {
     this.router.navigate(['/home/expenses/new']);
   }
 
-  search(sortable?: string, orderBy?: number) {
-    this.expenseService.get(this.form.value, sortable, orderBy).subscribe(
+  search(sortField?: string, sortOrder?: number, page?: number) {
+    this.expenseService.get(this.form.value, sortField, sortOrder, page).subscribe(
       (response: any) => {
         const array: Expense[] = response.data.data;
         this.expenses = array;
+        this.totalRecords = response.data.total;
       }
     );
   }
 
   customSort(eve: LazyLoadEvent) {
-    const sortable = eve.sortField;
-    const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const sortField = eve.sortField;
+    const sortOrder = eve.sortOrder;
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortField, sortOrder, page);
   }
 
   confirm(id: number) {
     this.confirmationService.confirm({
       message: '¿Estás seguro de que deseas borrar?',
-      header: 'Confirmation',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delete(id);

@@ -55,7 +55,7 @@ const routes: Routes = [
         }
       },
       {
-        path: "type-saving",
+        path: "type-profit",
         canActivate: [AuthenticationGuard],
         loadChildren: () =>
           import("./views/type-profit/type-profit.module").then(

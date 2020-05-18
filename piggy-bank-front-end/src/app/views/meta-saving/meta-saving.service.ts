@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Observable } from 'rxjs/internal/Observable';
 import { MetaSaving } from 'src/app/shared/models/meta-saving';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,8 @@ export class MetaSavingService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'meta-ahorros';
-    this.urlYearlySaving = API.url + 'ahorros-anuales';
+    this.url = environment.url + 'meta-ahorros';
+    this.urlYearlySaving = environment.url + 'ahorros-anuales';
   }
 
   get(form: any, sortable?: string, orderBy?: number): Observable<MetaSaving[]> {

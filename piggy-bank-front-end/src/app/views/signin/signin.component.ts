@@ -61,8 +61,8 @@ export class SigninComponent implements OnInit {
         this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });
         this.router.navigate(['login']);
       },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     )
   }

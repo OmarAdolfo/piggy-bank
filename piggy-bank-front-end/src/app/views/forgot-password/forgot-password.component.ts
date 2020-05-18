@@ -55,7 +55,7 @@ export class ForgotPasswordComponent implements OnInit {
         this.isEmailSent = true;
       },
       error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
       }
     );
   }
@@ -65,11 +65,11 @@ export class ForgotPasswordComponent implements OnInit {
     resetPassword.email = this.sendTokenEmailForm.get('email').value;
     this.forgotPasswordService.resetPassword(resetPassword).subscribe(
       (response: any) => {
-        this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });
+        this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response.message });
         this.router.navigate(['login']);
       },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
   }

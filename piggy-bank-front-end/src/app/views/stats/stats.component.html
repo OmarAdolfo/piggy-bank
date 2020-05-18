@@ -37,10 +37,14 @@
                     Gastos
                 </div>
                 <div class="card-body">
-                    <p-chart type="doughnut" [data]="data3" width="300" height="300" [options]="options"></p-chart>
+                    <p-chart *ngIf="data3.labels.length > 0; else noExpenses" type="doughnut" [data]="data3" width="300" height="300"
+                        [options]="options"></p-chart>
+                    <ng-template #noExpenses>
+                        No existen gastos para generar estadísticas
+                    </ng-template>
                 </div>
             </div>
         </div>
     </div>
-    
+
 </div>

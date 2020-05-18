@@ -6,7 +6,7 @@
     </div>
     <hr>
 
-    <div class="row" *ngIf="!user">
+    <div class="row" *ngIf="!user && !loading">
         <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
     </div>
 
@@ -28,6 +28,9 @@
                                     <div *ngIf="form.controls.nombre.errors.required">
                                         El nombre es obligatorio
                                     </div>
+                                    <div *ngIf="form.controls.nombre.errors.whitespace">
+                                        El nombre no puede ser vacío
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 form-group">
@@ -38,6 +41,9 @@
                                     class="alert alert-danger mt-1">
                                     <div *ngIf="form.controls.apellidos.errors.required">
                                         Los apellidos son obligatorios
+                                    </div>
+                                    <div *ngIf="form.controls.nombre.errors.whitespace">
+                                        Los apellidos no pueden ser vacíos
                                     </div>
                                 </div>
                             </div>
@@ -70,14 +76,17 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
                         <div class="row mt-1">
                             <div class="col-12 text-right mt-2">
-                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                                    class="btn btn-primary mr-1">
-                                    <span *ngIf="newUser"> <i class="fas fa-save" aria-hidden="true"></i>
+                                <button [disabled]="form.pristine || form.invalid || loading" type="button"
+                                    (click)="save()" class="btn btn-primary mr-1">
+                                    <span *ngIf="newUser"> <i class="fas"
+                                            [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
+                                            aria-hidden="true"></i>
                                         Guardar</span>
-                                    <span *ngIf="!newUser"> <i class="fas fa-edit" aria-hidden="true"></i>
+                                    <span *ngIf="!newUser"> <i class="fas"
+                                            [ngClass]="{'fa-edit': !loading, 'fa-spinner fa-spin': loading}"
+                                            aria-hidden="true"></i>
                                         Editar</span>
                                 </button>
                             </div>

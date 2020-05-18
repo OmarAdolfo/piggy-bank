@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Template } from 'src/app/shared/models/template';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +16,9 @@ export class TemplateService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'plantillas';
-    this.urlTemplateActual = API.url + 'plantilla-actual';
-    this.urlclone = API.url + 'plantilla-clone';
+    this.url = environment.url + 'plantillas';
+    this.urlTemplateActual = environment.url + 'plantilla-actual';
+    this.urlclone = environment.url + 'plantilla-clone';
   }
 
   getTemplateActual(): Observable<Response> {

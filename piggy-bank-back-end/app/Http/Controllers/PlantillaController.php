@@ -71,41 +71,56 @@ class PlantillaController extends Controller
         }
         $plantillas_bd = Plantilla::where('anno', '=', $request['newAnno'])->where('mes', '=', $request['newMes'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($plantillas_bd)) {
+            $postArray = $request->all();
+            $curMonth = date('m');
+            if ($postArray['newAnno'] > 2020 || ($postArray['newAnno'] == 2020) && ($postArray['newMes'] - $curMonth) > 1) {
+                return response()->json([
+                    'message' => 'No es posible crear plantillas posteriores al mes siguiente'
+                ], 500);
+            }
             $plantilla_copy = Plantilla::where('anno', '=', $request['anno'])->where('mes', '=', $request['mes'])->first();
-            $new_plantilla = new Plantilla();
-            $new_plantilla->anno = $request['newAnno'];
-            $new_plantilla->mes = $request['newMes'];
-            $new_plantilla->id_usuario = $plantilla_copy->id_usuario;
-            $new_plantilla->save();
-
-            foreach ($plantilla_copy->pagos as $pago){
-                $newPago = $pago->replicate();
-                $newPago->id = null;
-                $newPago->plantilla_id = $new_plantilla->id;
-                $newPago->fecha = new DateTime();
-                $newPago->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
-                $new_plantilla->pagos()->save($newPago);
+            if (is_null($plantilla_copy)) {
+                return response()->json([
+                    'message' => 'La plantilla que debe ser copiada no existe'
+                ], 500);
+            } else {
+                $new_plantilla = new Plantilla();
+                $new_plantilla->anno = $request['newAnno'];
+                $new_plantilla->mes = $request['newMes'];
+                $new_plantilla->id_usuario = $plantilla_copy->id_usuario;
+                $new_plantilla->save();
+    
+                foreach ($plantilla_copy->pagos as $pago){
+                    $newPago = $pago->replicate();
+                    $newPago->id = null;
+                    $newPago->plantilla_id = $new_plantilla->id;
+                    $newPago->fecha = new DateTime();
+                    $newPago->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
+                    $new_plantilla->pagos()->save($newPago);
+                }
+    
+                foreach ($plantilla_copy->ingresos as $ingreso){
+                    $newIngreso = $ingreso->replicate();
+                    $newIngreso->id = null;
+                    $newIngreso->plantilla_id = $new_plantilla->id;
+                    $newIngreso->fecha = new DateTime();
+                    $newIngreso->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
+                    $new_plantilla->ingresos()->save($newIngreso);
+                }
+    
+                $years = DB::table('plantillas')
+                ->select('anno')
+                ->distinct()
+                ->where('id_usuario', '=', JWTAuth::user()->id)
+                ->orderBy('anno', 'DESC')
+                ->get();
+                
+                return response()->json([
+                    'message' => 'Se ha creado una nueva plantilla',
+                    'data' => $new_plantilla
+                ], 200);
             }
 
-            foreach ($plantilla_copy->ingresos as $ingreso){
-                $newIngreso = $ingreso->replicate();
-                $newIngreso->id = null;
-                $newIngreso->plantilla_id = $new_plantilla->id;
-                $newIngreso->fecha = new DateTime();
-                $newIngreso->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
-                $new_plantilla->ingresos()->save($newIngreso);
-            }
-
-            $years = DB::table('plantillas')
-            ->select('anno')
-            ->distinct()
-            ->where('id_usuario', '=', JWTAuth::user()->id)
-            ->get();
-            
-            return response()->json([
-                'message' => 'Se ha creado una nueva plantilla',
-                'data' => $new_plantilla
-            ], 200);
         } else {
             return response()->json([
                 'message' => 'La plantilla ya existe'
@@ -120,7 +135,7 @@ class PlantillaController extends Controller
             ->select('anno')
             ->distinct()
             ->where('id_usuario', '=', JWTAuth::user()->id)
-            ->orderBy('anno', 'ASC')
+            ->orderBy('anno', 'DESC')
             ->get();
 
         return response()->json(array(
@@ -146,6 +161,12 @@ class PlantillaController extends Controller
             return response()->json(['error'=>$validator->errors()]);
         }
         $postArray = $request->all();
+        $curMonth = date('m');
+        if ($postArray['anno'] > 2020 || ($postArray['anno'] == 2020) && ($postArray['mes'] - $curMonth) > 1) {
+            return response()->json([
+                'message' => 'No es posible crear plantillas posteriores al mes siguiente'
+            ], 500);
+        }
         $plantillas_bd = Plantilla::where('anno', '=', $postArray['anno'])->where('mes', '=', $postArray['mes'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($plantillas_bd)) {
             $plantilla = new Plantilla();
@@ -157,6 +178,7 @@ class PlantillaController extends Controller
             ->select('anno')
             ->distinct()
             ->where('id_usuario', '=', JWTAuth::user()->id)
+            ->orderBy('anno', 'DESC')
             ->get();
             return response()->json([
                 'message' => 'Se ha creado una nueva plantilla',

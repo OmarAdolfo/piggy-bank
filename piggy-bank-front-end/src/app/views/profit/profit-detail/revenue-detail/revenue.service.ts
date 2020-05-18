@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Revenue } from 'src/app/shared/models/revenue';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class RevenueService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'ingresos';
+    this.url = environment.url + 'ingresos';
   }
 
   find(id: number) {

@@ -18,6 +18,7 @@ export class GoodPracticeComponent implements OnInit {
   goodPractices: GoodPractice[];
   cols: any[];
   totalRecords: number;
+  loading: boolean;
 
   constructor(
     private goodPracticeService: GoodPracticeService,
@@ -52,11 +53,16 @@ export class GoodPracticeComponent implements OnInit {
   }
 
   search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
     this.goodPracticeService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: GoodPractice[] = response.data.data;
         this.goodPractices = array;
         this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -81,12 +87,12 @@ export class GoodPracticeComponent implements OnInit {
 
   delete(id: number) {
     this.goodPracticeService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.goodPractices = this.goodPractices.filter(goodPractice => goodPractice.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado la buena práctica' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
-      () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar la buena práctica' })
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

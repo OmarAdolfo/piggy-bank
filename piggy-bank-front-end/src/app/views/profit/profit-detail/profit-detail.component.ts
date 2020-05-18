@@ -59,8 +59,8 @@ export class ProfitDetailComponent implements OnInit {
 
   getTypesProfit() {
     this.typeProfitService.findAll().subscribe(
-      (data: any) => {
-        this.typesProfit = data.tipos_ganancia;
+      (response: any) => {
+        this.typesProfit = response.data;
       }
     );
   }

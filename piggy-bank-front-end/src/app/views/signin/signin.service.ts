@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { API } from 'src/app/shared/config/api';
 import { SignIn } from 'src/app/shared/models/signin';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpBackend } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +13,8 @@ export class SigninService {
 
   constructor(
     private http: HttpClient,
-    private httpBackend: HttpBackend
   ) {
-    this.url = API.url + 'register';
-    this.http = new HttpClient(this.httpBackend);
+    this.url = environment.url + 'register';
   }
 
   signIn(signIn: SignIn): Observable<Response> {

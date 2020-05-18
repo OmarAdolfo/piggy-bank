@@ -124,11 +124,13 @@ class GananciaController extends Controller
         $ganancia_bd = Ganancia::find($id);
         if (!is_null($ganancia_bd)) {
             $ganancia_bd->delete();
-            return response()->json('Se ha eliminado la ganancia', 200);
+            return response()->json([
+                'message' => 'Se ha eliminado la ganancia'
+            ], 200);
         } else {
             return response()->json([
-                'error' => 'La ganancia no existe'
-            ]);
+                'message' => 'La ganancia no existe'
+            ], 500);
         }
     }
 }

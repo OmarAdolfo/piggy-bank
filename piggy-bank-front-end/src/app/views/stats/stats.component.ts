@@ -107,7 +107,7 @@ export class StatsComponent implements OnInit {
       backgroundColor.push(color);
       hoverBackgroundColor.push(color);
     }
-    
+
     this.data3 = {
       labels: labels,
       datasets: [
@@ -115,7 +115,8 @@ export class StatsComponent implements OnInit {
           data: amounts,
           backgroundColor: backgroundColor,
           hoverBackgroundColor: hoverBackgroundColor
-        }]
+        }
+      ]
     };
   }
 

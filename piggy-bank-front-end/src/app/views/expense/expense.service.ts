@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Expense } from 'src/app/shared/models/expense';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ExpenseService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'gastos';
+    this.url = environment.url + 'gastos';
   }
 
   get(form: any, sortField?: string, sortOrder?: number, page?: number): Observable<Expense[]> {

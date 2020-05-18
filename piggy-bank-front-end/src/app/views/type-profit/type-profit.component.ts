@@ -18,6 +18,7 @@ export class TypeProfitComponent implements OnInit {
   typesProfit: TypeProfit[];
   cols: any[];
   totalRecords: number;
+  loading: boolean;
 
   constructor(
     private typeProfitService: TypeProfitService,
@@ -52,11 +53,16 @@ export class TypeProfitComponent implements OnInit {
   }
 
   search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
     this.typeProfitService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: TypeProfit[] = response.data.data;
         this.typesProfit = array;
         this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -81,12 +87,12 @@ export class TypeProfitComponent implements OnInit {
 
   delete(id: number) {
     this.typeProfitService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.typesProfit = this.typesProfit.filter(typeProfit => typeProfit.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el tipo de ganancia' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
-      () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el tipo de ganancia' })
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

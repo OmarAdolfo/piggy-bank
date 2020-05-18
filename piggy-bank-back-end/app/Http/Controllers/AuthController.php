@@ -25,7 +25,7 @@ class AuthController extends Controller
             'email' => 'required|email'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 500);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all(); 
         $user_bd = User::where('email', '=', $postArray['email'])->first();
@@ -33,9 +33,9 @@ class AuthController extends Controller
             $postArray['password'] = Hash::make($postArray['password']); 
             $postArray['rol'] = 'USER';
             User::create($postArray);
-            return response()->json('Se ha registrado correctamente el usuario', 200); 
+            return response()->json(['message' =>'Se ha registrado correctamente el usuario'], 200); 
         } else {
-            return response()->json('Usuario duplicado', 500);
+            return response()->json(['message' => 'Usuario duplicado'], 500);
         }
     }
 
@@ -44,10 +44,10 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json('Credenciales inválidas', 401);
+                return response()->json(['message' =>'Credenciales inválidas'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json('El token no se ha podio crear', 500);
+            return response()->json(['message' => 'El token no se ha podio crear'], 500);
         }
         return response()->json(compact('token'), 200);
     }
@@ -58,7 +58,7 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 500);
+            return response()->json(['message'=>$validator->errors()], 500);
         }
         $user = JWTAuth::user();
         $user->password = Hash::make($request['password']); 
@@ -66,10 +66,10 @@ class AuthController extends Controller
         JWTAuth::parseToken()->invalidate();
         try {
             if (! $token = JWTAuth::fromUser($user)) {
-                return response()->json('Credenciales inválidas', 401);
+                return response()->json(['message' => 'Credenciales inválidas'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json('El token no se ha podio crear', 500);
+            return response()->json(['message' => 'El token no se ha podio crear'], 500);
         }
         return response()->json($token, 200);
     }
@@ -109,9 +109,9 @@ class AuthController extends Controller
                 $tokenData->save();
             }
             Mail::to($request['email'])->send(new SendMail($tokenData->token));
-            return response()->json('Se ha enviado el correo', 200);
+            return response()->json(['message' => 'Se ha enviado el correo'], 200);
         } else {
-            return response()->json('Usuario con este correo no existe', 500);
+            return response()->json(['message' => 'Usuario con este correo no existe'], 500);
         }
     }
 
@@ -123,24 +123,24 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 500);
+            return response()->json(['message' => $validator->errors()], 500);
         }
 
         $tokenData = PasswordReset::where('token', '=', $request['token'])->first();
         if (!$tokenData) { 
-            return response()->json('El token es inválido', 500);
+            return response()->json(['message' => 'El token es inválido'], 500);
         }
 
         $user = User::where('email', '=', $tokenData->email)->first();
         if (!$user) {
-            return response()->json('El usuario no existe', 500);
+            return response()->json(['message' => 'El usuario no existe'], 500);
         }
 
         $user->password = \Hash::make($request->password);
         $user->save();
 
         PasswordReset::where('email', $user->email)->delete();
-        return response()->json('Se ha reseteado la contraseña', 200);
+        return response()->json(['message' => 'Se ha reseteado la contraseña'], 200);
     }
     
 }

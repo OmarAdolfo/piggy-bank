@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GoodPractice } from 'src/app/shared/models/good-practice';
 import { Observable } from 'rxjs/internal/Observable';
-import { API } from 'src/app/shared/config/api';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class GoodPracticeService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'buenas-practicas';
+    this.url = environment.url + 'buenas-practicas';
   }
 
   get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<GoodPractice[]> {

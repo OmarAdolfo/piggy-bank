@@ -5,37 +5,61 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-12">
-            <form [formGroup]="form" *ngIf="payment">
-                <div class="row">
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="cantidad">Cantidad</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
-                            placeholder="XX.XX" appTwoDigitDecimaNumber>
-                    </div>
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="fecha">Fecha del pago</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <p-calendar formControlName="fecha" [locale]="es" dateFormat="yy-mm-dd" [dataType]="'string'"></p-calendar>
-                    </div>
+
+    <div class="row" *ngIf="!payment">
+        <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
+    </div>
+
+    <div class="card" *ngIf="payment">
+        <div class="card-header bg-primary text-white">
+            Diseñador pago
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
+                                    placeholder="XX.XX" appTwoDigitDecimaNumber>
+                                <div *ngIf="form.controls.cantidad.invalid && (form.controls.cantidad.dirty || form.controls.cantidad.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.cantidad.errors.required">
+                                        La cantidad es obligatoria
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="fecha">Fecha del pago</label>
+                                <p-calendar formControlName="fecha" [locale]="es" dateFormat="yy-mm-dd"
+                                    [dataType]="'string'">
+                                </p-calendar>
+                                <div *ngIf="form.controls.fecha.invalid && (form.controls.fecha.dirty || form.controls.fecha.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.fecha.errors.required">
+                                        La fecha es obligatoria
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12 text-right mt-2">
+                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                                    class="btn btn-primary mr-1">
+                                    <span *ngIf="newPayment"> <i class="fas fa-plus" aria-hidden="true"></i>
+                                        Añadir</span>
+                                    <span *ngIf="!newPayment"> <i class="fas fa-edit" aria-hidden="true"></i>
+                                        Editar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <hr>
-                <div class="row mt-1">
-                    <div class="col-12 text-right mt-2">
-                        <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                            class="btn btn-primary mr-1">
-                            <span *ngIf="newPayment"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
-                            <span *ngIf="!newPayment"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
+
     <div class="row mt-3">
         <div class="col-12 text-right">
             <button type="button" (click)="back()" class="btn btn-secondary mr-1">
@@ -43,6 +67,7 @@
             </button>
         </div>
     </div>
+
 </div>
 
 <p-toast [style]="{marginTop: '80px'}"></p-toast>

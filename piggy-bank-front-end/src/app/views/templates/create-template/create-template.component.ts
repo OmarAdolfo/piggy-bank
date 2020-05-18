@@ -72,7 +72,7 @@ export class CreateTemplateComponent implements OnInit {
         this.secondaryMonthlyExpenses = secondaryMonthlyExpenses.data;
         this.monthlyProfits = findAllMonthlyProfits.data;
         this.resources = this.monthlyProfits;
-        this.goodPractices = goodPractices.buenas_practicas;
+        this.goodPractices = goodPractices.data;
         this.template = template.data;
         this.calculate();
       }
@@ -153,6 +153,9 @@ export class CreateTemplateComponent implements OnInit {
       this.templateService.update(this.template).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha actualizado la plantilla' });
+        },
+        response => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido actualizar la plantilla' });
         }
       );
     }

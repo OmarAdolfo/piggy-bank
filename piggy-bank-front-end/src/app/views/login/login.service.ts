@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpBackend } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { API } from 'src/app/shared/config/api';
 import { Login } from 'src/app/shared/models/login';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,9 @@ export class LoginService {
   public url: string;
 
   constructor(
-    private http: HttpClient,
-    private httpBackend: HttpBackend
+    private http: HttpClient
   ) {
-    this.http = new HttpClient(this.httpBackend);
-    this.url = API.url + 'login';
+    this.url = environment.url + 'login';
   }
 
   login(login: Login): Observable<Response> {

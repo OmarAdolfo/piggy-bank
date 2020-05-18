@@ -1,77 +1,97 @@
-<div class="row">
-    <div class="col-12">
-        <h1>Objetivos</h1>
+<div class="wrapper">
+    <div class="row">
+        <div class="col-12">
+            <h1>Objetivos</h1>
+        </div>
     </div>
-</div>
-<hr>
+    <hr>
 
-<p-accordion>
-    <p-accordionTab header="Búsqueda">
-        <form [formGroup]="form">
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-white">
+            Buscador de objetivos
+        </div>
+        <div class="card-body">
             <div class="row">
-                <div class="col-6 col-md-3">
-                    <label for="anno">Año</label>
-                </div>
-                <div class="col-6 col-md-3">
-                    <input type="text" class="form-control form-control-user" id="anno" formControlName="anno">
+                <div class="col-12">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="anno">Año</label>
+                                <input type="text" class="form-control form-control-user" id="anno"
+                                    formControlName="anno">
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12 text-right mt-2">
+                                <button type="button" (click)="search()" class="btn btn-primary mr-1">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    <span> Buscar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="row mt-1">
-                <div class="col-12 text-right mt-2">
-                    <button type="button" (click)="search()" class="btn btn-primary mr-1">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        <span> Buscar</span>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </p-accordionTab>
-</p-accordion>
-
-<div class="row mt-2" *ngIf="pagos && ingresos">
-    <div class="col-12">
-        <p-table [columns]="cols" [value]="metasSaving" [paginator]="true" [rows]="10" [responsive]="true"
-            (onLazyLoad)="customSort($event)" [lazy]="true">
-            <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                        {{col.header}}
-                        <p-sortIcon [field]="col.field"></p-sortIcon>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td>
-                        {{rowData['anno']}}
-                    </td>
-                    <td>
-                        {{rowData['cantidad']}}
-                    </td>
-                    <td>
-                        {{getSavings(rowData['anno'])}}
-                    </td>
-                    <td>
-                        <span *ngIf="getStatus(rowData['cantidad'], rowData['anno'])" [class]="'customer-badge status-qualified'">SUPERADO</span>
-                        <span *ngIf="!getStatus(rowData['cantidad'], rowData['anno'])" [class]="'customer-badge status-unqualified'">NO SUPERADO</span>
-                    </td>
-                    <td>
-                        <button type="button" (click)="onRowSelect(rowData['id'])" class="btn btn-secondary mr-1">
-                            <span><i class="fas fa-edit" aria-hidden="true"></i></span>
-                        </button>
-                        <button type="button" (click)="confirm(rowData['id'])" class="btn btn-secondary mr-1">
-                            <span><i class="fas fa-trash" aria-hidden="true"></i></span>
-                        </button>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary" let-rowData>
-                <div style="text-align:left">
-                    <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
-                </div>
-            </ng-template>
-        </p-table>
+        </div>
     </div>
+
+    <div class="card mt-3">
+        <div class="card-header bg-primary text-white">
+            Listado de objetivos
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <p-table [columns]="cols" [value]="metasSaving" [paginator]="true" [rows]="10" [responsive]="true"
+                        (onLazyLoad)="customSort($event)" [lazy]="true">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td>
+                                    {{rowData['anno']}}
+                                </td>
+                                <td>
+                                    {{rowData['cantidad']}}
+                                </td>
+                                <td>
+                                    {{getSavings(rowData['anno'])}}
+                                </td>
+                                <td>
+                                    <span *ngIf="getStatus(rowData['cantidad'], rowData['anno'])"
+                                        [class]="'customer-badge status-qualified'">SUPERADO</span>
+                                    <span *ngIf="!getStatus(rowData['cantidad'], rowData['anno'])"
+                                        [class]="'customer-badge status-unqualified'">NO SUPERADO</span>
+                                </td>
+                                <td>
+                                    <button type="button" (click)="onRowSelect(rowData['id'])"
+                                        class="btn btn-secondary mr-1">
+                                        <span><i class="fas fa-edit" aria-hidden="true"></i></span>
+                                    </button>
+                                    <button type="button" (click)="confirm(rowData['id'])"
+                                        class="btn btn-secondary mr-1">
+                                        <span><i class="fas fa-trash" aria-hidden="true"></i></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="summary" let-rowData>
+                            <div style="text-align:left">
+                                <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
+                            </div>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <p-toast [style]="{marginTop: '80px'}"></p-toast>

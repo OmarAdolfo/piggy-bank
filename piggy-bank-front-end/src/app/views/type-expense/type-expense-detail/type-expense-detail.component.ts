@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MessageService } from 'primeng/api';
+import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.validator';
 
 @Component({
   selector: 'app-type-expense-detail',
@@ -17,6 +18,7 @@ export class TypeExpenseDetailComponent implements OnInit {
   typeExpense: TypeExpense;
   newTypeExpense: boolean;
   form: FormGroup;
+  loading: boolean;
 
   constructor(
     private typeExpenseService: TypeExpenseService,
@@ -32,10 +34,16 @@ export class TypeExpenseDetailComponent implements OnInit {
       this.typeExpense = new TypeExpense();
       this.buildForm();
     } else {
+      Promise.resolve().then(() => this.loading = true);
       this.typeExpenseService.find(this.activatedRoute.snapshot.params.id).subscribe(
         (response: any) => {
           this.typeExpense = response.data;
+          this.loading = false;
           this.buildForm();
+        },
+        response => {
+          this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       )
     }
@@ -43,21 +51,24 @@ export class TypeExpenseDetailComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      valor: new FormControl(this.typeExpense.valor, Validators.required),
-      descripcion: new FormControl(this.typeExpense.descripcion, Validators.required)
+      valor: new FormControl(this.typeExpense.valor, [Validators.required, noWhitespaceValidator]),
+      descripcion: new FormControl(this.typeExpense.descripcion, [Validators.required, noWhitespaceValidator])
     });
   }
 
   save() {
+    Promise.resolve().then(() => this.loading = true);
     if (this.typeExpense.id) {
       this.typeExpense.valor = this.form.get('valor').value;
       this.typeExpense.descripcion = this.form.get('descripcion').value;
       this.typeExpenseService.update(this.typeExpense).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
@@ -66,10 +77,12 @@ export class TypeExpenseDetailComponent implements OnInit {
       this.typeExpenseService.add(typeExpense).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
+          this.loading = false;
           this.back();
         },
         response => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
+          this.loading = false;
         }
       );
     }

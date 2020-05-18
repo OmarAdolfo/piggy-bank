@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Payment } from 'src/app/shared/models/payment';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class PaymentService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'pagos';
+    this.url = environment.url + 'pagos';
   }
 
   find(id: number) {

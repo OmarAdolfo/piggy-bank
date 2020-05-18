@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
   cols: any[];
   roles: any[];
   totalRecords: number;
+  loading: boolean;
 
   constructor(
     private userService: UserService,
@@ -60,11 +61,16 @@ export class UserComponent implements OnInit {
   }
 
   search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
     this.userService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: User[] = response.data.data;
         this.users = array;
         this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -89,12 +95,12 @@ export class UserComponent implements OnInit {
 
   delete(id: number) {
     this.userService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.users = this.users.filter(user => user.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el usuario' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
-      () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el usuario' })
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

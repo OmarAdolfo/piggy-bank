@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Observable } from 'rxjs/internal/Observable';
 import { TypeProfit } from 'src/app/shared/models/type-profit';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class TypeProfitService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'tipos-ganancias';
+    this.url = environment.url + 'tipos-ganancias';
   }
 
   get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<TypeProfit[]> {

@@ -46,8 +46,8 @@ export class ProfitComponent implements OnInit {
 
   getTypesProfit() {
     this.typeProfitService.findAll().subscribe(
-      (data: any) => {
-        this.typesProfit = data.tipos_gasto;
+      (response: any) => {
+        this.typesProfit = response.data;
       }
     );
   }
@@ -93,6 +93,9 @@ export class ProfitComponent implements OnInit {
     this.profitService.delete(id).subscribe(
       () => {
         this.profits = this.profits.filter((val, i) => i != id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
+      },
+      error => {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
       }
     );

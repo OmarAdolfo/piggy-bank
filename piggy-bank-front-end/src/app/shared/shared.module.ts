@@ -24,6 +24,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { TwoDigitDecimaNumberDirective } from './directives/decimal.directive';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   imports: [
@@ -46,12 +47,14 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     HomeComponent,
     SidebarComponent,
     TableComponent,
-    TwoDigitDecimaNumberDirective
+    TwoDigitDecimaNumberDirective,
+    LoaderComponent
   ],
   exports: [
     NavbarComponent,
     HomeComponent,
     TableComponent,
+    LoaderComponent,
     DropdownModule,
     CommonModule,
     ButtonModule,

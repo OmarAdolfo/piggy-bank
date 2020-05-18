@@ -12,6 +12,10 @@ export class TwoDigitDecimaNumberDirective {
     }
     @HostListener('keydown', ['$event'])
     onKeyDown(event: KeyboardEvent) {
+        if (event.key === '-') {
+            event.preventDefault();
+            return;
+        }
         if (this.specialKeys.indexOf(event.key) !== -1) {
             return;
         }

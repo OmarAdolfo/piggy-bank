@@ -65,8 +65,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.authenticationService.saveToken(response.token);
         this.router.navigate([this.authenticationService.getUrlNavigation()]);
       },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
   }

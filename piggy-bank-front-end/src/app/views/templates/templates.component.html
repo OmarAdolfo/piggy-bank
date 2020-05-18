@@ -127,8 +127,11 @@
                         </div>
                     </div>
                     <ng-template #noTemplates>
-                        <div class="alert alert-secondary" role="alert">
-                            No existen plantillas
+                        <div class="row">
+                            <div class="col-4 offset-4 form-group">
+                                <img src="assets/notfound.png" class="d-block mx-auto img-not-found"
+                                    alt="No existen resultados">
+                            </div>
                         </div>
                     </ng-template>
                 </div>
@@ -136,5 +139,5 @@
         </div>
     </div>
     <p-toast [style]="{marginTop: '80px'}"></p-toast>
-    <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+    <p-confirmDialog [style]="{width: '50vw'}" [acceptLabel]="'Sí'"></p-confirmDialog>
 </div>

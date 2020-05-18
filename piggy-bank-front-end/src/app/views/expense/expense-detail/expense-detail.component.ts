@@ -61,8 +61,8 @@ export class ExpenseDetailComponent implements OnInit {
 
   getTypesExpense() {
     this.typeExpenseService.findAll().subscribe(
-      (data: any) => {
-        this.typesExpense = data.tipos_gasto;
+      (response: any) => {
+        this.typesExpense = response.data;
       }
     );
   }

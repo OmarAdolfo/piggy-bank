@@ -5,37 +5,60 @@
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-12">
-            <form [formGroup]="form" *ngIf="metaSaving">
-                <div class="row">
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="anno">Año</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <input type="number" class="form-control form-control-user" id="anno" formControlName="anno">
-                    </div>
-                    <div class="col-6 col-md-3 text-center">
-                        <label for="cantidad">Cantidad</label>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
-                            placeholder="XX.XX" appTwoDigitDecimaNumber>
-                    </div>
+
+    <div class="row" *ngIf="!metaSaving">
+        <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
+    </div>
+
+    <div class="card" *ngIf="metaSaving">
+        <div class="card-header bg-primary text-white">
+            Diseñador objetivo
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="form">
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label for="anno">Año</label>
+                                <input type="number" class="form-control form-control-user" id="anno"
+                                    formControlName="anno">
+                                <div *ngIf="form.controls.anno.invalid && (form.controls.anno.dirty || form.controls.anno.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.anno.errors.required">
+                                        El año es obligatorio
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 form-group">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
+                                    placeholder="XX.XX" appTwoDigitDecimaNumber>
+                                <div *ngIf="form.controls.cantidad.invalid && (form.controls.cantidad.dirty || form.controls.cantidad.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="form.controls.cantidad.errors.required">
+                                        La cantidad es obligatoria
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-12 text-right mt-2">
+                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
+                                    class="btn btn-primary mr-1">
+                                    <span *ngIf="newMetaSaving"> <i class="fas fa-plus" aria-hidden="true"></i>
+                                        Añadir</span>
+                                    <span *ngIf="!newMetaSaving"> <i class="fas fa-edit" aria-hidden="true"></i>
+                                        Editar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <hr>
-                <div class="row mt-1">
-                    <div class="col-12 text-right mt-2">
-                        <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                            class="btn btn-primary mr-1">
-                            <span *ngIf="newMetaSaving"> <i class="fas fa-plus" aria-hidden="true"></i> Añadir</span>
-                            <span *ngIf="!newMetaSaving"> <i class="fas fa-edit" aria-hidden="true"></i> Editar</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
+
     <div class="row mt-3">
         <div class="col-12 text-right">
             <button type="button" (click)="back()" class="btn btn-secondary mr-1">

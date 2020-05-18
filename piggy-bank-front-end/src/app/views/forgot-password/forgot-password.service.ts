@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpBackend } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { ResetPassword } from 'src/app/shared/models/resetPassword';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,9 @@ export class ForgotPasswordService {
 
   constructor(
     private http: HttpClient,
-    private httpBackend: HttpBackend
   ) {
-    this.http = new HttpClient(this.httpBackend);
-    this.getTokenByEmailUrl = API.url + 'get-token-email?email=';
-    this.resetPasswordUrl = API.url + 'reset-password';
+    this.getTokenByEmailUrl = environment.url + 'get-token-email?email=';
+    this.resetPasswordUrl = environment.url + 'reset-password';
   }
 
   getTokenByEmail(email: string): Observable<Response> {

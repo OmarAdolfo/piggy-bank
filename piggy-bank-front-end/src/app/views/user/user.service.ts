@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from 'src/app/shared/models/user';
-import { API } from 'src/app/shared/config/api';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class UserService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'usuarios';
+    this.url = environment.url + 'usuarios';
   }
 
   get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<User[]> {

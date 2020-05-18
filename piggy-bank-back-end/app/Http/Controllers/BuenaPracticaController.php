@@ -15,7 +15,7 @@ class BuenaPracticaController extends Controller
     public function findAll() {
         $buenas_practicas = BuenaPractica::all();
         return response()->json(array(
-            'buenas_practicas' => $buenas_practicas
+            'data' => $buenas_practicas
         ), 200);
     }
 
@@ -69,7 +69,7 @@ class BuenaPracticaController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'error' => 'La buena práctica ya existe'
+                'message' => 'La buena práctica ya existe'
             ]);
         }
     }
@@ -81,7 +81,7 @@ class BuenaPracticaController extends Controller
             'porcentaje' => 'required|min:1|max:100'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()], 500);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all();
         $buena_practica_bd = BuenaPractica::where('id', '=', $id)->first();
@@ -92,15 +92,15 @@ class BuenaPracticaController extends Controller
                 $buena_practica_bd->porcentaje = $postArray['porcentaje'];
                 $buena_practica_bd->id_usuario = JWTAuth::user()->id;
                 $buena_practica_bd->save();
-                return response()->json('Se ha actualizado la buena práctica', 200);
+                return response()->json(['message' => 'Se ha actualizado la buena práctica'], 200);
             } else {
                 return response()->json([
-                    'error' => 'La buena práctica no existe'
+                    'message' => 'La buena práctica no existe'
                 ], 500);
             }
         } else {
             return response()->json([
-                'error' => 'La buena práctica no existe'
+                'message' => 'La buena práctica no existe'
             ], 500);
         }
     }
@@ -109,18 +109,24 @@ class BuenaPracticaController extends Controller
         $buena_practica_bd = BuenaPractica::find($id);
         if (!is_null($buena_practica_bd)) {
             $buena_practica_bd->delete();
-            return response()->json('Se ha eliminado la buena práctica', 200);
+            return response()->json(['message' => 'Se ha eliminado la buena práctica'], 200);
         } else {
             return response()->json([
-                'error' => 'La buena práctica no existe'
+                'message' => 'La buena práctica no existe'
             ]);
         }
     }
 
     public function show($id) {
         $buena_practica = BuenaPractica::find($id);
-        return response()->json(array(
-            'data' => $buena_practica
-        ), 200);
+        if (!is_null($buena_practica)) {
+            return response()->json(array(
+                'data' => $buena_practica
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La buena práctica no existe'
+            ], 500);
+        } 
     }
 }

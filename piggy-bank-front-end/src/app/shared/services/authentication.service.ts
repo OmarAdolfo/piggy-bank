@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { API } from '../config/api';
 import { Observable } from 'rxjs/internal/Observable';
 import { Role } from '../models/role';
 import * as jwt_decode from "jwt-decode";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -20,8 +20,8 @@ export class AuthenticationService {
         private http: HttpClient,
         private jwtHelper: JwtHelperService
     ) {
-        this.userUrl = API.url + 'user';
-        this.changePasswordUrl = API.url + 'change-password';
+        this.userUrl = environment.url + 'user';
+        this.changePasswordUrl = environment.url + 'change-password';
         if (this.isLogged()) {
             this.rol = jwt_decode(this.getToken()).rol;
             this.sub = jwt_decode(this.getToken()).sub;

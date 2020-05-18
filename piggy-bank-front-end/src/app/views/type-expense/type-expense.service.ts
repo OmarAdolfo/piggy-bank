@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Observable } from 'rxjs/internal/Observable';
 import { TypeExpense } from 'src/app/shared/models/type-expense';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class TypeExpenseService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'tipos-gastos';
+    this.url = environment.url + 'tipos-gastos';
   }
 
   get(form?: any, sortable?: string, orderBy?: number, page?: number): Observable<TypeExpense[]> {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient } from '@angular/common/http';
-import { API } from 'src/app/shared/config/api';
 import { Profit } from 'src/app/shared/models/profit';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ProfitService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = API.url + 'ganancias';
+    this.url = environment.url + 'ganancias';
   }
 
   findAllMonthlyProfits(): Observable<any> {

@@ -50,7 +50,7 @@ class TipoGananciaController extends Controller
             'valor' => 'required',
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['message '=> $validator->errors()], 500);
         }
         $postArray = $request->all();
         $tipos_ganancia_bd = TipoGanancia::where('valor', '=', $postArray['valor'])->first();
@@ -67,7 +67,7 @@ class TipoGananciaController extends Controller
         } else {
             return response()->json([
                 'error' => 'El tipo de ganancia ya existe'
-            ]);
+            ], 500);
         }
     }
 
@@ -78,7 +78,7 @@ class TipoGananciaController extends Controller
             'descripcion' => 'required',
         ]);
         if ($validator->fails()) { 
-            return response()->json(['message'=>$validator->errors()], 500);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all();
         $tipo_ganancia_bd = TipoGanancia::where('id', '=', $id)->first();
@@ -105,7 +105,7 @@ class TipoGananciaController extends Controller
         $tipo_ganancia = TipoGanancia::find($id);
         if (!is_null($tipo_ganancia)) {
             $tipo_ganancia->delete();
-            return response()->json('Se ha eliminado el tipo de ganancia', 200);
+            return response()->json(['message' => 'Se ha eliminado el tipo de ganancia'], 200);
         } else {
             return response()->json([
                 'message' => 'El tipo de ganancia no existe'
@@ -115,9 +115,15 @@ class TipoGananciaController extends Controller
 
     public function show($id) {
         $tipo_ganancia = TipoGanancia::find($id);
-        return response()->json(array(
-            'data' => $tipo_ganancia
-        ), 200);
+        if (!is_null($tipo_ganancia)) {
+            return response()->json(array(
+                'data' => $tipo_ganancia
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'El tipo de ganancia no existe'
+            ], 500);
+        }
     }
 
 }

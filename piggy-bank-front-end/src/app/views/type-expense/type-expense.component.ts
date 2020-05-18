@@ -18,6 +18,7 @@ export class TypeExpenseComponent implements OnInit {
   typesExpense: TypeExpense[];
   cols: any[];
   totalRecords: number;
+  loading = false;
 
   constructor(
     private typeExpenseService: TypeExpenseService,
@@ -52,11 +53,16 @@ export class TypeExpenseComponent implements OnInit {
   }
 
   search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
     this.typeExpenseService.get(this.typeExpenseForm.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: TypeExpense[] = response.data.data;
         this.typesExpense = array;
         this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -81,12 +87,12 @@ export class TypeExpenseComponent implements OnInit {
 
   delete(id: number) {
     this.typeExpenseService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.typesExpense = this.typesExpense.filter(typeExpense => typeExpense.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el tipo de gasto' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
-      () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido eliminar el tipo de gasto' })
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

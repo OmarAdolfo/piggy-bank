@@ -52,7 +52,7 @@ class TipoGastoController extends Controller
             'descripcion' => 'required',
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all();
         $tipo_gasto_bd = TipoGasto::where('valor', '=', $postArray['valor'])->first();
@@ -68,8 +68,8 @@ class TipoGastoController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'error' => 'El tipo de gasto ya existe'
-            ]);
+                'message' => 'El tipo de gasto ya existe'
+            ], 500);
         }
     }
 
@@ -80,7 +80,7 @@ class TipoGastoController extends Controller
             'descripcion' => 'required',
         ]);
         if ($validator->fails()) { 
-            return response()->json(['message'=>$validator->errors()], 500);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all();
         $tipo_gasto_bd = TipoGasto::where('id', '=', $id)->first();
@@ -90,7 +90,7 @@ class TipoGastoController extends Controller
                 $tipo_gasto_bd->valor = $postArray['valor']; 
                 $tipo_gasto_bd->descripcion = $postArray['descripcion']; 
                 $tipo_gasto_bd->save();
-                return response()->json('Se ha actualizado el tipo de gasto', 200);
+                return response()->json(['message' => 'Se ha actualizado el tipo de gasto'], 200);
             } else {
                 return response()->json([
                     'message' => 'El tipo de gasto con ese valor ya existe'
@@ -107,7 +107,7 @@ class TipoGastoController extends Controller
         $tipo_gasto = TipoGasto::find($id);
         if (!is_null($tipo_gasto)) {
             $tipo_gasto->delete();
-            return response()->json('Se ha eliminado el tipo de gasto', 200);
+            return response()->json(['message' => 'Se ha eliminado el tipo de gasto'], 200);
         } else {
             return response()->json([
                 'message' => 'El tipo de gasto no existe'
@@ -117,9 +117,15 @@ class TipoGastoController extends Controller
 
     public function show($id) {
         $tipo_gasto = TipoGasto::find($id);
-        return response()->json(array(
-            'data' => $tipo_gasto
-        ), 200);
+        if (!is_null($tipo_gasto)) {
+            return response()->json(array(
+                'data' => $tipo_gasto
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'El tipo de gasto no existe'
+            ], 500);
+        }
     }
 
 }

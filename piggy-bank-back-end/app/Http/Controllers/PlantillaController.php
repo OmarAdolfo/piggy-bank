@@ -12,6 +12,7 @@ use DB;
 use App\Pago;
 use App\Ingreso;
 use DateTime;
+use App\Gasto;
 
 class PlantillaController extends Controller
 {
@@ -43,8 +44,8 @@ class PlantillaController extends Controller
         ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
         ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
-        ->where('pagos.pagado', '=', 0);
-        $pagosNoPagados = $pagosNoPagadosQuery->count();
+        ->where('pagos.pagado', '=', 0)
+        ->where('gastos.flexible', '!=', 1);
         $pagosPagadosQuery = Pago::select('pagos.*')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
         ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
@@ -89,14 +90,19 @@ class PlantillaController extends Controller
                 $new_plantilla->mes = $request['newMes'];
                 $new_plantilla->id_usuario = $plantilla_copy->id_usuario;
                 $new_plantilla->save();
+
+                $fecha_actual = date('Y-m-d');
     
-                foreach ($plantilla_copy->pagos as $pago){
+                foreach ($plantilla_copy->pagos as $pago) {
                     $newPago = $pago->replicate();
-                    $newPago->id = null;
-                    $newPago->plantilla_id = $new_plantilla->id;
-                    $newPago->fecha = new DateTime();
-                    $newPago->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
-                    $new_plantilla->pagos()->save($newPago);
+                    $gasto = Gasto::find($pago->gasto_id);
+                    if ($fecha_actual > $gasto->fecha_fin) {
+                        $newPago->id = null;
+                        $newPago->plantilla_id = $new_plantilla->id;
+                        $newPago->fecha = new DateTime();
+                        $newPago->fecha->setDate($new_plantilla->anno, $new_plantilla->mes, 1);
+                        $new_plantilla->pagos()->save($newPago);
+                    }
                 }
     
                 foreach ($plantilla_copy->ingresos as $ingreso){
@@ -104,10 +110,10 @@ class PlantillaController extends Controller
                     $newIngreso->id = null;
                     $newIngreso->plantilla_id = $new_plantilla->id;
                     $newIngreso->fecha = new DateTime();
-                    $newIngreso->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
+                    $newIngreso->fecha->setDate($new_plantilla->anno, $new_plantilla->mes, 1);
                     $new_plantilla->ingresos()->save($newIngreso);
                 }
-    
+
                 $years = DB::table('plantillas')
                 ->select('anno')
                 ->distinct()

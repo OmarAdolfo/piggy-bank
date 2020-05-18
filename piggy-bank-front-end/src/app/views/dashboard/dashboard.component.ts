@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   savings: number;
   expenses: number;
   percentage: number;
-  unpaid: Payment[];
+  unpaid: Payment[] = [];
   annualReminders: string[] = [];
 
   constructor(

@@ -61,10 +61,10 @@ class PagoController extends Controller
             $pago_bd->cantidad = $postArray['cantidad']; 
             $pago_bd->fecha = date('Y-m-d h:i:s', strtotime($postArray['fecha'])); 
             $pago_bd->save();
-            return response()->json('Se ha actualizado el pago', 200);
+            return response()->json(['message' => 'Se ha actualizado el pago'], 200);
         } else {
             return response()->json([
-                'error' => 'El pago no existe'
+                'message' => 'El pago no existe'
             ], 500);
         }
     }
@@ -73,10 +73,10 @@ class PagoController extends Controller
         $pago_bd = Pago::find($id);
         if (!is_null($pago_bd)) {
             $pago_bd->delete();
-            return response()->json('Se ha eliminado el pago', 200);
+            return response()->json(['message' => 'Se ha eliminado el pago'], 200);
         } else {
             return response()->json([
-                'error' => 'El pago no existe'
+                'message' => 'El pago no existe'
             ]);
         }
     }

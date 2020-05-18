@@ -78,7 +78,7 @@
                         [(ngModel)]="ingreso.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                 </div>
                 <div class="resource-row col-4 col-md-2 text-center border border-dark border-left-0">
-                    <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                    <button type="button" (click)="deleteRevenue(ingreso.id)" class="btn btn-primary btn-sm mt-1">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -111,7 +111,7 @@
                     </div>
                     <div
                         class="resource-row col-2 col-md-1 primary-expense-item text-center border border-dark border-left-0">
-                        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                        <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -144,7 +144,7 @@
                         </p-checkbox>
                     </div>
                     <div class="resource-row col-2 col-md-1 text-center border border-dark border-left-0">
-                        <button type="button" (click)="delete()" class="btn btn-primary btn-sm mt-1">
+                        <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
                     </div>

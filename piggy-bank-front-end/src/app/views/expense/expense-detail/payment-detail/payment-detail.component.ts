@@ -18,6 +18,7 @@ export class PaymentDetailComponent implements OnInit {
   payment: Payment;
   form: FormGroup;
   es: any;
+  loading: boolean;
 
   constructor(
     private location: Location,
@@ -44,10 +45,16 @@ export class PaymentDetailComponent implements OnInit {
       this.payment = new Payment();
       this.buildForm();
     } else {
+      Promise.resolve().then(() => this.loading = true);
       this.paymentService.find(this.activatedRoute.snapshot.params.idpayment).subscribe(
         (response: any) => {
           this.payment = response.data;
+          this.loading = false;
           this.buildForm();
+        },
+        response => {
+          this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       )
     }
@@ -65,13 +72,16 @@ export class PaymentDetailComponent implements OnInit {
   }
 
   save() {
+    Promise.resolve().then(() => this.loading = true);
     if (!this.newPayment) {
       const payment: Payment = Object.assign(this.payment, this.form.value);
       this.paymentService.update(payment).subscribe(
         () => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
@@ -80,9 +90,11 @@ export class PaymentDetailComponent implements OnInit {
       payment.gasto_id = this.activatedRoute.snapshot.params.id;
       this.paymentService.add(payment).subscribe(
         () => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );

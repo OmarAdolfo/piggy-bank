@@ -127,6 +127,7 @@ export class CreateTemplateComponent implements OnInit {
       revenue.ganancia_id = this.selectedResource;
       revenue.cantidad = 0;
       revenue.plantilla_id = this.template.id;
+      revenue.id = this.selectedResource.id;
       this.template.ingresos.push(revenue);
     } else {
       const payment = new Payment();
@@ -134,30 +135,41 @@ export class CreateTemplateComponent implements OnInit {
       payment.cantidad = 0;
       payment.pagado = false;
       payment.plantilla_id = this.template.id;
+      payment.id = this.selectedResource.id;
       this.template.pagos.push(payment);
     }
   }
 
-  delete() {
+  deletePayment(id: number) {
+    this.template.pagos = this.template.pagos.filter(pago => pago.id !== id);
+    this.calculate();
+  }
 
+  deleteRevenue(id: number) {
+    this.template.ingresos = this.template.ingresos.filter(ingreso => ingreso.id !== id);
+    this.calculate();
   }
 
   save() {
-    const pago = this.template.pagos.find(pago => pago.cantidad == null || pago.cantidad === 0);
-    const ingreso = this.template.ingresos.find(ingreso => ingreso.cantidad == null || ingreso.cantidad === 0);
-    if (pago || ingreso) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El campo valor no puede estar vacío o ser 0' });
+    if (this.template.pagos.length === 0 && this.template.ingresos.length === 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Se debe añadir al menos un gasto o ingreso' });
     } else {
-      this.template.pagos.forEach(pago => pago.cantidad = +pago.cantidad);
-      this.template.ingresos.forEach(ingreso => ingreso.cantidad = +ingreso.cantidad);
-      this.templateService.update(this.template).subscribe(
-        (response: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha actualizado la plantilla' });
-        },
-        response => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido actualizar la plantilla' });
-        }
-      );
+      const pago = this.template.pagos.find(pago => pago.cantidad == null || pago.cantidad === 0);
+      const ingreso = this.template.ingresos.find(ingreso => ingreso.cantidad == null || ingreso.cantidad === 0);
+      if (pago || ingreso) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El campo valor no puede estar vacío o ser 0' });
+      } else {
+        this.template.pagos.forEach(pago => pago.cantidad = +pago.cantidad);
+        this.template.ingresos.forEach(ingreso => ingreso.cantidad = +ingreso.cantidad);
+        this.templateService.update(this.template).subscribe(
+          (response: any) => {
+            this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha actualizado la plantilla' });
+          },
+          response => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se ha podido actualizar la plantilla' });
+          }
+        );
+      }
     }
   }
 
@@ -168,23 +180,21 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   calculateTemplate() {
-    if (this.template.ingresos.length > 0) {
-      this.revenues = this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => a + b);
-      const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
-      let primaryExpenses = 0;
-      if (primaryExpensesFilter.length > 0) {
-        primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);
-      }
-      const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
-      let secondaryExpenses = 0;
-      if (secondaryExpensesFilter.length > 0) {
-        secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);;
-      }
-      this.primaryExpenses = (Math.round((this.revenues * 0.5) * 100) / 100) - primaryExpenses;
-      this.secondaryExpenses = (Math.round((this.revenues * 0.3) * 100) / 100) - secondaryExpenses;
-      this.promiseSavings = (Math.round(((this.revenues * 0.2)) * 100) / 100);
-      this.realSavings = (Math.round(((this.revenues * 0.2) + this.primaryExpenses + this.secondaryExpenses) * 100) / 100);
+    this.revenues = this.template.ingresos.length > 0 ? this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => a + b) : 0;
+    const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
+    let primaryExpenses = 0;
+    if (primaryExpensesFilter.length > 0) {
+      primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);
     }
+    const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
+    let secondaryExpenses = 0;
+    if (secondaryExpensesFilter.length > 0) {
+      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);;
+    }
+    this.primaryExpenses = (Math.round((this.revenues * 0.5) * 100) / 100) - primaryExpenses;
+    this.secondaryExpenses = (Math.round((this.revenues * 0.3) * 100) / 100) - secondaryExpenses;
+    this.promiseSavings = (Math.round(((this.revenues * 0.2)) * 100) / 100);
+    this.realSavings = (Math.round(((this.revenues * 0.2) + this.primaryExpenses + this.secondaryExpenses) * 100) / 100);
   }
 
   calculateGoodPractices() {
@@ -193,10 +203,12 @@ export class CreateTemplateComponent implements OnInit {
       for (let goodPractices of this.goodPractices) {
         const pago = this.template.pagos.find(pago => goodPractices.palabra_clave === pago.gasto_id.nombre);
         const goodPracticaAmount = (goodPractices.porcentaje * 0.01) * this.revenues;
-        if (pago.cantidad > goodPracticaAmount) {
-          this.goodPracticesUsed.push({ message: 'Es recomendable no sobrepasar el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: false });
-        } else {
-          this.goodPracticesUsed.push({ message: 'No sobrepasas el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: true });
+        if (pago) {
+          if (pago.cantidad > goodPracticaAmount) {
+            this.goodPracticesUsed.push({ message: 'Es recomendable no sobrepasar el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: false });
+          } else {
+            this.goodPracticesUsed.push({ message: 'No sobrepasas el ' + goodPractices.porcentaje + '% de los ingresos en el gasto del ' + goodPractices.palabra_clave, status: true });
+          }
         }
       }
     }

@@ -17,6 +17,7 @@ class CreateGastosTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->date('fecha_fin')->nullable();
+            $table->boolean('flexible')->nullable();
             $table->integer('id_usuario')->unsigned();
             $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->integer('id_tipo_gasto')->unsigned();

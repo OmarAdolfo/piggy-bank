@@ -21,6 +21,7 @@ export class ExpenseComponent implements OnInit {
   roles: any[];
   typesExpense: TypeExpense[] = [];
   totalRecords: number;
+  loading: boolean;
 
   constructor(
     private expenseService: ExpenseService,
@@ -66,11 +67,16 @@ export class ExpenseComponent implements OnInit {
   }
 
   search(sortField?: string, sortOrder?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
     this.expenseService.get(this.form.value, sortField, sortOrder, page).subscribe(
       (response: any) => {
         const array: Expense[] = response.data.data;
         this.expenses = array;
         this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -95,9 +101,12 @@ export class ExpenseComponent implements OnInit {
 
   delete(id: number) {
     this.expenseService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.expenses = this.expenses.filter((val, i) => i != id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
+      },
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

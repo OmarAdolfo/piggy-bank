@@ -6,6 +6,7 @@ export class Expense {
     id: number;
     nombre: string;
     fecha_fin: Date;
+    flexible: boolean;
     user: User;
     id_tipo_gasto: TypeExpense;
     created_at: Date;

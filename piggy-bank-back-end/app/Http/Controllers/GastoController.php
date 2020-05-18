@@ -19,6 +19,11 @@ class GastoController extends Controller
         ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
         ->where('tipos_gastos.valor', '=', 'Mensuales Primarios')
+        ->where(static function ($query) {
+            $now = date('Y-m-d');
+            $query->where('gastos.fecha_fin', '>=', $now)
+            ->orWhere('gastos.fecha_fin', '=', null);
+        })
         ->get();
         return response()->json(array(
             'data' => $gastos_primarios
@@ -31,6 +36,11 @@ class GastoController extends Controller
         ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
         ->where('tipos_gastos.valor', '=', 'Mensuales Secundarios')
+        ->where(static function ($query) {
+            $now = date('Y-m-d');
+            $query->where('gastos.fecha_fin', '>=', $now)
+            ->orWhere('gastos.fecha_fin', '=', null);
+        })
         ->get();
         return response()->json(array(
             'data' => $gastos_secundarios
@@ -59,6 +69,7 @@ class GastoController extends Controller
         $gastos = $gastos
                 ->orderBy($sortable, $orderBy)
                 ->where('id_usuario', '=', JWTAuth::user()->id)
+                ->with('id_tipo_gasto')
                 ->paginate(10);
 
         return response()->json(array(
@@ -68,16 +79,22 @@ class GastoController extends Controller
 
     public function show($id) {
         $gasto = Gasto::find($id);
-        return response()->json(array(
-            'data' => $gasto->load('pagos')
-        ), 200);
+        if (!is_null($gasto)) {
+            return response()->json(array(
+                'data' => $gasto->load('pagos')
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'El gasto no existe'
+            ], 500);
+        }
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
-            'tipo_gasto' => 'required',
+            'id_tipo_gasto' => 'required',
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -87,10 +104,15 @@ class GastoController extends Controller
         if (is_null($gastos_bd)) {
             $gasto = new Gasto();
             $gasto->nombre = $postArray['nombre']; 
-            $gasto->id_tipo_gasto = $postArray['tipo_gasto']['id']; 
+            $gasto->id_tipo_gasto = $postArray['id_tipo_gasto']['id']; 
             $gasto->id_usuario = JWTAuth::user()->id; 
-            if ($request->has('fecha_fin')) {
-                $gasto->fecha_fin = $postArray['fecha_fin']; 
+            if ($request->has('fechaFin')) {
+                $gasto->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fechaFin']));
+            }
+            if ($request->has('flexible')) {
+                $gasto->flexible = $postArray['flexible']; 
+            } else {
+                $gasto->flexible = 0; 
             }
             $gasto->save();
             return response()->json([
@@ -108,7 +130,7 @@ class GastoController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'nombre' => 'required', 
-            'tipo_gasto' => 'required',
+            'id_tipo_gasto' => 'required',
         ]);
         if ($validator->fails()) { 
             return response()->json(['message' => 'Validaciones erróneas'], 500);
@@ -119,9 +141,20 @@ class GastoController extends Controller
             $gasto_bd_repeat = Gasto::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
             if (is_null($gasto_bd_repeat) || $gasto_bd_repeat->id == $gasto_bd->id ) {
                 $gasto_bd->nombre = $postArray['nombre'];
-                $gasto_bd->id_tipo_gasto = $postArray['tipo_gasto']['id']; 
+                $gasto_bd->id_tipo_gasto = $postArray['id_tipo_gasto']['id']; 
+                if ($request->has('fechaFin')) {
+                    $gasto_bd->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fechaFin']));
+                }
+                if ($request->has('flexible')) {
+                    $gasto_bd->flexible = $postArray['flexible']; 
+                } else {
+                    $gasto_bd->flexible = false; 
+                }
                 $gasto_bd->save();
-                return response()->json('Se ha actualizado el gasto', 200);
+                return response()->json([
+                    'message' => 'Se ha actualizado el gasto',
+                    'data' => $gasto_bd
+                ], 200);
             } else {
                 return response()->json([
                     'error' => 'El gasto ya existe'
@@ -138,11 +171,11 @@ class GastoController extends Controller
         $gasto_bd = Gasto::find($id);
         if (!is_null($gasto_bd)) {
             $gasto_bd->delete();
-            return response()->json('Se ha eliminado el gasto', 200);
+            return response()->json(['message' => 'Se ha eliminado el gasto'], 200);
         } else {
             return response()->json([
                 'error' => 'El gasto no existe'
-            ]);
+            ], 500);
         }
     }
 }

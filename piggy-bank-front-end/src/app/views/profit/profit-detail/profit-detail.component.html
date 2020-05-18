@@ -33,12 +33,14 @@
                             <div class="col-6 form-group">
                                 <label for="id_tipo_ganancia">Tipo de ganancia</label>
                                 <p-dropdown [options]="typesProfit" formControlName="id_tipo_ganancia"
-                                    placeholder="Seleccione tipo de ganancia" optionLabel="valor" [showClear]="true">
+                                    placeholder="Seleccione tipo de ganancia" optionLabel="valor" [showClear]="true"
+                                    (onChange)="changeTypeProfit($event)">
                                     <ng-template let-item pTemplate="selectedItem">
                                         <span>{{item.label}}</span>
                                     </ng-template>
                                     <ng-template let-tipo pTemplate="item">
-                                        <span pTooltip="{{tipo.value.descripcion}}" tooltipPosition="top">{{tipo.label}}</span>
+                                        <span pTooltip="{{tipo.value.descripcion}}"
+                                            tooltipPosition="top">{{tipo.label}}</span>
                                     </ng-template>
                                 </p-dropdown>
                                 <div *ngIf="form.controls.id_tipo_ganancia.invalid && (form.controls.id_tipo_ganancia.dirty || form.controls.id_tipo_ganancia.touched)"
@@ -92,11 +94,11 @@
                                     {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>
-                                    <button type="button" (click)="onRowSelect(rowData['id'])"
+                                    <button *ngIf="!isMonthly" type="button" (click)="onRowSelect(rowData['id'])"
                                         class="btn btn-secondary mr-1">
                                         <span><i class="fas fa-edit" aria-hidden="true"></i></span>
                                     </button>
-                                    <button type="button" (click)="confirm(rowData['id'])"
+                                    <button *ngIf="!isMonthly" type="button" (click)="confirm(rowData['id'])"
                                         class="btn btn-secondary mr-1">
                                         <span><i class="fas fa-trash" aria-hidden="true"></i></span>
                                     </button>
@@ -104,8 +106,11 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="summary" let-rowData>
-                            <div style="text-align:left">
+                            <div *ngIf="!isMonthly" style="text-align:left">
                                 <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
+                            </div>
+                            <div *ngIf="isMonthly" class="text-center">
+                                Los ingresos mensuales se gestionan en la pantalla de Plantillas
                             </div>
                         </ng-template>
                     </p-table>

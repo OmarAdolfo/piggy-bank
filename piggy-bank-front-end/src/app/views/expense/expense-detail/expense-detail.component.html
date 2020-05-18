@@ -6,7 +6,7 @@
     </div>
     <hr>
 
-    <div class="row" *ngIf="!expense">
+    <div class="row" *ngIf="!expense && !loading">
         <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
     </div>
 
@@ -28,45 +28,51 @@
                                     <div *ngIf="form.controls.nombre.errors.required">
                                         El nombre es obligatorio
                                     </div>
+                                    <div *ngIf="form.controls.nombre.errors.whitespace">
+                                        El nombre no puede ser vacío
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6 form-group">
-                                <label for="tipo_gasto">Tipo de gasto</label>
-                                <p-dropdown [options]="typesExpense" formControlName="tipo_gasto"
-                                    placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true">
+                                <label for="id_tipo_gasto">Tipo de gasto</label>
+                                <p-dropdown [options]="typesExpense" formControlName="id_tipo_gasto"
+                                    placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true"
+                                    (onChange)="changeTypeExpense($event)">
                                     <ng-template let-item pTemplate="selectedItem">
                                         <span>{{item.label}}</span>
                                     </ng-template>
                                     <ng-template let-tipo pTemplate="item">
-                                        <span pTooltip="{{tipo.value.descripcion}}" tooltipPosition="top">{{tipo.label}}</span>
+                                        <span pTooltip="{{tipo.value.descripcion}}"
+                                            tooltipPosition="top">{{tipo.label}}</span>
                                     </ng-template>
                                 </p-dropdown>
-                                <div *ngIf="form.controls.tipo_gasto.invalid && (form.controls.tipo_gasto.dirty || form.controls.tipo_gasto.touched)"
+                                <div *ngIf="form.controls.id_tipo_gasto.invalid && (form.controls.id_tipo_gasto.dirty || form.controls.id_tipo_gasto.touched)"
                                     class="alert alert-danger mt-1">
-                                    <div *ngIf="form.controls.tipo_gasto.errors.required">
+                                    <div *ngIf="form.controls.id_tipo_gasto.errors.required">
                                         El tipo de gasto es obligatorio
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div *ngIf="isMonthly" class="col-6 form-group">
                                 <label for="fechaFin">Fecha fin</label>
                                 <p-calendar formControlName="fechaFin"></p-calendar>
-                                <div *ngIf="form.controls.fechaFin.invalid && (form.controls.fechaFin.dirty || form.controls.fechaFin.touched)"
-                                    class="alert alert-danger mt-1">
-                                    <div *ngIf="form.controls.fechaFin.errors.required">
-                                        La fecha de fin es obligatoria
-                                    </div>
+                            </div>
+                            <div *ngIf="isMonthly" class="col-6 form-group">
+                                <label for="flexible">Flexible</label>
+                                <div>
+                                    <p-inputSwitch formControlName="flexible"></p-inputSwitch>
                                 </div>
                             </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-12 text-right mt-2">
-                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                                    class="btn btn-primary mr-1">
-                                    <span *ngIf="newExpense"> <i class="fas fa-plus" aria-hidden="true"></i>
-                                        Guardar</span>
-                                    <span *ngIf="!newExpense"> <i class="fas fa-edit" aria-hidden="true"></i>
-                                        Editar</span>
+                                <button [disabled]="form.pristine || form.invalid || loading" type="button"
+                                    (click)="save()" class="btn btn-primary mr-1">
+                                    <span>
+                                        <i class="fas" [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
+                                            aria-hidden="true"></i>
+                                        Guardar
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -102,11 +108,11 @@
                                     {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>
-                                    <button type="button" (click)="onRowSelect(rowData['id'])"
+                                    <button *ngIf="!isMonthly" type="button" (click)="onRowSelect(rowData['id'])"
                                         class="btn btn-secondary mr-1">
                                         <span><i class="fas fa-edit" aria-hidden="true"></i></span>
                                     </button>
-                                    <button type="button" (click)="confirm(rowData['id'])"
+                                    <button *ngIf="!isMonthly" type="button" (click)="confirm(rowData['id'])"
                                         class="btn btn-secondary mr-1">
                                         <span><i class="fas fa-trash" aria-hidden="true"></i></span>
                                     </button>
@@ -114,8 +120,11 @@
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="summary" let-rowData>
-                            <div style="text-align:left">
+                            <div *ngIf="!isMonthly" style="text-align:left">
                                 <button type="button" pButton icon="pi pi-plus" (click)="add()" label="Añadir"></button>
+                            </div>
+                            <div *ngIf="isMonthly" class="text-center">
+                                Los gastos mensuales se gestionan en la pantalla de Plantillas
                             </div>
                         </ng-template>
                     </p-table>
@@ -134,4 +143,4 @@
 </div>
 
 <p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '50vw'}" [acceptLabel]="'Sí'"></p-confirmDialog>

@@ -22,6 +22,7 @@ export class ProfitDetailComponent implements OnInit {
   profit: Profit;
   typesProfit: TypeProfit[] = [];
   cols: any[];
+  isMonthly: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,6 +51,7 @@ export class ProfitDetailComponent implements OnInit {
       this.profitService.find(this.activatedRoute.snapshot.params.id).subscribe(
         (response: any) => {
           this.profit = response.data;
+          this.isMonthly = this.profit.id_tipo_ganancia.valor.includes('Mensuales');
           this.buildForm();
         }
       )
@@ -68,7 +70,7 @@ export class ProfitDetailComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       nombre: new FormControl(this.profit.nombre, Validators.required),
-      id_tipo_ganancia: new FormControl(this.profit.id_tipo_ganancia ? this.profit.id_tipo_ganancia : '', Validators.required)
+      id_tipo_ganancia: new FormControl({ value: this.profit.id_tipo_ganancia ? this.profit.id_tipo_ganancia : '', disabled: this.profit.id_tipo_ganancia ? true : false }, Validators.required)
     });
   }
 
@@ -89,6 +91,7 @@ export class ProfitDetailComponent implements OnInit {
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.profit = response.data;
+          this.isMonthly = this.profit.id_tipo_ganancia.valor.includes('Mensuales');
           this.location.replaceState('/home/profits/' + this.profit.id);
         },
         response => {
@@ -128,6 +131,12 @@ export class ProfitDetailComponent implements OnInit {
 
   onRowSelect(id: number) {
     this.router.navigate(['/home/profits/' + this.profit.id + '/revenue/' + id]);
+  }
+
+  changeTypeProfit(eve: any) {
+    if (!this.profit.id) {
+      this.isMonthly = eve.value.valor.includes('Mensuales');
+    }
   }
 
 }

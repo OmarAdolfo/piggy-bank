@@ -12,21 +12,21 @@
         </div>
         <div class="card-body">
             <div class="row mt-3">
-                <div class="form-group col-6">
+                <div class="form-group col-12 col-md-6">
                     <label for="exampleInputPassword1">Tipo de recurso</label>
                     <p-dropdown [options]="types" optionLabel="name" (onChange)="selectResource($event)">
                     </p-dropdown>
                 </div>
-                <div class="form-group col-6">
+                <div class="form-group col-12 col-md-6">
                     <label for="exampleInputPassword1">Recurso</label>
                     <p-dropdown [options]="resources" optionLabel="nombre" [(ngModel)]="selectedResource"
                         placeholder="Elige el recurso...">
                     </p-dropdown>
                 </div>
-                <div *ngIf="!isProfit" class="form-group offset-6 col-3">
+                <div *ngIf="!isProfit" class="form-group offset-md-6 col-12 col-md-3">
                     Si desea añadir un nuevo gasto acceda <a [routerLink]="['/home/expenses/new']">aquí</a>
                 </div>
-                <div *ngIf="isProfit" class="form-group offset-6 col-3">
+                <div *ngIf="isProfit" class="form-group offset-md-6 col-12 col-md-3">
                     Si desea añadir una nueva ganancia acceda <a [routerLink]="['/home/profits/new']">aquí</a>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             Plantilla
         </div>
         <div class="card-body">
-            <div class="row mx-1 mt-5">
+            <div class="row mx-1 mt-5 d-none d-md-flex">
                 <div class="col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Nombre
                 </div>
@@ -59,58 +59,58 @@
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Ingresos
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
                     {{revenues}}
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mx-1" *ngFor="let ingreso of template.ingresos">
                 <div
-                    class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                    class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                     {{ingreso.ganancia_id.nombre}}
                 </div>
-                <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
                     <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                         [(ngModel)]="ingreso.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                 </div>
-                <div class="resource-row col-4 col-md-2 text-center border border-dark border-left-0">
+                <div class="resource-row col-12 col-md-2 text-center border border-dark border-left-0 py-2 py-md-0">
                     <button type="button" (click)="deleteRevenue(ingreso.id)" class="btn btn-primary btn-sm mt-1">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Disponible Gastos primarios
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
                     {{primaryExpenses}}
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div *ngFor="let pago of template.pagos">
                 <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios'">
                     <div
-                        class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                        class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                         {{pago.gasto_id.nombre}}
                     </div>
-                    <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                    <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
                         <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                             [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                     </div>
                     <div
-                        class="resource-row col-2 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center">
+                        class="resource-row col-6 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
                         <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
                             name="groupname" binary="true">
                         </p-checkbox>
                     </div>
                     <div
-                        class="resource-row col-2 col-md-1 primary-expense-item text-center border border-dark border-left-0">
+                        class="resource-row col-6 col-md-1 primary-expense-item text-center border border-dark border-left-0 py-2 py-md-0">
                         <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
@@ -118,32 +118,32 @@
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Disponible Gastos secundarios
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
                     {{secondaryExpenses}}
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div *ngFor="let pago of template.pagos">
                 <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios'">
                     <div
-                        class="resource-row col-4 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center">
+                        class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                         {{pago.gasto_id.nombre}}
                     </div>
-                    <div class="resource-row col-4 col-md-2 text-center border border-dark">
+                    <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
                         <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                             [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                     </div>
                     <div
-                        class="resource-row col-2 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center">
+                        class="resource-row col-6 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
                         <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
                             name="groupname" binary="true">
                         </p-checkbox>
                     </div>
-                    <div class="resource-row col-2 col-md-1 text-center border border-dark border-left-0">
+                    <div class="resource-row col-6 col-md-1 text-center border border-dark border-left-0">
                         <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
@@ -151,23 +151,23 @@
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Ahorros esperados
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
                     {{promiseSavings}}
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
                     Ahorros reales
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
                     {{realSavings}}
                 </div>
-                <div class="fixed-row col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mt-3 text-right">
@@ -182,7 +182,7 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-3 mt-md-0">
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     Tips
@@ -202,7 +202,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-6 mt-3 mt-md-0">
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     Buenas prácticas
@@ -233,6 +233,4 @@
             </button>
         </div>
     </div>
-    <p-toast [style]="{marginTop: '80px'}"></p-toast>
-    <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 </div>

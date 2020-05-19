@@ -8,8 +8,7 @@ import { MetaSavingService } from './meta-saving.service';
 @Component({
   selector: 'app-meta-saving',
   templateUrl: './meta-saving.component.html',
-  styleUrls: ['./meta-saving.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./meta-saving.component.scss']
 })
 export class MetaSavingComponent implements OnInit {
 
@@ -19,6 +18,8 @@ export class MetaSavingComponent implements OnInit {
   statuses: any[];
   pagos: any[];
   ingresos: any[];
+  totalRecords: number;
+  loading: boolean;
 
   constructor(
     private metaSavingService: MetaSavingService,
@@ -80,11 +81,17 @@ export class MetaSavingComponent implements OnInit {
     this.router.navigate(['/home/objectives/new']);
   }
 
-  search(sortable?: string, orderBy?: number) {
-    this.metaSavingService.get(this.form.value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
+    this.metaSavingService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: MetaSaving[] = response.data.data;
         this.metasSaving = array;
+        this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -92,7 +99,8 @@ export class MetaSavingComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
   }
 
   confirm(id: number) {
@@ -108,9 +116,12 @@ export class MetaSavingComponent implements OnInit {
 
   delete(id: number) {
     this.metaSavingService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.metasSaving = this.metasSaving.filter(metaSaving => metaSaving.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
+      },
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

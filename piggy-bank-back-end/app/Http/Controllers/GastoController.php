@@ -69,7 +69,6 @@ class GastoController extends Controller
         $gastos = $gastos
                 ->orderBy($sortable, $orderBy)
                 ->where('id_usuario', '=', JWTAuth::user()->id)
-                ->with('id_tipo_gasto')
                 ->paginate(10);
 
         return response()->json(array(
@@ -117,7 +116,7 @@ class GastoController extends Controller
             $gasto->save();
             return response()->json([
                 'message' => 'Se ha creado un nuevo gasto',
-                'data' => $gasto
+                'data' => $gasto->load('id_tipo_gasto')
             ], 200);
         } else {
             return response()->json([

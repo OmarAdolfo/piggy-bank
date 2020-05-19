@@ -9,8 +9,7 @@ import { MonthService } from 'src/app/shared/services/month-service.service';
 @Component({
   selector: 'app-templates',
   templateUrl: './templates.component.html',
-  styleUrls: ['./templates.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./templates.component.scss']
 })
 export class TemplatesComponent implements OnInit {
 
@@ -23,6 +22,7 @@ export class TemplatesComponent implements OnInit {
   annoRegex = /^(\d{4})$/;
   selectedYear: any;
   optionCreation: string = 'Añadir plantilla';
+  loading: boolean;
 
   constructor(
     private router: Router,
@@ -55,13 +55,18 @@ export class TemplatesComponent implements OnInit {
   }
 
   getTemplates() {
+    Promise.resolve().then(() => this.loading = true);
     this.templateService.get().subscribe(
       (response: any) => {
         this.templatesTotal = response.data;
         this.years = response.years;
+        this.loading = false;
         if (this.years && this.years.length > 0) {
           this.calculateTemplates(this.years[0]);
         }
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -82,22 +87,28 @@ export class TemplatesComponent implements OnInit {
     const template: Template = new Template();
     template.anno = this.addForm.get('anno').value;
     template.mes = this.addForm.get('mes').value.value;
+    Promise.resolve().then(() => this.loading = true);
     this.templateService.add(template).subscribe(
       (response: any) => {
         let templatesTotal: Template[] = [...this.templatesTotal];
         templatesTotal.push(response.data);
         this.templatesTotal = templatesTotal;
         this.years = response.years;
-        this.calculateTemplates();
+        if (this.years && this.years.length > 0) {
+          this.calculateTemplates(this.years[0]);
+        }
+        this.loading = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
       },
       response => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
   }
 
   clone() {
+    Promise.resolve().then(() => this.loading = true);
     const template = {
       anno: this.cloneForm.get('anno').value,
       mes: this.cloneForm.get('mes').value.value,
@@ -111,9 +122,11 @@ export class TemplatesComponent implements OnInit {
         this.templatesTotal = templatesTotal;
         this.years = response.years;
         this.calculateTemplates();
+        this.loading = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
       },
       response => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
@@ -143,6 +156,10 @@ export class TemplatesComponent implements OnInit {
         this.templatesTotal = this.templatesTotal.filter(templateTotal => templateTotal.id !== id);
         this.templates = this.templates.filter(template => template.id !== id);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.message });
+        this.years = response.years;
+        if (this.years && this.years.length > 0) {
+          this.calculateTemplates(this.years[0]);
+        }
       }
     );
   }

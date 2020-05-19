@@ -10,8 +10,7 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.va
 @Component({
   selector: 'app-type-profit-detail',
   templateUrl: './type-profit-detail.component.html',
-  styleUrls: ['./type-profit-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./type-profit-detail.component.scss']
 })
 export class TypeProfitDetailComponent implements OnInit {
 

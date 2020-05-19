@@ -9,8 +9,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-revenue-detail',
   templateUrl: './revenue-detail.component.html',
-  styleUrls: ['./revenue-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./revenue-detail.component.scss']
 })
 export class RevenueDetailComponent implements OnInit {
 
@@ -18,6 +17,7 @@ export class RevenueDetailComponent implements OnInit {
   revenue: Revenue;
   form: FormGroup;
   es: any;
+  loading: boolean;
 
   constructor(
     private location: Location,
@@ -44,10 +44,16 @@ export class RevenueDetailComponent implements OnInit {
       this.revenue = new Revenue();
       this.buildForm();
     } else {
+      Promise.resolve().then(() => this.loading = true);
       this.revenueService.find(this.activatedRoute.snapshot.params.idrevenue).subscribe(
         (response: any) => {
           this.revenue = response.data;
+          this.loading = false;
           this.buildForm();
+        },
+        response => {
+          this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       )
     }
@@ -65,13 +71,16 @@ export class RevenueDetailComponent implements OnInit {
   }
 
   save() {
+    Promise.resolve().then(() => this.loading = true);
     if (!this.newRevenue) {
       const revenue: Revenue = Object.assign(this.revenue, this.form.value);
       this.revenueService.update(revenue).subscribe(
         () => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
@@ -80,9 +89,11 @@ export class RevenueDetailComponent implements OnInit {
       revenue.ganancia_id = this.activatedRoute.snapshot.params.id;
       this.revenueService.add(revenue).subscribe(
         () => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );

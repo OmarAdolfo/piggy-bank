@@ -11,8 +11,7 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.va
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
-  styleUrls: ['./user-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./user-detail.component.scss']
 })
 export class UserDetailComponent implements OnInit {
 

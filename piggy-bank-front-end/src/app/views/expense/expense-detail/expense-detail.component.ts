@@ -14,7 +14,7 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.va
   selector: 'app-expense-detail',
   templateUrl: './expense-detail.component.html',
   styleUrls: ['./expense-detail.component.scss'],
-  providers: [MessageService, ConfirmationService, DatePipe]
+  providers: [DatePipe]
 })
 export class ExpenseDetailComponent implements OnInit {
 
@@ -109,6 +109,7 @@ export class ExpenseDetailComponent implements OnInit {
           this.expense = response.data;
           this.loading = false;
           this.isMonthly = this.expense.id_tipo_gasto.valor.includes('Mensuales');
+          this.form.get('id_tipo_gasto').disable();
           this.location.replaceState('/home/expenses/' + this.expense.id);
         },
         response => {

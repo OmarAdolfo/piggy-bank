@@ -10,8 +10,7 @@ import { TypeExpense } from 'src/app/shared/models/type-expense';
 @Component({
   selector: 'app-expense',
   templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./expense.component.scss']
 })
 export class ExpenseComponent implements OnInit {
 

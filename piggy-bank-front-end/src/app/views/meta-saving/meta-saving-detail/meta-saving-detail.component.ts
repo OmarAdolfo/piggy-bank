@@ -9,8 +9,7 @@ import { MetaSavingService } from '../meta-saving.service';
 @Component({
   selector: 'app-meta-saving-detail',
   templateUrl: './meta-saving-detail.component.html',
-  styleUrls: ['./meta-saving-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./meta-saving-detail.component.scss']
 })
 export class MetaSavingDetailComponent implements OnInit {
 
@@ -18,6 +17,7 @@ export class MetaSavingDetailComponent implements OnInit {
   newMetaSaving: boolean;
   metaSaving: MetaSaving;
   annoRegex = /^(\d{4})$/;
+  loading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,10 +33,16 @@ export class MetaSavingDetailComponent implements OnInit {
       this.metaSaving = new MetaSaving();
       this.buildForm();
     } else {
+      Promise.resolve().then(() => this.loading = true);
       this.metasavingService.find(this.activatedRoute.snapshot.params.id).subscribe(
         (response: any) => {
           this.metaSaving = response.data;
+          this.loading = false;
           this.buildForm();
+        },
+        response => {
+          this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       )
     }
@@ -50,22 +56,28 @@ export class MetaSavingDetailComponent implements OnInit {
   }
 
   save() {
-    const metaSaving = Object.assign({}, this.form.value);
+    Promise.resolve().then(() => this.loading = true);
     if (this.metaSaving.id) {
+      const metaSaving = Object.assign(this.metaSaving, this.form.value);
       this.metasavingService.update(metaSaving, this.metaSaving.id).subscribe(
         (response: any) => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
     } else {
+      const metaSaving: MetaSaving = Object.assign({}, this.form.value);
       this.metasavingService.add(metaSaving).subscribe(
         (response: any) => {
+          this.loading = false;
           this.back();
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );

@@ -21,7 +21,7 @@ export class ProfitService {
     return this.http.get<Profit[]>(this.url + '-mensuales');
   }
 
-  get(form: any, sortable?: string, orderBy?: number): Observable<Profit[]> {
+  get(form: any, sortable?: string, orderBy?: number, page?: number): Observable<Profit[]> {
     let params: string[] = [];
     let query = '';
     if (form.nombre) {
@@ -35,6 +35,9 @@ export class ProfitService {
       if (orderBy) {
         params.push(orderBy === 1 ? 'orderBy=asc' : 'orderBy=desc');
       }
+    }
+    if (page) {
+      params.push('page=' + page);
     }
     if (params.length > 0) {
       query = '?' + params.join('&');

@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  providers: [DatePipe, MessageService]
+  providers: [DatePipe]
 })
 export class ProfileComponent implements OnInit {
 

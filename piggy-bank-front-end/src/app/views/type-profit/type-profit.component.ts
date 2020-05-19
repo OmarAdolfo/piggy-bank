@@ -9,8 +9,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 @Component({
   selector: 'app-type-profit',
   templateUrl: './type-profit.component.html',
-  styleUrls: ['./type-profit.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./type-profit.component.scss']
 })
 export class TypeProfitComponent implements OnInit {
 

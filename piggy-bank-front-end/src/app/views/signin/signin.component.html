@@ -72,7 +72,7 @@
                                         </div>
                                     </div>
                                     <button type="submit"
-                                        [disabled]="signinForm.pristine || signinForm.invalid"
+                                        [disabled]="signinForm.pristine || signinForm.invalid || loading"
                                         class="btn btn-secondary btn-user btn-block">
                                         Registrar usuario
                                     </button>

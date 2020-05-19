@@ -15,7 +15,7 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="anno">Año</label>
                                 <input type="text" class="form-control form-control-user" id="anno"
                                     formControlName="anno">
@@ -23,8 +23,10 @@
                         </div>
                         <div class="row mt-1">
                             <div class="col-12 text-right mt-2">
-                                <button type="button" (click)="search()" class="btn btn-primary mr-1">
-                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                <button [disabled]="loading" type="button" (click)="search()"
+                                    class="btn btn-primary mr-1">
+                                    <i class="fas" [ngClass]="{'fa-search': !loading, 'fa-spinner fa-spin': loading}"
+                                        aria-hidden="true"></i>
                                     <span> Buscar</span>
                                 </button>
                             </div>
@@ -43,7 +45,7 @@
             <div class="row">
                 <div class="col-12">
                     <p-table [columns]="cols" [value]="metasSaving" [paginator]="true" [rows]="10" [responsive]="true"
-                        (onLazyLoad)="customSort($event)" [lazy]="true">
+                        (onLazyLoad)="customSort($event)" [lazy]="true" [totalRecords]="totalRecords">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -91,8 +93,4 @@
             </div>
         </div>
     </div>
-
 </div>
-
-<p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

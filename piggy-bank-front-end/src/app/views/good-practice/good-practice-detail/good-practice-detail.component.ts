@@ -10,8 +10,7 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.va
 @Component({
   selector: 'app-good-practice-detail',
   templateUrl: './good-practice-detail.component.html',
-  styleUrls: ['./good-practice-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./good-practice-detail.component.scss']
 })
 export class GoodPracticeDetailComponent implements OnInit {
 

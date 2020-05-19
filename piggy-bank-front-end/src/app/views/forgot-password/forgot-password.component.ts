@@ -11,13 +11,14 @@ import { ResetPassword } from 'src/app/shared/models/resetPassword';
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
-  providers: [ForgotPasswordService, MessageService]
+  providers: [ForgotPasswordService]
 })
 export class ForgotPasswordComponent implements OnInit {
 
   sendTokenEmailForm: FormGroup;
   resetPasswordForm: FormGroup;
   isEmailSent = false;
+  loading: boolean;
 
   constructor(
     @Inject(DOCUMENT) private _document,
@@ -49,26 +50,32 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   getTokenByEmail() {
+    Promise.resolve().then(() => this.loading = true);
     this.forgotPasswordService.getTokenByEmail(this.sendTokenEmailForm.get('email').value).subscribe(
       (response: any) => {
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response });
         this.isEmailSent = true;
+        this.loading = false;
       },
       error => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
       }
     );
   }
 
   ressetPassword() {
+    Promise.resolve().then(() => this.loading = true);
     const resetPassword: ResetPassword = Object.assign({}, this.resetPasswordForm.value);
     resetPassword.email = this.sendTokenEmailForm.get('email').value;
     this.forgotPasswordService.resetPassword(resetPassword).subscribe(
       (response: any) => {
+        this.loading = false;
         this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response.message });
         this.router.navigate(['login']);
       },
       response => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );

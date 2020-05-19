@@ -14,9 +14,15 @@ class ingresoController extends Controller
 
     public function show($id) {
         $ingreso = Ingreso::find($id);
-        return response()->json(array(
-            'data' => $ingreso
-        ), 200);
+        if (!is_null($ingreso)) {
+            return response()->json(array(
+                'data' => $ingreso
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'El ingreso no existe'
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -56,10 +62,10 @@ class ingresoController extends Controller
             $ingreso_bd->cantidad = $postArray['cantidad']; 
             $ingreso_bd->fecha = date('Y-m-d h:i:s', strtotime($postArray['fecha'])); 
             $ingreso_bd->save();
-            return response()->json('Se ha actualizado el ingreso', 200);
+            return response()->json(['message' => 'Se ha actualizado el ingreso'], 200);
         } else {
             return response()->json([
-                'error' => 'El ingreso no existe'
+                'message' => 'El ingreso no existe'
             ], 500);
         }
     }
@@ -68,10 +74,10 @@ class ingresoController extends Controller
         $ingreso_bd = ingreso::find($id);
         if (!is_null($ingreso_bd)) {
             $ingreso_bd->delete();
-            return response()->json('Se ha eliminado el ingreso', 200);
+            return response()->json(['message' => 'Se ha eliminado el ingreso'], 200);
         } else {
             return response()->json([
-                'error' => 'El ingreso no existe'
+                'message' => 'El ingreso no existe'
             ]);
         }
     }

@@ -8,12 +8,12 @@ import { TypeProfitService } from '../../type-profit/type-profit.service';
 import { ProfitService } from '../profit.service';
 import { Location } from '@angular/common';
 import { RevenueService } from './revenue-detail/revenue.service';
+import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.validator';
 
 @Component({
   selector: 'app-profit-detail',
   templateUrl: './profit-detail.component.html',
-  styleUrls: ['./profit-detail.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./profit-detail.component.scss']
 })
 export class ProfitDetailComponent implements OnInit {
 
@@ -23,6 +23,7 @@ export class ProfitDetailComponent implements OnInit {
   typesProfit: TypeProfit[] = [];
   cols: any[];
   isMonthly: boolean;
+  loading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,11 +49,17 @@ export class ProfitDetailComponent implements OnInit {
       this.profit = new Profit();
       this.buildForm();
     } else {
+      Promise.resolve().then(() => this.loading = true);
       this.profitService.find(this.activatedRoute.snapshot.params.id).subscribe(
         (response: any) => {
           this.profit = response.data;
           this.isMonthly = this.profit.id_tipo_ganancia.valor.includes('Mensuales');
+          this.loading = false;
           this.buildForm();
+        },
+        response => {
+          this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       )
     }
@@ -69,32 +76,39 @@ export class ProfitDetailComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      nombre: new FormControl(this.profit.nombre, Validators.required),
+      nombre: new FormControl(this.profit.nombre, [Validators.required, noWhitespaceValidator]),
       id_tipo_ganancia: new FormControl({ value: this.profit.id_tipo_ganancia ? this.profit.id_tipo_ganancia : '', disabled: this.profit.id_tipo_ganancia ? true : false }, Validators.required)
     });
   }
 
   save() {
-    const profit = Object.assign({}, this.form.value);
+    Promise.resolve().then(() => this.loading = true);
     if (this.profit.id) {
+      const profit: Profit = Object.assign(this.profit, this.form.value);
       this.profitService.update(profit, this.profit.id).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.profit = response.data;
+          this.loading = false;
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
     } else {
+      const profit: Profit = Object.assign({}, this.form.value);
       this.profitService.add(profit).subscribe(
         (response: any) => {
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.profit = response.data;
           this.isMonthly = this.profit.id_tipo_ganancia.valor.includes('Mensuales');
+          this.loading = false;
+          this.form.get('id_tipo_ganancia').disable();
           this.location.replaceState('/home/profits/' + this.profit.id);
         },
         response => {
+          this.loading = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
         }
       );
@@ -118,9 +132,12 @@ export class ProfitDetailComponent implements OnInit {
 
   delete(id: number) {
     this.revenueService.delete(id).subscribe(
-      () => {
+      (response: any) => {
         this.profit.ingresos = this.profit.ingresos.filter(ingreso => ingreso.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el ingreso' })
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
+      },
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

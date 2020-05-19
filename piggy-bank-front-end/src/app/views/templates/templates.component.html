@@ -35,17 +35,33 @@
                                 <label for="anno">Año</label>
                                 <input type="number" class="form-control form-control-user" id="anno"
                                     formControlName="anno">
+                                <div *ngIf="addForm.controls.anno.invalid && (addForm.controls.anno.dirty || addForm.controls.anno.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="addForm.controls.anno.errors.required">
+                                        El año es obligatorio
+                                    </div>
+                                    <div *ngIf="addForm.controls.anno.errors.pattern">
+                                        El año debe estar formado por cuatro números
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-4 form-group">
                                 <label for="mes">Mes</label>
                                 <p-dropdown [options]="months" formControlName="mes" placeholder="Seleccione un mes"
                                     optionLabel="name" [showClear]="true">
                                 </p-dropdown>
+                                <div *ngIf="addForm.controls.mes.invalid && (addForm.controls.mes.dirty || addForm.controls.mes.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="addForm.controls.mes.errors.required">
+                                        El mes es obligatorio
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-4 form-group text-right d-flex align-items-end">
-                                <button [disabled]="addForm.pristine || addForm.invalid" type="button"
+                                <button [disabled]="addForm.pristine || addForm.invalid || loading" type="button"
                                     (click)="addTemplate()" class="btn btn-primary mr-4">
-                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                    <i class="fas" [ngClass]="{'fa-plus': !loading, 'fa-spinner fa-spin': loading}"
+                                        aria-hidden="true"></i>
                                     <span> Añadir plantilla</span>
                                 </button>
                             </div>
@@ -57,12 +73,27 @@
                                 <label for="anno">Año</label>
                                 <input type="number" class="form-control form-control-user" id="anno"
                                     formControlName="anno">
+                                <div *ngIf="cloneForm.controls.anno.invalid && (cloneForm.controls.anno.dirty || cloneForm.controls.anno.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="cloneForm.controls.anno.errors.required">
+                                        El año es obligatorio
+                                    </div>
+                                    <div *ngIf="cloneForm.controls.anno.errors.pattern">
+                                        El año debe estar formado por cuatro números
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-4 form-group">
                                 <label for="mes">Mes</label>
                                 <p-dropdown [options]="months" formControlName="mes" placeholder="Seleccione un mes"
                                     optionLabel="name" [showClear]="true">
                                 </p-dropdown>
+                                <div *ngIf="cloneForm.controls.mes.invalid && (cloneForm.controls.mes.dirty || cloneForm.controls.mes.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="cloneForm.controls.mes.errors.required">
+                                        El mes es obligatorio
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -70,17 +101,30 @@
                                 <label for="anno">Nuevo año</label>
                                 <input type="number" class="form-control form-control-user" id="anno"
                                     formControlName="newAnno">
+                                <div *ngIf="cloneForm.controls.newAnno.invalid && (cloneForm.controls.newAnno.dirty || cloneForm.controls.newAnno.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="cloneForm.controls.newAnno.errors.required">
+                                        El año es obligatorio
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-4 form-group">
                                 <label for="mes">Nuevo mes</label>
                                 <p-dropdown [options]="months" formControlName="newMes" placeholder="Seleccione un mes"
                                     optionLabel="name" [showClear]="true">
                                 </p-dropdown>
+                                <div *ngIf="cloneForm.controls.newMes.invalid && (cloneForm.controls.newMes.dirty || cloneForm.controls.newMes.touched)"
+                                    class="alert alert-danger mt-1">
+                                    <div *ngIf="cloneForm.controls.newMes.errors.required">
+                                        El mes es obligatorio
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-12 col-md-4 form-group text-right d-flex align-items-end">
-                                <button [disabled]="cloneForm.pristine || cloneForm.invalid" type="button"
+                                <button [disabled]="cloneForm.pristine || cloneForm.invalid || loading" type="button"
                                     (click)="clone()" class="btn btn-primary">
-                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                    <i class="fas" [ngClass]="{'fa-edit': !loading, 'fa-spinner fa-spin': loading}"
+                                        aria-hidden="true"></i>
                                     <span> Copiar plantilla</span>
                                 </button>
                             </div>
@@ -107,19 +151,23 @@
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-12 col-md-4 col-lg-3 mt-3" *ngFor="let template of templates">
+                            <div class="col-12 col-md-4 col-xl-3 mt-3" *ngFor="let template of templates">
                                 <div class="card bg-secondary border border-dark">
-                                    <div class="card-body d-flex justify-content-between">
-                                        <div>{{getMonth(template.mes)}}</div>
-                                        <div>
-                                            <button type="button" (click)="editTemplate(template.id)"
-                                                class="btn btn-primary">
-                                                <i class="fas fa-edit" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" (click)="confirm(template.id)"
-                                                class="ml-1 btn btn-primary">
-                                                <i class="fas fa-trash" aria-hidden="true"></i>
-                                            </button>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                {{getMonth(template.mes)}}
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="button" (click)="editTemplate(template.id)"
+                                                    class="btn btn-primary">
+                                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" (click)="confirm(template.id)"
+                                                    class="ml-1 btn btn-primary">
+                                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +175,7 @@
                         </div>
                     </div>
                     <ng-template #noTemplates>
-                        <div class="row">
+                        <div class="row" *ngIf="!loading">
                             <div class="col-4 offset-4 form-group">
                                 <img src="assets/notfound.png" class="d-block mx-auto img-not-found"
                                     alt="No existen resultados">
@@ -138,6 +186,4 @@
             </div>
         </div>
     </div>
-    <p-toast [style]="{marginTop: '80px'}"></p-toast>
-    <p-confirmDialog [style]="{width: '50vw'}" [acceptLabel]="'Sí'"></p-confirmDialog>
 </div>

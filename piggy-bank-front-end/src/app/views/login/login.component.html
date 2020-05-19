@@ -36,7 +36,7 @@
                                         </div>
                                     </div>
                                     <button type="submit"
-                                        [disabled]="loginForm.pristine || loginForm.invalid"
+                                        [disabled]="loginForm.pristine || loginForm.invalid || loading"
                                         class="btn btn-secondary btn-user btn-block">
                                         Iniciar sesión
                                     </button>

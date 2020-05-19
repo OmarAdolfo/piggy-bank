@@ -11,7 +11,7 @@ import { ProfitService } from './profit.service';
   selector: 'app-profit',
   templateUrl: './profit.component.html',
   styleUrls: ['./profit.component.scss'],
-  providers: [MessageService, ConfirmationService]
+
 })
 export class ProfitComponent implements OnInit {
 
@@ -20,6 +20,8 @@ export class ProfitComponent implements OnInit {
   cols: any[];
   roles: any[];
   typesProfit: TypeProfit[] = [];
+  totalRecords: number;
+  loading: boolean;
 
   constructor(
     private profitService: ProfitService,
@@ -63,11 +65,17 @@ export class ProfitComponent implements OnInit {
     this.router.navigate(['/home/profits/new']);
   }
 
-  search(sortable?: string, orderBy?: number) {
-    this.profitService.get(this.form.value, sortable, orderBy).subscribe(
+  search(sortable?: string, orderBy?: number, page?: number) {
+    Promise.resolve().then(() => this.loading = true);
+    this.profitService.get(this.form.value, sortable, orderBy, page).subscribe(
       (response: any) => {
         const array: Profit[] = response.data.data;
         this.profits = array;
+        this.totalRecords = response.data.total;
+        this.loading = false;
+      },
+      () => {
+        this.loading = false;
       }
     );
   }
@@ -75,7 +83,8 @@ export class ProfitComponent implements OnInit {
   customSort(eve: LazyLoadEvent) {
     const sortable = eve.sortField;
     const orderBy = eve.sortOrder;
-    this.search(sortable, orderBy);
+    const page = (eve.first / eve.rows) + 1;
+    this.search(sortable, orderBy, page);
   }
 
   confirm(id: number) {
@@ -91,12 +100,12 @@ export class ProfitComponent implements OnInit {
 
   delete(id: number) {
     this.profitService.delete(id).subscribe(
-      () => {
-        this.profits = this.profits.filter((val, i) => i != id);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
+      (response: any) => {
+        this.profits = this.profits.filter(profit => profit.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
-      error => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha eliminado el gasto' })
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message })
       }
     );
   }

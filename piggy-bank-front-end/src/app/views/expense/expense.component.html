@@ -15,12 +15,12 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="nombre">Nombre</label>
                                 <input type="text" class="form-control form-control-user" id="nombre"
                                     formControlName="nombre">
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="nombre">Tipo de gasto</label>
                                 <p-dropdown [options]="typesExpense" formControlName="tipo_gasto"
                                     placeholder="Seleccione tipo de gasto" optionLabel="valor" [showClear]="true">
@@ -100,6 +100,3 @@
         </div>
     </div>
 </div>
-
-<p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" [acceptLabel]="'Sí'"></p-confirmDialog>

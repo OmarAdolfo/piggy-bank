@@ -68,7 +68,7 @@ class PlantillaController extends Controller
             'newMes' => 'required', 
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['message' => $validator->errors()], 200);
         }
         $plantillas_bd = Plantilla::where('anno', '=', $request['newAnno'])->where('mes', '=', $request['newMes'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
         if (is_null($plantillas_bd)) {
@@ -152,9 +152,15 @@ class PlantillaController extends Controller
 
     public function show($id) {
         $plantilla = Plantilla::find($id);
-        return response()->json(array(
-            'data' => $plantilla->load('pagos')->load('ingresos')
-        ), 200);
+        if (!is_null($plantilla)) {
+            return response()->json(array(
+                'data' => $plantilla->load('pagos')->load('ingresos')
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La plantilla no existe'
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -164,7 +170,7 @@ class PlantillaController extends Controller
             'mes' => 'required'
         ]);
         if ($validator->fails()) { 
-            return response()->json(['error'=>$validator->errors()]);
+            return response()->json(['message' => $validator->errors()], 500);
         }
         $postArray = $request->all();
         $curMonth = date('m');
@@ -202,11 +208,20 @@ class PlantillaController extends Controller
         $plantilla_bd = Plantilla::find($id);
         if (!is_null($plantilla_bd)) {
             $plantilla_bd->delete();
-            return response()->json(['message' => 'Se ha eliminado la plantilla'], 200);
+            $years = DB::table('plantillas')
+            ->select('anno')
+            ->distinct()
+            ->where('id_usuario', '=', JWTAuth::user()->id)
+            ->orderBy('anno', 'DESC')
+            ->get();
+            return response()->json([
+                'message' => 'Se ha eliminado la plantilla',
+                'years' => $years
+            ], 200);
         } else {
             return response()->json([
-                'error' => 'La plantilla no existe'
-            ]);
+                'message' => 'La plantilla no existe'
+            ], 500);
         }
     }
 
@@ -240,10 +255,10 @@ class PlantillaController extends Controller
                 $plantilla_bd->ingresos()->save($ingresobd);       
             }
 
-            return response()->json('Se ha actualizado la plantilla', 200);
+            return response()->json(['message' => 'Se ha actualizado la plantilla'], 200);
         } else {
             return response()->json([
-                'error' => 'La plantilla no existe'
+                'message' => 'La plantilla no existe'
             ], 500);
         }
     }

@@ -18,8 +18,7 @@ import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
-  styleUrls: ['./create-template.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./create-template.component.scss']
 })
 export class CreateTemplateComponent implements OnInit {
 

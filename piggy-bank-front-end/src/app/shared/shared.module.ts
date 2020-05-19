@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/Navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { TableComponent } from './components/table/table.component';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -46,14 +45,12 @@ import { LoaderComponent } from './components/loader/loader.component';
     NavbarComponent,
     HomeComponent,
     SidebarComponent,
-    TableComponent,
     TwoDigitDecimaNumberDirective,
     LoaderComponent
   ],
   exports: [
     NavbarComponent,
     HomeComponent,
-    TableComponent,
     LoaderComponent,
     DropdownModule,
     CommonModule,

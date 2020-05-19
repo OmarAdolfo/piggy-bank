@@ -9,8 +9,7 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-payment-detail',
   templateUrl: './payment-detail.component.html',
-  styleUrls: ['./payment-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./payment-detail.component.scss']
 })
 export class PaymentDetailComponent implements OnInit {
 

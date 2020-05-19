@@ -10,8 +10,7 @@ import { noWhitespaceValidator } from 'src/app/shared/validators/nowhitespace.va
 @Component({
   selector: 'app-type-expense-detail',
   templateUrl: './type-expense-detail.component.html',
-  styleUrls: ['./type-expense-detail.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./type-expense-detail.component.scss']
 })
 export class TypeExpenseDetailComponent implements OnInit {
 

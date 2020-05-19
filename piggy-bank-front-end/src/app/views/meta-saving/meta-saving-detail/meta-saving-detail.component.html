@@ -6,7 +6,7 @@
     </div>
     <hr>
 
-    <div class="row" *ngIf="!metaSaving">
+    <div class="row" *ngIf="!metaSaving && !loading">
         <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
     </div>
 
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="anno">Año</label>
                                 <input type="number" class="form-control form-control-user" id="anno"
                                     formControlName="anno">
@@ -28,9 +28,12 @@
                                     <div *ngIf="form.controls.anno.errors.required">
                                         El año es obligatorio
                                     </div>
+                                    <div *ngIf="form.controls.anno.errors.pattern">
+                                        El año debe estar formado por cuatro números
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="cantidad">Cantidad</label>
                                 <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
                                     placeholder="XX.XX" appTwoDigitDecimaNumber>
@@ -44,12 +47,13 @@
                         </div>
                         <div class="row mt-1">
                             <div class="col-12 text-right mt-2">
-                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                                    class="btn btn-primary mr-1">
-                                    <span *ngIf="newMetaSaving"> <i class="fas fa-plus" aria-hidden="true"></i>
-                                        Añadir</span>
-                                    <span *ngIf="!newMetaSaving"> <i class="fas fa-edit" aria-hidden="true"></i>
-                                        Editar</span>
+                                <button [disabled]="form.pristine || form.invalid || loading" type="button"
+                                    (click)="save()" class="btn btn-primary mr-1">
+                                    <span>
+                                        <i class="fas" [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
+                                            aria-hidden="true"></i>
+                                        Guardar
+                                    </span>
                                 </button>
                             </div>
                         </div>

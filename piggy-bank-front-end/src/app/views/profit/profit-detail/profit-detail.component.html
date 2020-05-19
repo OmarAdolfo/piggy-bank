@@ -6,7 +6,7 @@
     </div>
     <hr>
 
-    <div class="row" *ngIf="!profit">
+    <div class="row" *ngIf="!profit && !loading">
         <img src="assets/notfound.png" class="d-block mx-auto img-not-found" alt="No existen resultados">
     </div>
 
@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="nombre">Nombre</label>
                                 <input type="text" class="form-control form-control-user" id="nombre"
                                     formControlName="nombre">
@@ -28,9 +28,12 @@
                                     <div *ngIf="form.controls.nombre.errors.required">
                                         El nombre es obligatorio
                                     </div>
+                                    <div *ngIf="form.controls.nombre.errors.whitespace">
+                                        El nombre no puede ser vacío
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="id_tipo_ganancia">Tipo de ganancia</label>
                                 <p-dropdown [options]="typesProfit" formControlName="id_tipo_ganancia"
                                     placeholder="Seleccione tipo de ganancia" optionLabel="valor" [showClear]="true"
@@ -53,12 +56,13 @@
                         </div>
                         <div class="row mt-1">
                             <div class="col-12 text-right mt-2">
-                                <button [disabled]="form.pristine || form.invalid" type="button" (click)="save()"
-                                    class="btn btn-primary mr-1">
-                                    <span *ngIf="newProfit"> <i class="fas fa-plus" aria-hidden="true"></i>
-                                        Añadir</span>
-                                    <span *ngIf="!newProfit"> <i class="fas fa-edit" aria-hidden="true"></i>
-                                        Editar</span>
+                                <button [disabled]="form.pristine || form.invalid || loading" type="button"
+                                    (click)="save()" class="btn btn-primary mr-1">
+                                    <span>
+                                        <i class="fas" [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
+                                            aria-hidden="true"></i>
+                                        Guardar
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -127,6 +131,3 @@
         </div>
     </div>
 </div>
-
-<p-toast [style]="{marginTop: '80px'}"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>

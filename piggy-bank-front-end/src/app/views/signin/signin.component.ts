@@ -12,11 +12,12 @@ import { Router } from '@angular/router';
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
-  providers: [SigninService, MessageService]
+  providers: [SigninService]
 })
 export class SigninComponent implements OnInit {
 
   signinForm: FormGroup;
+  loading: boolean;
 
   constructor(
     @Inject(DOCUMENT) private _document,
@@ -55,13 +56,16 @@ export class SigninComponent implements OnInit {
   }
 
   signin() {
+    Promise.resolve().then(() => this.loading = true);
     const signIn: SignIn = Object.assign({}, this.signinForm.value);
     this.signinService.signIn(signIn).subscribe(
       (response: any) => {
         this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });
+        this.loading = false;
         this.router.navigate(['login']);
       },
       response => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     )

@@ -68,11 +68,11 @@ class MetaAhorroController extends Controller
         $meta_ahorro_bd = MetaAhorro::find($id);
         if (!is_null($meta_ahorro_bd)) {
             $meta_ahorro_bd->delete();
-            return response()->json('Se ha eliminado la meta de ahorro', 200);
+            return response()->json(['message' => 'Se ha eliminado la meta de ahorro'], 200);
         } else {
             return response()->json([
                 'error' => 'La meta de ahorro no existe'
-            ]);
+            ], 500);
         }
     }
 
@@ -93,7 +93,7 @@ class MetaAhorroController extends Controller
                 $meta_ahorro_bd->cantidad = $postArray['cantidad'];
                 $meta_ahorro_bd->anno = $postArray['anno'];
                 $meta_ahorro_bd->save();
-                return response()->json('Se ha actualizado la meta de ahorro', 200);
+                return response()->json(['message' => 'Se ha actualizado la meta de ahorro'], 200);
             } else {
                 return response()->json([
                     'error' => 'La meta de ahorro con ese año ya existe'
@@ -108,9 +108,15 @@ class MetaAhorroController extends Controller
 
     public function show($id) {
         $meta_ahorro = MetaAhorro::find($id);
-        return response()->json(array(
-            'data' => $meta_ahorro
-        ), 200);
+        if (!is_null($meta_ahorro)) {
+            return response()->json(array(
+                'data' => $meta_ahorro
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La meta de ahorro no existe'
+            ], 500);
+        }
     }
 
 }

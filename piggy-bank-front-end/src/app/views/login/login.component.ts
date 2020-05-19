@@ -12,11 +12,12 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [MessageService, LoginService],
+  providers: [LoginService],
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
   loginForm: FormGroup;
+  loading: boolean;
 
   constructor(
     @Inject(DOCUMENT) private _document,
@@ -60,12 +61,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   login() {
     const login: Login = Object.assign({}, this.loginForm.value);
+    Promise.resolve().then(() => this.loading = true);
     this.loginService.login(login).subscribe(
       (response: any) => {
         this.authenticationService.saveToken(response.token);
+        this.loading = false;
         this.router.navigate([this.authenticationService.getUrlNavigation()]);
       },
       response => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );

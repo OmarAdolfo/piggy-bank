@@ -4,13 +4,11 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { GoodPractice } from 'src/app/shared/models/good-practice';
 import { GoodPracticeService } from './good-practice.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
 @Component({
   selector: 'app-good-practice',
   templateUrl: './good-practice.component.html',
-  styleUrls: ['./good-practice.component.scss'],
-  providers: [MessageService, ConfirmationService]
+  styleUrls: ['./good-practice.component.scss']
 })
 export class GoodPracticeComponent implements OnInit {
 

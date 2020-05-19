@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="cantidad">Cantidad</label>
                                 <input type="textbox" class="form-control form-control-user" formControlName="cantidad"
                                     placeholder="XX.XX" appTwoDigitDecimaNumber>
@@ -30,7 +30,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="fecha">Fecha del pago</label>
                                 <p-calendar formControlName="fecha" [locale]="es" dateFormat="yy-mm-dd"
                                     [dataType]="'string'">
@@ -47,14 +47,11 @@
                             <div class="col-12 text-right mt-2">
                                 <button [disabled]="form.pristine || form.invalid || loading" type="button"
                                     (click)="save()" class="btn btn-primary mr-1">
-                                    <span *ngIf="newPayment"> <i class="fas"
-                                            [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
+                                    <span>
+                                        <i class="fas" [ngClass]="{'fa-save': !loading, 'fa-spinner fa-spin': loading}"
                                             aria-hidden="true"></i>
-                                        Guardar</span>
-                                    <span *ngIf="!newPayment"> <i class="fas"
-                                            [ngClass]="{'fa-edit': !loading, 'fa-spinner fa-spin': loading}"
-                                            aria-hidden="true"></i>
-                                        Editar</span>
+                                        Guardar
+                                    </span>
                                 </button>
                             </div>
                         </div>

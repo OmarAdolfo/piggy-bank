@@ -57,9 +57,15 @@ class GananciaController extends Controller
 
     public function show($id) {
         $ganancia = Ganancia::find($id);
-        return response()->json(array(
-            'data' => $ganancia->load('ingresos')
-        ), 200);
+        if (!is_null($ganancia)) {
+            return response()->json(array(
+                'data' => $ganancia->load('ingresos')
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La ganancia no existe'
+            ], 500);
+        }
     }
 
     public function store(Request $request)
@@ -81,7 +87,7 @@ class GananciaController extends Controller
             $ganancia->save();
             return response()->json([
                 'message' => 'Se ha creado una nueva ganancia',
-                'data' => $ganancia
+                'data' => $ganancia->load('id_tipo_ganancia')
             ], 200);
         } else {
             return response()->json([
@@ -107,15 +113,18 @@ class GananciaController extends Controller
                 $ganancia_bd->nombre = $postArray['nombre'];
                 $ganancia_bd->id_tipo_ganancia = $postArray['id_tipo_ganancia']['id']; 
                 $ganancia_bd->save();
-                return response()->json(['message' => 'Se ha actualizado la ganancia'], 200);
+                return response()->json([
+                    'message' => 'Se ha actualizado la ganancia',
+                    'data' => $ganancia_bd
+                ], 200);
             } else {
                 return response()->json([
-                    'error' => 'La ganancia ya existe'
+                    'message' => 'La ganancia ya existe'
                 ], 500);
             }
         } else {
             return response()->json([
-                'error' => 'La ganancia no existe'
+                'message' => 'La ganancia no existe'
             ], 500);
         }
     }

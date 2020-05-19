@@ -14,9 +14,15 @@ class PagoController extends Controller
 
     public function show($id) {
         $pago = Pago::find($id);
-        return response()->json(array(
-            'data' => $pago
-        ), 200);
+        if (!is_null($pago)) {
+            return response()->json(array(
+                'data' => $pago
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'El pago no existe'
+            ], 500);
+        }
     }
 
     public function store(Request $request)

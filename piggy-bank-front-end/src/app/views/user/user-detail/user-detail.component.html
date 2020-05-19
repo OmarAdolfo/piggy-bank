@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <form [formGroup]="form">
                         <div class="row">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="nombre">Nombre</label>
                                 <input type="text" class="form-control form-control-user" id="nombre"
                                     formControlName="nombre">
@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="apellidos">Apellidos</label>
                                 <input type="text" class="form-control form-control-user" id="apellidos"
                                     formControlName="apellidos">
@@ -47,9 +47,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-5">
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="rol">Rol</label>
                                 <div>
                                     <p-selectButton [options]="roles" formControlName="rol"></p-selectButton>
@@ -61,7 +59,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6 form-group">
+                            <div class="col-12 col-md-6 form-group">
                                 <label for="email">Correo electrónico</label>
                                 <input type="text" class="form-control form-control-user" id="email"
                                     formControlName="email">

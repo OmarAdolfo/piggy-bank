@@ -117,7 +117,7 @@ class TipoGastoController extends Controller
 
     public function show($id) {
         $tipo_gasto = TipoGasto::find($id);
-        if (!is_null($tipo_gasto)) {
+        if (!is_null($tipo_gasto) && $tipo_gasto->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $tipo_gasto
             ), 200);

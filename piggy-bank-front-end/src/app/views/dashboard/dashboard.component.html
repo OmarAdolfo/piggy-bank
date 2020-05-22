@@ -6,7 +6,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-12 col-md-6 col-lg-4 mt-3 mt-lg-0">
+        <div class="col-12 col-md-6 col-xl-4 mt-3 mt-xl-0">
             <div class="card card-data h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-4 mt-3 mt-lg-0">
+        <div class="col-12 col-md-6 col-xl-4 mt-3 mt-xl-0">
             <div class="card card-data h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-4 mt-3 mt-lg-0">
+        <div class="col-12 col-md-6 col-xl-4 mt-3 mt-xl-0">
             <div class="card card-data h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -63,7 +63,7 @@
                     <div *ngIf="unpaid.length > 0; else noAnnualReminders">
                         <div class="alert alert-secondary text-dark" role="alert" *ngFor="let payment of unpaid">
                             El pago con nombre <a
-                                (click)="editTemplate(payment.plantilla_id)"><strong>{{payment.gasto_id.nombre}}</strong></a>
+                                (click)="editTemplate(payment.plantilla_id.id)"><strong>{{payment.gasto_id.nombre}}</strong></a>
                             del mes de {{getMonth(payment.plantilla_id.mes)}} de {{payment.plantilla_id.anno}}
                             aún no se ha pagado
                         </div>

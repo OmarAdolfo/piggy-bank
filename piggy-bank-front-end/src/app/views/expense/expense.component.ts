@@ -34,8 +34,6 @@ export class ExpenseComponent implements OnInit {
       { field: 'nombre', header: 'Nombre' },
       { field: 'fecha_fin', header: 'Fecha de fin' },
       { field: 'tipoGasto', header: 'Tipo Gasto' },
-      { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' },
       { field: '', header: 'Opciones' }
     ];
   }
@@ -65,9 +63,9 @@ export class ExpenseComponent implements OnInit {
     this.router.navigate(['/home/expenses/new']);
   }
 
-  search(sortField?: string, sortOrder?: number, page?: number) {
+  search(sortable?: string, sortOrder?: number, page?: number) {
     Promise.resolve().then(() => this.loading = true);
-    this.expenseService.get(this.form.value, sortField, sortOrder, page).subscribe(
+    this.expenseService.get(this.form.value, sortable, sortOrder, page).subscribe(
       (response: any) => {
         const array: Expense[] = response.data.data;
         this.expenses = array;

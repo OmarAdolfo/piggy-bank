@@ -34,9 +34,7 @@ export class ProfitComponent implements OnInit {
     this.cols = [
       { field: 'nombre', header: 'Nombre' },
       { field: 'fecha_fin', header: 'Fecha de fin' },
-      { field: 'tipoGasto', header: 'Tipo Gasto' },
-      { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' },
+      { field: 'tipoGanancia', header: 'Tipo Ganancia' },
       { field: '', header: 'Opciones' }
     ];
   }

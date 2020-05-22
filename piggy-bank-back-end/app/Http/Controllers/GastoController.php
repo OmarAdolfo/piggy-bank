@@ -78,7 +78,7 @@ class GastoController extends Controller
 
     public function show($id) {
         $gasto = Gasto::find($id);
-        if (!is_null($gasto)) {
+        if (!is_null($gasto) && $gasto->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $gasto->load('pagos')
             ), 200);
@@ -105,8 +105,10 @@ class GastoController extends Controller
             $gasto->nombre = $postArray['nombre']; 
             $gasto->id_tipo_gasto = $postArray['id_tipo_gasto']['id']; 
             $gasto->id_usuario = JWTAuth::user()->id; 
-            if ($request->has('fechaFin')) {
-                $gasto->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fechaFin']));
+            if (!is_null($postArray['fecha_fin'])) {
+                $gasto->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fecha_fin']));
+            } else {
+                $gasto->fecha_fin = null;
             }
             if ($request->has('flexible')) {
                 $gasto->flexible = $postArray['flexible']; 
@@ -141,13 +143,15 @@ class GastoController extends Controller
             if (is_null($gasto_bd_repeat) || $gasto_bd_repeat->id == $gasto_bd->id ) {
                 $gasto_bd->nombre = $postArray['nombre'];
                 $gasto_bd->id_tipo_gasto = $postArray['id_tipo_gasto']['id']; 
-                if ($request->has('fechaFin')) {
-                    $gasto_bd->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fechaFin']));
+                if (!is_null($postArray['fecha_fin'])) {
+                    $gasto_bd->fecha_fin = date('Y-m-d h:i:s', strtotime($postArray['fecha_fin']));
+                } else {
+                    $gasto_bd->fecha_fin = null;
                 }
                 if ($request->has('flexible')) {
                     $gasto_bd->flexible = $postArray['flexible']; 
                 } else {
-                    $gasto_bd->flexible = false; 
+                    $gasto_bd->flexible = 0; 
                 }
                 $gasto_bd->save();
                 return response()->json([

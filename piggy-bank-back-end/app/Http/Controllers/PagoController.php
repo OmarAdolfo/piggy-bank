@@ -14,7 +14,7 @@ class PagoController extends Controller
 
     public function show($id) {
         $pago = Pago::find($id);
-        if (!is_null($pago)) {
+        if (!is_null($pago) && $pago->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $pago
             ), 200);

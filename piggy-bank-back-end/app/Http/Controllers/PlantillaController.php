@@ -152,7 +152,7 @@ class PlantillaController extends Controller
 
     public function show($id) {
         $plantilla = Plantilla::find($id);
-        if (!is_null($plantilla)) {
+        if (!is_null($plantilla) && $plantilla->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $plantilla->load('pagos')->load('ingresos')
             ), 200);

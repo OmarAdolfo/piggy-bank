@@ -115,7 +115,7 @@ class TipoGananciaController extends Controller
 
     public function show($id) {
         $tipo_ganancia = TipoGanancia::find($id);
-        if (!is_null($tipo_ganancia)) {
+        if (!is_null($tipo_ganancia) && $tipo_ganancia->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $tipo_ganancia
             ), 200);

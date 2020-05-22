@@ -62,7 +62,7 @@ export class DashboardComponent implements OnInit {
   }
 
   editTemplate(id: number) {
-    this.router.navigate(['/admin/templates/' + id]);
+    this.router.navigate(['/home/templates/' + id]);
   }
 
   getMonth(value: number) {

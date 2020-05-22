@@ -108,7 +108,7 @@ class MetaAhorroController extends Controller
 
     public function show($id) {
         $meta_ahorro = MetaAhorro::find($id);
-        if (!is_null($meta_ahorro)) {
+        if (!is_null($meta_ahorro) && $meta_ahorro->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $meta_ahorro
             ), 200);

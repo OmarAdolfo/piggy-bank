@@ -39,6 +39,7 @@ export class CreateTemplateComponent implements OnInit {
   goodPractices: GoodPractice[] = [];
   goodPracticesUsed: any[] = [];
   tips: any[] = [];
+  loading: boolean;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -58,6 +59,7 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    Promise.resolve().then(() => this.loading = true);
     this.isNewTemplate = this.activatedRoute.snapshot.params.id === 'new' ? true : false;
     combineLatest(
       this.getPrimaryMonthlyExpenses(),
@@ -73,7 +75,12 @@ export class CreateTemplateComponent implements OnInit {
         this.resources = this.monthlyProfits;
         this.goodPractices = goodPractices.data;
         this.template = template.data;
+        this.loading = false;
         this.calculate();
+      },
+      response => {
+        this.loading = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     )
   }
@@ -122,20 +129,30 @@ export class CreateTemplateComponent implements OnInit {
 
   addResouce() {
     if (this.selectedResource.id_tipo_ganancia) {
-      const revenue = new Revenue();
-      revenue.ganancia_id = this.selectedResource;
-      revenue.cantidad = 0;
-      revenue.plantilla_id = this.template.id;
-      revenue.id = this.selectedResource.id;
-      this.template.ingresos.push(revenue);
+      const exists = this.template.ingresos.filter(ingreso => ingreso.id === this.selectedResource.id);
+      if (exists) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La ganancia ya está añadida en la plantilla' });
+      } else {
+        const revenue = new Revenue();
+        revenue.ganancia_id = this.selectedResource;
+        revenue.cantidad = 0;
+        revenue.plantilla_id = this.template.id;
+        revenue.id = this.selectedResource.id;
+        this.template.ingresos.push(revenue);
+      }
     } else {
-      const payment = new Payment();
-      payment.gasto_id = this.selectedResource;
-      payment.cantidad = 0;
-      payment.pagado = false;
-      payment.plantilla_id = this.template.id;
-      payment.id = this.selectedResource.id;
-      this.template.pagos.push(payment);
+      const exists = this.template.pagos.filter(pago => pago.id === this.selectedResource.id);
+      if (exists) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El gasto ya está añadido en la plantilla' });
+      } else {
+        const payment = new Payment();
+        payment.gasto_id = this.selectedResource;
+        payment.cantidad = 0;
+        payment.pagado = false;
+        payment.plantilla_id = this.template.id;
+        payment.id = this.selectedResource.id;
+        this.template.pagos.push(payment);
+      }
     }
   }
 

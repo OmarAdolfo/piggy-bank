@@ -60,7 +60,7 @@ export class SigninComponent implements OnInit {
     const signIn: SignIn = Object.assign({}, this.signinForm.value);
     this.signinService.signIn(signIn).subscribe(
       (response: any) => {
-        this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response });
+        this.notificationService.addMessage({ severity: 'success', summary: 'Éxito', detail: response.message });
         this.loading = false;
         this.router.navigate(['login']);
       },

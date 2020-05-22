@@ -62,7 +62,7 @@
                                     (click)="addTemplate()" class="btn btn-primary mr-4">
                                     <i class="fas" [ngClass]="{'fa-plus': !loading, 'fa-spinner fa-spin': loading}"
                                         aria-hidden="true"></i>
-                                    <span> Añadir plantilla</span>
+                                    <span> Añadir</span>
                                 </button>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                                     (click)="clone()" class="btn btn-primary">
                                     <i class="fas" [ngClass]="{'fa-edit': !loading, 'fa-spinner fa-spin': loading}"
                                         aria-hidden="true"></i>
-                                    <span> Copiar plantilla</span>
+                                    <span> Copiar</span>
                                 </button>
                             </div>
                         </div>
@@ -158,7 +158,7 @@
                                             <div class="col-12">
                                                 {{getMonth(template.mes)}}
                                             </div>
-                                            <div class="col-12">
+                                            <div class="col-12 text-right">
                                                 <button type="button" (click)="editTemplate(template.id)"
                                                     class="btn btn-primary">
                                                     <i class="fas fa-edit" aria-hidden="true"></i>

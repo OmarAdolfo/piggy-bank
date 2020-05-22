@@ -14,7 +14,7 @@ class ingresoController extends Controller
 
     public function show($id) {
         $ingreso = Ingreso::find($id);
-        if (!is_null($ingreso)) {
+        if (!is_null($ingreso) && $ingreso->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $ingreso
             ), 200);

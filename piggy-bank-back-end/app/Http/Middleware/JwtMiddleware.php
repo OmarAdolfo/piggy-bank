@@ -22,20 +22,17 @@ class JwtMiddleware extends BaseMiddleware
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
-            return response()->json(['error' => 'Usuario no autenticado'], 401);
+            return response()->json(['message' => 'Usuario no autenticado'], 401);
         }
 
         if ($user && in_array($user->rol, $roles)) {
             return $next($request);
         }
     
-        return $this->unauthorized();
-    }
-
-    private function unauthorized(){
         return response()->json([
             'message' => 'No tienes permisos suficientes para acceder a este recurso',
             'success' => false
         ], 403);
     }
+
 }

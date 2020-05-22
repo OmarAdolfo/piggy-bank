@@ -57,7 +57,7 @@ class GananciaController extends Controller
 
     public function show($id) {
         $ganancia = Ganancia::find($id);
-        if (!is_null($ganancia)) {
+        if (!is_null($ganancia) && $ganancia->id_usuario === JWTAuth::user()->id) {
             return response()->json(array(
                 'data' => $ganancia->load('ingresos')
             ), 200);

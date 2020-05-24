@@ -151,6 +151,17 @@ const routes: Routes = [
           ),
         data: {
           rol: Role.User.toString()
+        },
+      },
+      {
+        path: "help",
+        canActivate: [AuthenticationGuard],
+        loadChildren: () =>
+          import("./views/help/help.module").then(
+            m => m.HelpModule
+          ),
+        data: {
+          rol: Role.All.toString()
         }
       }
     ]

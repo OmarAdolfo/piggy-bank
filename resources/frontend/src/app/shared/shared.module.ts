@@ -70,7 +70,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     InputSwitchModule,
     CalendarModule,
     TwoDigitDecimaNumberDirective,
-    RadioButtonModule
+    RadioButtonModule,
   ]
 })
 export class SharedModule {

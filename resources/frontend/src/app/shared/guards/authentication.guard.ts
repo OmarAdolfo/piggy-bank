@@ -2,6 +2,7 @@ import { Injectable, ɵConsole } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
+import { Role } from '../models/role';
 
 @Injectable({
     providedIn: 'root'
@@ -22,9 +23,13 @@ export class AuthenticationGuard implements CanActivate {
             if (state.url === '/home') {
                 this.router.navigate([this.authenticationService.getUrlNavigation()]);
             }
-            if (!this.authenticationService.isLogged() || (route.data.rol && this.authenticationService.getRol() !== route.data.rol)) {
-                this.router.navigate(['login']);
-                return false;
+            if (!this.authenticationService.isLogged() || (route.data.rol && (this.authenticationService.getRol() !== route.data.rol))) {
+                if (route.data.rol === Role.All.toString()) {
+                    return true;
+                } else {
+                    this.router.navigate(['login']);
+                    return false;
+                } 
             }
         }
         return true;

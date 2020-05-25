@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "server-uoc": "ng build --prod --aot; rm -force ../../public/assets/*; rm -force ../../public/*.js; rm -force ../../public/*.css; rm -force ../../public/*.ico; rm -force ../../public/assets/; cp dist/PiggyBank/* ../../public/; cp dist/PiggyBank/assets/* ../../public/assets/; cp dist/PiggyBank/index.html ../../resources/views/index.html"
+    "server-uoc": "ng build --prod --base-href /~oalvarezher/piggy-bank/ --aot; rm -force ../../public/assets/*; rm -force ../../public/*.js; rm -force ../../public/*.css; rm -force ../../public/*.ico; rm -force ../../public/assets/; cp dist/PiggyBank/* ../../public/; cp dist/PiggyBank/assets/* ../../public/assets/; cp dist/PiggyBank/index.html ../../resources/views/index.html"
   },
   "private": true,
   "dependencies": {

@@ -17,9 +17,9 @@ export class HelpComponent implements OnInit {
 
   ngOnInit(): void {
     if (Role.User.toString() === this.authenticationService.getRol()) {
-      this.pdfSrc = "assets/Guía de usuario normal.pdf";
+      this.pdfSrc = "./assets/Guía de usuario normal.pdf";
     } else {
-      this.pdfSrc = "assets/Guía de usuario administrador.pdf";
+      this.pdfSrc = "./assets/Guía de usuario administrador.pdf";
     }
   }
 

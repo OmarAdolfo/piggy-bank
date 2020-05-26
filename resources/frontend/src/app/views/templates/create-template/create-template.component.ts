@@ -130,7 +130,7 @@ export class CreateTemplateComponent implements OnInit {
   addResouce() {
     if (this.selectedResource.id_tipo_ganancia) {
       const exists = this.template.ingresos.filter(ingreso => ingreso.id === this.selectedResource.id);
-      if (exists) {
+      if (exists.length > 0) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La ganancia ya está añadida en la plantilla' });
       } else {
         const revenue = new Revenue();
@@ -142,13 +142,13 @@ export class CreateTemplateComponent implements OnInit {
       }
     } else {
       const exists = this.template.pagos.filter(pago => pago.id === this.selectedResource.id);
-      if (exists) {
+      if (exists.length > 0) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El gasto ya está añadido en la plantilla' });
       } else {
         const payment = new Payment();
         payment.gasto_id = this.selectedResource;
         payment.cantidad = 0;
-        payment.pagado = false;
+        payment.pagado = 0;
         payment.plantilla_id = this.template.id;
         payment.id = this.selectedResource.id;
         this.template.pagos.push(payment);
@@ -200,17 +200,17 @@ export class CreateTemplateComponent implements OnInit {
     const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
     let primaryExpenses = 0;
     if (primaryExpensesFilter.length > 0) {
-      primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);
+      primaryExpenses = primaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => parseFloat(a.toString()) + parseFloat(b.toString()));
     }
     const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
     let secondaryExpenses = 0;
     if (secondaryExpensesFilter.length > 0) {
-      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => a + b);;
+      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => parseFloat(a.toString()) + parseFloat(b.toString()));;
     }
-    this.primaryExpenses = (Math.round((this.revenues * 0.5) * 100) / 100) - primaryExpenses;
-    this.secondaryExpenses = (Math.round((this.revenues * 0.3) * 100) / 100) - secondaryExpenses;
-    this.promiseSavings = (Math.round(((this.revenues * 0.2)) * 100) / 100);
-    this.realSavings = (Math.round(((this.revenues * 0.2) + this.primaryExpenses + this.secondaryExpenses) * 100) / 100);
+    this.primaryExpenses = Number((this.revenues * 0.5 - primaryExpenses).toFixed(2));
+    this.secondaryExpenses = Number((this.revenues * 0.3 - secondaryExpenses).toFixed(2));
+    this.promiseSavings = Number((this.revenues * 0.2).toFixed(2));
+    this.realSavings = this.promiseSavings + this.primaryExpenses + this.secondaryExpenses;
   }
 
   calculateGoodPractices() {
@@ -231,8 +231,8 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   calculateTips() {
+    this.tips = [];
     if (this.promiseSavings !== 0) {
-      this.tips = [];
       if (this.promiseSavings < this.realSavings) {
         this.tips.push({ message: 'Perfecto! Ahorras este mes más de lo esperado', status: true });
       } else {

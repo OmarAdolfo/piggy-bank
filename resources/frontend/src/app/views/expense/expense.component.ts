@@ -99,7 +99,7 @@ export class ExpenseComponent implements OnInit {
   delete(id: number) {
     this.expenseService.delete(id).subscribe(
       (response: any) => {
-        this.expenses = this.expenses.filter((val, i) => i != id);
+        this.expenses = this.expenses.filter(expense => expense.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message })
       },
       response => {

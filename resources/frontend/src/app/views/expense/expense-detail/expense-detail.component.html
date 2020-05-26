@@ -55,7 +55,8 @@
                             </div>
                             <div *ngIf="isMonthly" class="col-12 col-md-6 form-group">
                                 <label for="fecha_fin">Fecha fin</label>
-                                <p-calendar formControlName="fecha_fin"></p-calendar>
+                                <p-calendar formControlName="fecha_fin" [locale]="es" dateFormat="yy-mm-dd"
+                                    [dataType]="'string'"></p-calendar>
                             </div>
                             <div *ngIf="isMonthly" class="col-12 col-md-6 form-group">
                                 <label for="flexible">Flexible</label>

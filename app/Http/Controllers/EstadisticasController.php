@@ -56,7 +56,9 @@ class EstadisticasController extends Controller
             ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
             ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
             ->where('usuarios.id', '=', JWTAuth::user()->id)
-            ->groupBy(DB::raw('nombre') )
+            ->groupBy(DB::raw('nombre'))
+            ->orderByRaw('sum(cantidad) DESC')
+            ->take(7)
             ->get();
 
         return response()->json(array(

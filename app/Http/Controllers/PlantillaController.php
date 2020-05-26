@@ -237,7 +237,7 @@ class PlantillaController extends Controller
                 $pagobd->gasto_id = $pago['gasto_id']['id'];
                 $pagobd->fecha = new DateTime();
                 $pagobd->fecha->setDate($plantilla_bd->anno, $plantilla_bd->mes, 1);
-                if ($pago['pagado'] === true) {
+                if ($pago['pagado'] === true || $pago['pagado'] === 1) {
                     $pagobd->pagado = 1;
                 } else {
                     $pagobd->pagado = 0;

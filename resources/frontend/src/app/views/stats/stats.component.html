@@ -34,10 +34,10 @@
         <div class="col-12 col-md-6">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    Gastos
+                    Gastos con mayor dinero invertido
                 </div>
                 <div class="card-body">
-                    <p-chart *ngIf="data3.labels.length > 0; else noExpenses" type="doughnut" [data]="data3" width="300" height="300"
+                    <p-chart *ngIf="data3?.labels.length > 0; else noExpenses" type="doughnut" [data]="data3" width="300" height="300"
                         [options]="options"></p-chart>
                     <ng-template #noExpenses>
                         No existen gastos para generar estadísticas

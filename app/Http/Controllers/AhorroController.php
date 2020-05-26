@@ -19,11 +19,15 @@ class AhorroController extends Controller
         ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
         ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->whereYear('fecha', '<>', date('Y'))
+        ->whereMonth('fecha', '=', date('m'))
         ->sum('ingresos.cantidad');
         $pagos = DB::table('pagos')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
         ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->whereYear('fecha', '<>', date('Y'))
+        ->whereMonth('fecha', '=', date('m'))
         ->sum('pagos.cantidad');
         $cuenta = $ingresos - $pagos;
         return response()->json(array(

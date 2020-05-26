@@ -239,6 +239,21 @@ export class CreateTemplateComponent implements OnInit {
         this.tips.push({ message: 'No es aconsejable ahorrar menos de lo esperado', status: false });
       }
     }
+    if (this.realSavings < 0) {
+      this.tips.push({ message: 'Este mes no es bueno dado que no has ahorrado', status: false });
+    } else {
+      this.tips.push({ message: 'Felicidades! Has ahorrado este mes', status: true });
+    }
+    if (this.primaryExpenses < 0) {
+      this.tips.push({ message: 'Este mes sobrepasas el dinero establecido para gastos primarios', status: false });
+    } else {
+      this.tips.push({ message: 'Perfecto! No sobrepasas los gastos primarios', status: true });
+    }
+    if (this.secondaryExpenses < 0) {
+      this.tips.push({ message: 'Este mes sobrepasas el dinero establecido para gastos secundarios', status: false });
+    } else {
+      this.tips.push({ message: 'Perfecto! No sobrepasas los gastos secundarios', status: true });
+    }
   }
 
 }

@@ -62,8 +62,8 @@ class EstadisticasController extends Controller
             ->get();
 
         return response()->json(array(
-            'pagos' => $pagos,
-            'ingresos' => $ingresos,
+            'pagos' => round($pagos, 2),
+            'ingresos' => round($ingresos, 2),
             'pagosmes' => $pagosByYear,
             'ingresosmes' => $ingresosByYear,
             'gastos' => $gastos

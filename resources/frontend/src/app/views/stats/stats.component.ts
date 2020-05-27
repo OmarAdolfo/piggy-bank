@@ -38,60 +38,68 @@ export class StatsComponent implements OnInit {
     this.statsService.getStats().subscribe(
       (response: any) => {
         this.calculateStatsByMonthAndYear(response.pagosmes, response.ingresosmes);
-        this.data2 = {
-          labels: ['Ganancias', 'Gastos'],
-          datasets: [
-            {
-              data: [response.ingresos, response.pagos],
-              backgroundColor: [
-                "#FF6384",
-                "#9CCC65"
-              ],
-              hoverBackgroundColor: [
-                "#FF6384",
-                "#9CCC65"
-              ]
-            }]
-        };
+        if (response.ingresos !== 0 && response.pagos !== 0) {
+          this.data2 = {
+            labels: ['Ganancias', 'Gastos'],
+            datasets: [
+              {
+                data: [response.ingresos, response.pagos],
+                backgroundColor: [
+                  "#FF6384",
+                  "#9CCC65"
+                ],
+                hoverBackgroundColor: [
+                  "#FF6384",
+                  "#9CCC65"
+                ]
+              }]
+          };
+        } else {
+          this.data2 = null;
+        }
         this.calculateStatsExpenses(response.gastos);
       }
     )
   }
 
   calculateStatsByMonthAndYear(pagos: any, ingresos: any) {
-    const dataPagos = [];
-    const dataIngresos = [];
-    for (let i = 1; i <= 12; i++) {
-      const resultPago = pagos.find(pago => pago.mes === i);
-      if (resultPago) {
-        dataPagos.push(resultPago.total);
-      } else {
-        dataPagos.push(0);
-      }
-      const resultIngreso = ingresos.find(ingreso => ingreso.mes === i);
-      if (resultIngreso) {
-        dataIngresos.push(resultIngreso.total);
-      } else {
-        dataIngresos.push(0);
-      }
-    }
-    this.data = {
-      labels: this.monthService.getMonths().map(month => month.name),
-      datasets: [
-        {
-          label: 'Gastos',
-          backgroundColor: '#42A5F5',
-          borderColor: '#1E88E5',
-          data: dataPagos
-        },
-        {
-          label: 'Ingresos',
-          backgroundColor: '#9CCC65',
-          borderColor: '#7CB342',
-          data: dataIngresos
+    if (pagos.length > 0 || ingresos.length > 0) {
+      const dataPagos = [];
+      const dataIngresos = [];
+      for (let i = 1; i <= 12; i++) {
+        const resultPago = pagos.find(pago => pago.mes === i);
+        if (resultPago) {
+          dataPagos.push(resultPago.total);
+        } else {
+          dataPagos.push(0);
         }
-      ]
-    };
+        const resultIngreso = ingresos.find(ingreso => ingreso.mes === i);
+        if (resultIngreso) {
+          dataIngresos.push(resultIngreso.total);
+        } else {
+          dataIngresos.push(0);
+        }
+      }
+      this.data = {
+        labels: this.monthService.getMonths().map(month => month.name),
+        datasets: [
+          {
+            label: 'Gastos',
+            backgroundColor: '#42A5F5',
+            borderColor: '#1E88E5',
+            data: dataPagos
+          },
+          {
+            label: 'Ingresos',
+            backgroundColor: '#9CCC65',
+            borderColor: '#7CB342',
+            data: dataIngresos
+          }
+        ]
+      };
+    } else {
+      this.data = null;
+    }
   }
 
   calculateStatsExpenses(gastos: any) {

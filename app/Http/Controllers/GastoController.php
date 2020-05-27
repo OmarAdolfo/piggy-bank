@@ -99,7 +99,10 @@ class GastoController extends Controller
             return response()->json(['message' => 'Validaciones erróneas'], 500);
         }
         $postArray = $request->all();
-        $gastos_bd = Gasto::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
+        $gastos_bd = Gasto::where('nombre', '=', $postArray['nombre'])
+            ->where('id_tipo_gasto', '=', $postArray['id_tipo_gasto']['id'])
+            ->where('id_usuario', '=', JWTAuth::user()->id)
+            ->first();
         if (is_null($gastos_bd)) {
             $gasto = new Gasto();
             $gasto->nombre = $postArray['nombre']; 
@@ -139,7 +142,10 @@ class GastoController extends Controller
         $postArray = $request->all();
         $gasto_bd = Gasto::where('id', '=', $id)->first();
         if (!is_null($gasto_bd)) {
-            $gasto_bd_repeat = Gasto::where('nombre', '=', $postArray['nombre'])->where('id_usuario', '=', JWTAuth::user()->id)->first();
+            $gasto_bd_repeat = Gasto::where('nombre', '=', $postArray['nombre'])
+            ->where('id_usuario', '=', JWTAuth::user()->id)
+            ->where('id_tipo_gasto', '=', $postArray['id_tipo_gasto']['id'])
+            ->first();
             if (is_null($gasto_bd_repeat) || $gasto_bd_repeat->id == $gasto_bd->id ) {
                 $gasto_bd->nombre = $postArray['nombre'];
                 $gasto_bd->id_tipo_gasto = $postArray['id_tipo_gasto']['id']; 

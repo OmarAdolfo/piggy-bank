@@ -53,13 +53,13 @@ export class ForgotPasswordComponent implements OnInit {
     Promise.resolve().then(() => this.loading = true);
     this.forgotPasswordService.getTokenByEmail(this.sendTokenEmailForm.get('email').value).subscribe(
       (response: any) => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response .message});
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message});
         this.isEmailSent = true;
         this.loading = false;
       },
-      error => {
+      response => {
         this.loading = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
   }

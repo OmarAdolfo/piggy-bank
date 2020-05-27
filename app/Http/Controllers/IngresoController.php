@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ingreso;
+use App\Ganancia;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -14,15 +15,17 @@ class ingresoController extends Controller
 
     public function show($id) {
         $ingreso = Ingreso::find($id);
-        if (!is_null($ingreso) && $ingreso->id_usuario === JWTAuth::user()->id) {
-            return response()->json(array(
-                'data' => $ingreso
-            ), 200);
-        } else {
-            return response()->json([
-                'message' => 'El ingreso no existe'
-            ], 500);
+        if (!is_null($ingreso)) {
+            $ganancia = Ganancia::find($ingreso->ganancia_id);
+            if ($ganancia->id_usuario === JWTAuth::user()->id) {
+                return response()->json(array(
+                    'data' => $ingreso
+                ), 200);
+            }
         }
+        return response()->json([
+            'message' => 'El ingreso no existe'
+        ], 500);
     }
 
     public function store(Request $request)

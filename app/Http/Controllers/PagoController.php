@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pago;
+use App\Gasto;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -14,15 +15,17 @@ class PagoController extends Controller
 
     public function show($id) {
         $pago = Pago::find($id);
-        if (!is_null($pago) && $pago->id_usuario === JWTAuth::user()->id) {
-            return response()->json(array(
-                'data' => $pago
-            ), 200);
-        } else {
-            return response()->json([
-                'message' => 'El pago no existe'
-            ], 500);
+        if (!is_null($pago)) {
+            $gasto = Gasto::find($pago->gasto_id);
+            if ($gasto->id_usuario === JWTAuth::user()->id) {
+                return response()->json(array(
+                    'data' => $pago
+                ), 200);
+            }
         }
+        return response()->json([
+            'message' => 'El pago no existe'
+        ], 500);
     }
 
     public function store(Request $request)

@@ -15,20 +15,40 @@ class AhorroController extends Controller
 
     public function cuentaAhorro() 
     {
-        $ingresos = DB::table('ingresos')
+        $ingresosNoMensuales = DB::table('ingresos')
         ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
         ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
+        ->join('tipos_ganancias', 'ganancias.id_tipo_ganancia', '=', 'tipos_ganancias.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
-        ->whereYear('fecha', '<>', date('Y'))
-        ->whereMonth('fecha', '=', date('m'))
+        ->where('tipos_ganancias.valor', 'NOT LIKE', '%' . 'Mensuales' . '%')
         ->sum('ingresos.cantidad');
-        $pagos = DB::table('pagos')
+        $pagosNoMensuales = DB::table('pagos')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
         ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->where('tipos_gastos.valor', 'NOT LIKE', '%' . 'Mensuales' . '%')
+        ->sum('pagos.cantidad');
+        $ingresosMensuales = DB::table('ingresos')
+        ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
+        ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
+        ->join('tipos_ganancias', 'ganancias.id_tipo_ganancia', '=', 'tipos_ganancias.id')
+        ->where('usuarios.id', '=', JWTAuth::user()->id)
+        ->where('tipos_ganancias.valor', 'like', '%' . 'Mensuales' . '%')
+        ->whereYear('fecha', '<>', date('Y'))
+        ->whereMonth('fecha', '<>', date('m'))
+        ->sum('ingresos.cantidad');
+        $pagosMensuales = DB::table('pagos')
+        ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
+        ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+        ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
         ->whereYear('fecha', '<>', date('Y'))
-        ->whereMonth('fecha', '=', date('m'))
+        ->whereMonth('fecha', '<>', date('m'))
         ->sum('pagos.cantidad');
+        $ingresos = $ingresosNoMensuales + $ingresosMensuales;
+        $pagos = $pagosNoMensuales + $pagosMensuales;
         $cuenta = $ingresos - $pagos;
         return response()->json(array(
             'data' => round($cuenta, 2)

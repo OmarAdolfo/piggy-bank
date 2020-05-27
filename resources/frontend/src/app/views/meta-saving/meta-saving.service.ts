@@ -22,7 +22,7 @@ export class MetaSavingService {
   get(form: any, sortable?: string, orderBy?: number, page?: number): Observable<MetaSaving[]> {
     let params: string[] = [];
     let query = '';
-    if (form.nombre) {
+    if (form.anno) {
       params.push('anno=' + form.anno);
     }
     if (sortable) {

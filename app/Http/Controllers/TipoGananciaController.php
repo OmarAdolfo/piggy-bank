@@ -88,7 +88,7 @@ class TipoGananciaController extends Controller
                 $tipo_ganancia_bd->valor = $postArray['valor']; 
                 $tipo_ganancia_bd->descripcion = $postArray['descripcion']; 
                 $tipo_ganancia_bd->save();
-                return response()->json('Se ha actualizado el tipo de ganancia', 200);
+                return response()->json(['message' => 'Se ha actualizado el tipo de ganancia'], 200);
             } else {
                 return response()->json([
                     'message' => 'El tipo de ganancia con ese valor ya existe'

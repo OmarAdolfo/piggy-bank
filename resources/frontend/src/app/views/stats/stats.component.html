@@ -14,7 +14,11 @@
                     Ingresos y pagos por mes del año actual
                 </div>
                 <div class="card-body">
-                    <p-chart type="bar" [data]="data" width="300" height="300" [options]="options"></p-chart>
+                    <p-chart *ngIf="data; else noActualYear" type="bar" [data]="data" width="300"
+                        height="300" [options]="options"></p-chart>
+                    <ng-template #noActualYear>
+                        No existen pagos ni ingresos en el año actual para generar estadísticas
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -27,7 +31,11 @@
                     Ganancias/Gastos
                 </div>
                 <div class="card-body">
-                    <p-chart type="doughnut" [data]="data2" width="300" height="300" [options]="options"></p-chart>
+                    <p-chart *ngIf="data2; else noExpensesAndProfits" type="doughnut" [data]="data2" width="300"
+                        height="300" [options]="options"></p-chart>
+                    <ng-template #noExpensesAndProfits>
+                        No existen pagos ni ingresos para generar estadísticas
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -37,8 +45,8 @@
                     Gastos con mayor dinero invertido
                 </div>
                 <div class="card-body">
-                    <p-chart *ngIf="data3?.labels.length > 0; else noExpenses" type="doughnut" [data]="data3" width="300" height="300"
-                        [options]="options"></p-chart>
+                    <p-chart *ngIf="data3?.labels.length > 0; else noExpenses" type="doughnut" [data]="data3"
+                        width="300" height="300" [options]="options"></p-chart>
                     <ng-template #noExpenses>
                         No existen gastos para generar estadísticas
                     </ng-template>

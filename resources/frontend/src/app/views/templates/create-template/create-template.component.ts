@@ -210,7 +210,7 @@ export class CreateTemplateComponent implements OnInit {
     this.primaryExpenses = Number((this.revenues * 0.5 - primaryExpenses).toFixed(2));
     this.secondaryExpenses = Number((this.revenues * 0.3 - secondaryExpenses).toFixed(2));
     this.promiseSavings = Number((this.revenues * 0.2).toFixed(2));
-    this.realSavings = this.promiseSavings + this.primaryExpenses + this.secondaryExpenses;
+    this.realSavings = Number((this.promiseSavings + this.primaryExpenses + this.secondaryExpenses).toFixed(2));
   }
 
   calculateGoodPractices() {
@@ -239,7 +239,7 @@ export class CreateTemplateComponent implements OnInit {
         this.tips.push({ message: 'No es aconsejable ahorrar menos de lo esperado', status: false });
       }
     }
-    if (this.realSavings < 0) {
+    if (this.realSavings <= 0) {
       this.tips.push({ message: 'Este mes no es bueno dado que no has ahorrado', status: false });
     } else {
       this.tips.push({ message: 'Felicidades! Has ahorrado este mes', status: true });

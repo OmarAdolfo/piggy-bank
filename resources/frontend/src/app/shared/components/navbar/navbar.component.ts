@@ -11,13 +11,12 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class NavbarComponent implements OnInit {
 
   menuOptions = [];
-  isLogged = false;
   collapsed = false;
   logoUrl: string;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    public authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
@@ -35,23 +34,20 @@ export class NavbarComponent implements OnInit {
         }))
       .subscribe(
         url => {
-          if (url.includes('home')) {
+          if (url.includes('home') && this.authenticationService.isLogged()) {
             this.menuOptions = [
               { name: 'Perfil', url: 'home/profile', icon: 'fas fa-user', logout: false },
               { name: 'Cerrar sesión', url: '', icon: 'fas fa-sign-out-alt', logout: true }
             ]
-            this.isLogged = true;
             this.logoUrl = this.authenticationService.getUrlNavigation();
           } else if (url === '') {
             this.menuOptions = [
               { name: 'Iniciar sesión', url: '/login', icon: 'fas fa-sign-in-alt', logout: false },
               { name: 'Registrarse', url: '/signin', icon: 'fas fa-user-tag', logout: false }
             ]
-            this.isLogged = false;
             this.logoUrl = '';
           } else {
             this.menuOptions = [];
-            this.isLogged = false;
             this.logoUrl = '';
           }
         }

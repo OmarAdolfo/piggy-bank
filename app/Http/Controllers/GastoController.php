@@ -4,47 +4,63 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gasto;
+use App\Plantilla;
 use Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JWTAuth;
 use DB;
+use Carbon\Carbon;
 
 class GastoController extends Controller
 {
 
-    public function findAllPrimaryMonthlyExpenses() {
-        $gastos_primarios = Gasto::select('gastos.*')
-        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
-        ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
-        ->where('usuarios.id', '=', JWTAuth::user()->id)
-        ->where('tipos_gastos.valor', '=', 'Mensuales Primarios')
-        ->where(static function ($query) {
-            $now = date('Y-m-d');
-            $query->where('gastos.fecha_fin', '>=', $now)
-            ->orWhere('gastos.fecha_fin', '=', null);
-        })
-        ->get();
-        return response()->json(array(
-            'data' => $gastos_primarios
-        ), 200);
+    public function findAllPrimaryMonthlyExpenses($id) {
+        $plantilla = Plantilla::find($id);
+        if (!is_null($plantilla) && $plantilla->id_usuario === JWTAuth::user()->id) {
+            $gastos_primarios = Gasto::select('gastos.*')
+            ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+            ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+            ->where('usuarios.id', '=', JWTAuth::user()->id)
+            ->where('tipos_gastos.valor', '=', 'Mensuales Primarios')
+            ->where(static function ($query) use ($plantilla) {
+                $date = Carbon::createFromDate($plantilla->year, $plantilla->month, 1);
+                $query->where('gastos.fecha_fin', '>=', $date)
+                ->orWhere('gastos.fecha_fin', '=', null);
+            })
+            ->get();
+            return response()->json(array(
+                'data' => $gastos_primarios
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La plantilla no existe'
+            ], 500);
+        }
     }
 
-    public function findAllSecondaryMonthlyExpenses() {
-        $gastos_secundarios = Gasto::select('gastos.*')
-        ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
-        ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
-        ->where('usuarios.id', '=', JWTAuth::user()->id)
-        ->where('tipos_gastos.valor', '=', 'Mensuales Secundarios')
-        ->where(static function ($query) {
-            $now = date('Y-m-d');
-            $query->where('gastos.fecha_fin', '>=', $now)
-            ->orWhere('gastos.fecha_fin', '=', null);
-        })
-        ->get();
-        return response()->json(array(
-            'data' => $gastos_secundarios
-        ), 200);
+    public function findAllSecondaryMonthlyExpenses($id) {
+        $plantilla = Plantilla::find($id);
+        if (!is_null($plantilla) && $plantilla->id_usuario === JWTAuth::user()->id) {
+            $gastos_secundarios = Gasto::select('gastos.*')
+            ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
+            ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
+            ->where('usuarios.id', '=', JWTAuth::user()->id)
+            ->where('tipos_gastos.valor', '=', 'Mensuales Secundarios')
+            ->where(static function ($query) use ($plantilla) {
+                $date = Carbon::createFromDate($plantilla->year, $plantilla->month, 1);
+                $query->where('gastos.fecha_fin', '>=', $date)
+                ->orWhere('gastos.fecha_fin', '=', null);
+            })
+            ->get();
+            return response()->json(array(
+                'data' => $gastos_secundarios
+            ), 200);
+        } else {
+            return response()->json([
+                'message' => 'La plantilla no existe'
+            ], 500);
+        }
     }
 
     public function index(Request $request)

@@ -103,9 +103,11 @@
                         <ng-template pTemplate="body" let-rowData let-columns="columns">
                             <tr [pSelectableRow]="rowData">
                                 <td>
+                                    <span class="ui-column-title">Cantidad</span>
                                     {{rowData['cantidad']}}
                                 </td>
                                 <td>
+                                    <span class="ui-column-title">Fecha</span>
                                     {{rowData['fecha'] | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>

@@ -63,12 +63,15 @@
                         <ng-template pTemplate="body" let-rowData let-columns="columns">
                             <tr [pSelectableRow]="rowData">
                                 <td>
+                                    <span class="ui-column-title">Nombre</span>
                                     {{rowData['nombre']}}
                                 </td>
                                 <td>
+                                    <span class="ui-column-title">Fecha de fin</span>
                                     {{rowData['fecha_fin'] | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>
+                                    <span class="ui-column-title">Tipo Ganancia</span>
                                     {{rowData['id_tipo_ganancia'].valor}}
                                 </td>
                                 <td>

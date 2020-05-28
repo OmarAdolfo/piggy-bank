@@ -106,6 +106,9 @@
                                     <div *ngIf="cloneForm.controls.newAnno.errors.required">
                                         El año es obligatorio
                                     </div>
+                                    <div *ngIf="cloneForm.controls.newAnno.errors.pattern">
+                                        El año debe estar formado por cuatro números
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 form-group">
@@ -176,7 +179,7 @@
                     </div>
                     <ng-template #noTemplates>
                         <div class="row" *ngIf="!loading">
-                            <div class="col-4 offset-4 form-group">
+                            <div class="col-12 col-lg-4 offset-lg-4 form-group">
                                 <img src="./assets/notfound.png" class="d-block mx-auto img-not-found"
                                     alt="No existen resultados">
                             </div>

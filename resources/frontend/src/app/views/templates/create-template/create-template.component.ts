@@ -22,7 +22,6 @@ import { combineLatest } from 'rxjs';
 })
 export class CreateTemplateComponent implements OnInit {
 
-  isNewTemplate: boolean;
   types: any[];
   resources: any[];
   template: Template;
@@ -40,6 +39,7 @@ export class CreateTemplateComponent implements OnInit {
   goodPracticesUsed: any[] = [];
   tips: any[] = [];
   loading: boolean;
+  display = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -60,7 +60,6 @@ export class CreateTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     Promise.resolve().then(() => this.loading = true);
-    this.isNewTemplate = this.activatedRoute.snapshot.params.id === 'new' ? true : false;
     combineLatest(
       this.getPrimaryMonthlyExpenses(),
       this.getSecondaryMonthlyExpenses(),
@@ -90,11 +89,11 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   getPrimaryMonthlyExpenses() {
-    return this.expenseService.findAllPrimaryMonthlyExpenses();
+    return this.expenseService.findAllPrimaryMonthlyExpenses(this.activatedRoute.snapshot.params.id);
   }
 
   getSecondaryMonthlyExpenses() {
-    return this.expenseService.findAllSecondaryMonthlyExpenses();
+    return this.expenseService.findAllSecondaryMonthlyExpenses(this.activatedRoute.snapshot.params.id);
   }
 
   getMonthlyProfits() {
@@ -254,6 +253,10 @@ export class CreateTemplateComponent implements OnInit {
     } else {
       this.tips.push({ message: 'Perfecto! No sobrepasas los gastos secundarios', status: true });
     }
+  }
+
+  openInfo() {
+    this.display = true;
   }
 
 }

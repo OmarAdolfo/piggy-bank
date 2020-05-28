@@ -95,6 +95,17 @@ export class ExpenseDetailComponent implements OnInit {
       fecha_fin: new FormControl(this.expense.fecha_fin ? new Date(this.expense.fecha_fin) : this.expense.fecha_fin),
       flexible: new FormControl(this.expense.flexible ? this.expense.flexible : 0),
     });
+    this.form.get('fecha_fin').valueChanges.subscribe(
+      data => {
+        if (data && this.expense.id) {
+          let formDate = new Date(data);
+          let expenseDate = new Date(this.expense.fecha_fin);
+          if (formDate.getFullYear() <= expenseDate.getFullYear() && formDate.getMonth() < expenseDate.getMonth()) {
+            this.messageService.add({ severity: 'info', summary: 'Información', detail: 'Modificar la fecha de fin a fechas anteriores implica cambiar de forma manual las plantillas donde se haya añadido este gasto' });
+          }
+        }
+      }
+    )
   }
 
   save() {

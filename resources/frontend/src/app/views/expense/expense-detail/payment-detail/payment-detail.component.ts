@@ -75,8 +75,9 @@ export class PaymentDetailComponent implements OnInit {
     if (!this.newPayment) {
       const payment: Payment = Object.assign(this.payment, this.form.value);
       this.paymentService.update(payment).subscribe(
-        () => {
+        (response: any) => {
           this.loading = false;
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.back();
         },
         response => {
@@ -88,8 +89,9 @@ export class PaymentDetailComponent implements OnInit {
       const payment: Payment = Object.assign({}, this.form.value);
       payment.gasto_id = this.activatedRoute.snapshot.params.id;
       this.paymentService.add(payment).subscribe(
-        () => {
+        (response: any) => {
           this.loading = false;
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.back();
         },
         response => {

@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <div class="row" >
+    <div class="row">
         <div class="col-12">
             <h1 *ngIf="template">Plantilla {{getMonth(template.mes)}} {{template.anno}}</h1>
             <h1 *ngIf="!template">Plantilla</h1>
@@ -52,70 +52,76 @@
             Plantilla
         </div>
         <div class="card-body">
-            <div class="row mx-1 mt-5 d-none d-md-flex">
-                <div class="col-4 col-md-3 offset-md-2 p-2 text-center border border-dark">
+            <div class="row">
+                <div class="col-12">
+                    La plantilla se gestiona de forma automática a través del método 50/30/20 <a (click)="openInfo()"><i
+                            class="fas fa-question-circle"></i></a>
+                </div>
+            </div>
+            <div class="row mx-1 mt-3 d-none d-md-flex">
+                <div class="col-12 col-md-4 p-2 text-center border border-dark">
                     Nombre
                 </div>
-                <div class="col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="col-12 col-md-4 p-2 text-center border border-dark">
                     Valor
                 </div>
-                <div class="col-4 col-md-2 p-2 text-center border border-dark">
+                <div class="col-12 col-md-4 p-2 text-center border border-dark">
                     Opciones
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     Ingresos
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     {{revenues}}
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mx-1" *ngFor="let ingreso of template.ingresos">
                 <div
-                    class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
+                    class="resource-row col-12 col-md-4 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                     {{ingreso.ganancia_id.nombre}}
                 </div>
-                <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
+                <div class="resource-row col-12 col-md-4 text-center border border-dark py-2 py-md-0">
                     <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                         [(ngModel)]="ingreso.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                 </div>
-                <div class="resource-row col-12 col-md-2 text-center border border-dark border-left-0 py-2 py-md-0">
+                <div class="resource-row col-12 col-md-4 text-center border border-dark border-left-0 py-2 py-md-0">
                     <button type="button" (click)="deleteRevenue(ingreso.id)" class="btn btn-primary btn-sm mt-1">
                         <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     </button>
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     Disponible Gastos primarios
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     {{primaryExpenses}}
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div *ngFor="let pago of template.pagos">
                 <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios'">
                     <div
-                        class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
+                        class="resource-row col-12 col-md-4 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                         {{pago.gasto_id.nombre}}
                     </div>
-                    <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
+                    <div class="resource-row col-12 col-md-4 text-center border border-dark py-2 py-md-0">
                         <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                             [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                     </div>
                     <div
-                        class="resource-row col-6 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
-                        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
-                            name="groupname" binary="true">
+                        class="resource-row col-6 col-md-2 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
+                        <p-checkbox [(ngModel)]="pago.pagado" tooltipPosition="top"
+                            name="groupname" binary="true" label="Pagado">
                         </p-checkbox>
                     </div>
                     <div
-                        class="resource-row col-6 col-md-1 primary-expense-item text-center border border-dark border-left-0 py-2 py-md-0">
+                        class="resource-row col-6 col-md-2 primary-expense-item text-center border border-dark border-left-0 py-2 py-md-0">
                         <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
@@ -123,32 +129,32 @@
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     Disponible Gastos secundarios
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     {{secondaryExpenses}}
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div *ngFor="let pago of template.pagos">
                 <div class="row mx-1" *ngIf="pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios'">
                     <div
-                        class="resource-row col-12 col-md-3 offset-md-2 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
+                        class="resource-row col-12 col-md-4 text-center border border-dark d-flex justify-content-center align-items-center py-2 py-md-0">
                         {{pago.gasto_id.nombre}}
                     </div>
-                    <div class="resource-row col-12 col-md-2 text-center border border-dark py-2 py-md-0">
+                    <div class="resource-row col-12 col-md-4 text-center border border-dark py-2 py-md-0">
                         <input type="textbox" (input)="calculate()" class="form-control form-control-user"
                             [(ngModel)]="pago.cantidad" placeholder="XX.XX" appTwoDigitDecimaNumber>
                     </div>
                     <div
-                        class="resource-row col-6 col-md-1 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
-                        <p-checkbox pTooltip="¿Ha sido pagado el gasto?" [(ngModel)]="pago.pagado" tooltipPosition="top"
-                            name="groupname" binary="true">
+                        class="resource-row col-6 col-md-2 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
+                        <p-checkbox [(ngModel)]="pago.pagado" tooltipPosition="top"
+                            name="groupname" binary="true" label="Pagado">
                         </p-checkbox>
                     </div>
-                    <div class="resource-row col-6 col-md-1 text-center border border-dark border-left-0">
+                    <div class="resource-row col-6 col-md-2 text-center border border-dark border-left-0">
                         <button type="button" (click)="deletePayment(pago.id)" class="btn btn-primary btn-sm mt-1">
                             <i class="fas fa-trash-alt" aria-hidden="true"></i>
                         </button>
@@ -156,23 +162,23 @@
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     Ahorros esperados
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     {{promiseSavings}}
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mx-1 text-white">
-                <div class="fixed-row col-12 col-md-3 offset-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     Ahorros reales
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark">
                     {{realSavings}}
                 </div>
-                <div class="fixed-row col-12 col-md-2 p-2 text-center border border-dark d-none d-md-block">
+                <div class="fixed-row col-12 col-md-4 p-2 text-center border border-dark d-none d-md-block">
                 </div>
             </div>
             <div class="row mt-3 text-right">
@@ -238,5 +244,16 @@
             </button>
         </div>
     </div>
-    
+
 </div>
+
+<p-dialog header="Método 50/30/20" [(visible)]="display" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
+    Este método de ahorro consiste en:
+    <ul>
+        <li>El 50% de los ingresos destinados para gastos primarios, es decir, aquellos primordiales todos los meses</li>
+        <li>El 30% de los ingresos destinados para gastos secundarios, es decir, aquellos como caprichos o gastos del día adía</li>
+        <li>El 20% de los ingresos destinados para ahorros</li>
+    </ul>
+    De esta forma, la aplicación se encarga de gestionar tus ingresos y pagos de cada mes
+</p-dialog>

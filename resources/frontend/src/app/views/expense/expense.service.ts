@@ -41,12 +41,12 @@ export class ExpenseService {
     return this.http.get<Expense[]>(this.url + query);
   }
 
-  findAllPrimaryMonthlyExpenses(): Observable<any> {
-    return this.http.get<Expense[]>(this.url + '-primarios');
+  findAllPrimaryMonthlyExpenses(id: number): Observable<any> {
+    return this.http.get<Expense[]>(this.url + '-primarios' + '/' + id);
   }
 
-  findAllSecondaryMonthlyExpenses(): Observable<any> {
-    return this.http.get<Expense[]>(this.url + '-secundarios');
+  findAllSecondaryMonthlyExpenses(id: number): Observable<any> {
+    return this.http.get<Expense[]>(this.url + '-secundarios' + '/' + id);
   }
 
   find(id: number) {

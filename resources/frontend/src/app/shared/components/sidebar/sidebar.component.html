@@ -1,6 +1,6 @@
 <ul id="sidenav" class="border-right border-secondary border-3">
     <li class="px-0 px-lg-3 text-center" *ngFor="let optionMenu of optionsMenu">
-        <a class="link-menu px-2 px-lg-0 text-center" [routerLink]="[optionMenu.url]" routerLinkActive="is-active">
+        <a class="link-menu px-2 px-lg-0" [routerLink]="[optionMenu.url]" routerLinkActive="is-active">
             <i class="{{optionMenu.icon}}" aria-hidden="true"></i>
             <span class="option-menu"> {{optionMenu.name}}</span>
         </a>

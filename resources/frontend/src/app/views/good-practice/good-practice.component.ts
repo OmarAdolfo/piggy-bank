@@ -29,8 +29,6 @@ export class GoodPracticeComponent implements OnInit {
       { field: 'palabra_clave', header: 'Palabra clave' },
       { field: 'porcentaje', header: 'Porcentaje' },
       { field: 'user', header: 'Creado/Actualizado por' },
-      { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' },
       { field: '', header: 'Opciones' }
     ];
   }

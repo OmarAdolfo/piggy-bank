@@ -32,8 +32,6 @@ export class UserComponent implements OnInit {
       { field: 'apellidos', header: 'Apellidos' },
       { field: 'email', header: 'Correo electrónico' },
       { field: 'rol', header: 'Rol' },
-      { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' },
       { field: '', header: 'Opciones' }
     ];
     this.roles = [

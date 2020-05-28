@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,11 @@ export class SavingService {
     this.url = environment.url + 'ahorros';
   }
 
-  getSavings() {
+  getSavings(): Observable<any> {
     return this.http.get<Response>(this.url + '/cuenta-ahorro');
   }
 
-  getAnnualReminders() {
+  getAnnualReminders(): Observable<any> {
     return this.http.get<Response>(this.url + '/recordatorios-anuales');
   }
   

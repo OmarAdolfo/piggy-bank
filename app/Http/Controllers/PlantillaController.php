@@ -13,6 +13,7 @@ use App\Pago;
 use App\Ingreso;
 use DateTime;
 use App\Gasto;
+use Carbon\Carbon;
 
 class PlantillaController extends Controller
 {
@@ -37,7 +38,8 @@ class PlantillaController extends Controller
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
         ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
         ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
-        ->where('gastos.id_usuario', '=', JWTAuth::user()->id);
+        ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
+        ->where('gastos.flexible', '!=', 1);;
         $pagosTotales = $pagosTotalesQuery->count();
         $pagosNoPagadosQuery = Pago::select('pagos.*')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
@@ -51,7 +53,8 @@ class PlantillaController extends Controller
         ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
         ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
-        ->where('pagos.pagado', '=', 1);
+        ->where('pagos.pagado', '=', 1)
+        ->where('gastos.flexible', '!=', 1);;
         $pagosPagados = $pagosPagadosQuery->count();
         return response()->json(array(
             'cuentaGastos' => $ingresos - $pagos,
@@ -79,7 +82,10 @@ class PlantillaController extends Controller
                     'message' => 'No es posible crear plantillas posteriores al mes siguiente'
                 ], 500);
             }
-            $plantilla_copy = Plantilla::where('anno', '=', $request['anno'])->where('mes', '=', $request['mes'])->first();
+            $plantilla_copy = Plantilla::where('anno', '=', $request['anno'])
+            ->where('mes', '=', $request['mes'])
+            ->where('id_usuario', '=', JWTAuth::user()->id)
+            ->first();
             if (is_null($plantilla_copy)) {
                 return response()->json([
                     'message' => 'La plantilla que debe ser copiada no existe'
@@ -91,12 +97,12 @@ class PlantillaController extends Controller
                 $new_plantilla->id_usuario = $plantilla_copy->id_usuario;
                 $new_plantilla->save();
 
-                $fecha_actual = date('Y-m-d');
+                $date = Carbon::createFromDate($request['newAnno'], $request['newMes'], 1);
     
                 foreach ($plantilla_copy->pagos as $pago) {
                     $newPago = $pago->replicate();
                     $gasto = Gasto::find($pago->gasto_id);
-                    if ($fecha_actual > $gasto->fecha_fin) {
+                    if (is_null($gasto->fecha_fin) || $gasto->fecha_fin >= $date) {
                         $newPago->id = null;
                         $newPago->plantilla_id = $new_plantilla->id;
                         $newPago->fecha = new DateTime();

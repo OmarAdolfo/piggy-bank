@@ -61,19 +61,16 @@
                         <ng-template pTemplate="body" let-rowData let-columns="columns">
                             <tr [pSelectableRow]="rowData">
                                 <td>
+                                    <span class="ui-column-title">Palabra clave</span>
                                     {{rowData['palabra_clave']}}
                                 </td>
                                 <td>
+                                    <span class="ui-column-title">Porcentaje</span>
                                     {{rowData['porcentaje']}}
                                 </td>
                                 <td>
+                                    <span class="ui-column-title">Creado/Actualizado por</span>
                                     {{rowData['id_usuario'].nombre}}
-                                </td>
-                                <td>
-                                    {{rowData['created_at'] | date: 'dd/MM/yyyy'}}
-                                </td>
-                                <td>
-                                    {{rowData['updated_at'] | date: 'dd/MM/yyyy'}}
                                 </td>
                                 <td>
                                     <button type="button" (click)="onRowSelect(rowData['id'])"

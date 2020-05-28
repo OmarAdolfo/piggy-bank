@@ -21,7 +21,7 @@ export class TemplateService {
     this.urlclone = environment.url + 'plantilla-clone';
   }
 
-  getTemplateActual(): Observable<Response> {
+  getTemplateActual(): Observable<any> {
     return this.http.get<Response>(this.urlTemplateActual);
   }
 

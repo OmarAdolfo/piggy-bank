@@ -30,8 +30,6 @@ export class TypeProfitComponent implements OnInit {
     this.cols = [
       { field: 'valor', header: 'Valor' },
       { field: 'descripcion', header: 'Descripción' },
-      { field: 'created_at', header: 'Fecha de creación' },
-      { field: 'updated_at', header: 'Fecha de actualización' },
       { field: '', header: 'Opciones' }
     ];
   }

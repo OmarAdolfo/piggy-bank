@@ -155,11 +155,14 @@ export class TemplatesComponent implements OnInit {
       (response: any) => {
         this.templatesTotal = this.templatesTotal.filter(templateTotal => templateTotal.id !== id);
         this.templates = this.templates.filter(template => template.id !== id);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.message });
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
         this.years = response.years;
         if (this.years && this.years.length > 0) {
           this.calculateTemplates(this.years[0]);
         }
+      },
+      response => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: response.error.message });
       }
     );
   }

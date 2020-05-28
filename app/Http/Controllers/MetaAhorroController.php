@@ -22,6 +22,7 @@ class MetaAhorroController extends Controller
 
         if ($request->has('anno')) {
             $metas_ahorros = $metas_ahorros
+                ->where('id_usuario', '=', JWTAuth::user()->id)
                 ->where('anno', $request['anno'])
                 ->orWhere('anno', 'like', '%' . $request['anno'] . '%');
         }

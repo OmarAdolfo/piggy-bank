@@ -129,7 +129,8 @@ class PlantillaController extends Controller
                 
                 return response()->json([
                     'message' => 'Se ha creado una nueva plantilla',
-                    'data' => $new_plantilla
+                    'data' => $new_plantilla,
+                    'years' => $years
                 ], 200);
             }
 

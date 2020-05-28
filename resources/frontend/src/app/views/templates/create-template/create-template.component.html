@@ -116,8 +116,7 @@
                     </div>
                     <div
                         class="resource-row col-6 col-md-2 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
-                        <p-checkbox [(ngModel)]="pago.pagado" tooltipPosition="top"
-                            name="groupname" binary="true" label="Pagado">
+                        <p-checkbox [(ngModel)]="pago.pagado" name="groupname" binary="true" label="Pagado">
                         </p-checkbox>
                     </div>
                     <div
@@ -150,8 +149,7 @@
                     </div>
                     <div
                         class="resource-row col-6 col-md-2 text-center border border-dark border-right-0 d-flex justify-content-center align-items-center py-2 py-md-0">
-                        <p-checkbox [(ngModel)]="pago.pagado" tooltipPosition="top"
-                            name="groupname" binary="true" label="Pagado">
+                        <p-checkbox [(ngModel)]="pago.pagado" name="groupname" binary="true" label="Pagado">
                         </p-checkbox>
                     </div>
                     <div class="resource-row col-6 col-md-2 text-center border border-dark border-left-0">
@@ -207,7 +205,7 @@
                     </div>
                     <ng-template #noTips>
                         <div class="alert alert-secondary" role="alert">
-                            No existen tips que aportar
+                            Debes añadir ingresos o gastos para recibir tips.
                         </div>
                     </ng-template>
                 </div>
@@ -251,8 +249,10 @@
     [draggable]="false" [resizable]="false">
     Este método de ahorro consiste en:
     <ul>
-        <li>El 50% de los ingresos destinados para gastos primarios, es decir, aquellos primordiales todos los meses</li>
-        <li>El 30% de los ingresos destinados para gastos secundarios, es decir, aquellos como caprichos o gastos del día adía</li>
+        <li>El 50% de los ingresos destinados para gastos primarios, es decir, aquellos primordiales todos los meses
+        </li>
+        <li>El 30% de los ingresos destinados para gastos secundarios, es decir, aquellos como caprichos o gastos del
+            día adía</li>
         <li>El 20% de los ingresos destinados para ahorros</li>
     </ul>
     De esta forma, la aplicación se encarga de gestionar tus ingresos y pagos de cada mes

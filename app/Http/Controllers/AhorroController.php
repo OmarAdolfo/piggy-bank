@@ -91,6 +91,12 @@ class AhorroController extends Controller
             ->where('usuarios.id', '=', JWTAuth::user()->id)
             ->groupBy(DB::raw('YEAR(fecha)') )
             ->get();
+        foreach ($pagosAmount as &$pago) {
+            $pago->total = round($pago->total, 2);
+        }
+        foreach ($ingresosAmount as &$ingreso) {
+            $ingreso->total = round($ingreso->total, 2);
+        }
         return response()->json(array(
             'pagos' => $pagosAmount,
             'ingresos' => $ingresosAmount

@@ -29,11 +29,11 @@ export class MetaSavingComponent implements OnInit {
     private router: Router
   ) {
     this.cols = [
-      { field: 'anno', header: 'Año' },
-      { field: 'cantidad', header: 'Objetivo' },
-      { field: '', header: 'Ahorrado' },
-      { field: '', header: 'Estado' },
-      { field: '', header: 'Opciones' }
+      { field: 'anno', header: 'Año', sortOrder: true },
+      { field: 'cantidad', header: 'Objetivo', sortOrder: true },
+      { field: '', header: 'Ahorrado', sortOrder: false },
+      { field: '', header: 'Estado', sortOrder: false },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
     this.statuses = [
       { label: 'No superado', value: 'no-superado' },

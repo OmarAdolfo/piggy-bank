@@ -31,10 +31,10 @@ export class ExpenseComponent implements OnInit {
     private typeExpenseService: TypeExpenseService,
   ) {
     this.cols = [
-      { field: 'nombre', header: 'Nombre' },
-      { field: 'fecha_fin', header: 'Fecha de fin' },
-      { field: 'tipoGasto', header: 'Tipo Gasto' },
-      { field: '', header: 'Opciones' }
+      { field: 'nombre', header: 'Nombre', sortOrder: true },
+      { field: 'fecha_fin', header: 'Fecha de fin', sortOrder: true },
+      { field: 'tipoGasto', header: 'Tipo Gasto', sortOrder: true },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
   }
 

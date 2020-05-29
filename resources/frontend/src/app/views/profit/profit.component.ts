@@ -32,10 +32,9 @@ export class ProfitComponent implements OnInit {
     private typeProfitService: TypeProfitService,
   ) {
     this.cols = [
-      { field: 'nombre', header: 'Nombre' },
-      { field: 'fecha_fin', header: 'Fecha de fin' },
-      { field: 'tipoGanancia', header: 'Tipo Ganancia' },
-      { field: '', header: 'Opciones' }
+      { field: 'nombre', header: 'Nombre', sortOrder: true },
+      { field: 'tipoGanancia', header: 'Tipo Ganancia', sortOrder: true },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
   }
 

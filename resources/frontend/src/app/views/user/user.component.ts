@@ -28,11 +28,11 @@ export class UserComponent implements OnInit {
     private router: Router
   ) {
     this.cols = [
-      { field: 'nombre', header: 'Nombre' },
-      { field: 'apellidos', header: 'Apellidos' },
-      { field: 'email', header: 'Correo electrónico' },
-      { field: 'rol', header: 'Rol' },
-      { field: '', header: 'Opciones' }
+      { field: 'nombre', header: 'Nombre', sortOrder: true },
+      { field: 'apellidos', header: 'Apellidos', sortOrder: true },
+      { field: 'email', header: 'Correo electrónico', sortOrder: true },
+      { field: 'rol', header: 'Rol', sortOrder: true },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
     this.roles = [
       { label: Role.Admin, value: Role.Admin.toString() },

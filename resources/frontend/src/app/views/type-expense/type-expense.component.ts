@@ -28,9 +28,9 @@ export class TypeExpenseComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) {
     this.cols = [
-      { field: 'valor', header: 'Valor' },
-      { field: 'descripcion', header: 'Descripción' },
-      { field: '', header: 'Opciones' }
+      { field: 'valor', header: 'Valor', sortOrder: true },
+      { field: 'descripcion', header: 'Descripción', sortOrder: true },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
   }
 

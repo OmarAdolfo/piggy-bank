@@ -26,10 +26,10 @@ export class GoodPracticeComponent implements OnInit {
     private router: Router
   ) {
     this.cols = [
-      { field: 'palabra_clave', header: 'Palabra clave' },
-      { field: 'porcentaje', header: 'Porcentaje' },
-      { field: 'user', header: 'Creado/Actualizado por' },
-      { field: '', header: 'Opciones' }
+      { field: 'palabra_clave', header: 'Palabra clave', sortOrder: true },
+      { field: 'porcentaje', header: 'Porcentaje', sortOrder: true },
+      { field: 'user', header: 'Creado/Actualizado por', sortOrder: true },
+      { field: '', header: 'Opciones', sortOrder: false }
     ];
   }
 

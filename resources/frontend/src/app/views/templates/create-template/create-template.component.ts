@@ -153,6 +153,7 @@ export class CreateTemplateComponent implements OnInit {
         this.template.pagos.push(payment);
       }
     }
+    this.calculateTips();
   }
 
   deletePayment(id: number) {

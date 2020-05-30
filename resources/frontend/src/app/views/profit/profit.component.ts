@@ -33,7 +33,7 @@ export class ProfitComponent implements OnInit {
   ) {
     this.cols = [
       { field: 'nombre', header: 'Nombre', sortOrder: true },
-      { field: 'tipoGanancia', header: 'Tipo Ganancia', sortOrder: true },
+      { field: 'id_tipo_ganancia', header: 'Tipo Ganancia', sortOrder: true },
       { field: '', header: 'Opciones', sortOrder: false }
     ];
   }

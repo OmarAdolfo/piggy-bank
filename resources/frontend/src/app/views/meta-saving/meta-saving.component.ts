@@ -60,7 +60,7 @@ export class MetaSavingComponent implements OnInit {
     const ingresos = this.ingresos.find(yearlySaving => yearlySaving.anno === anno);
     const totalGastos = gastos ? this.pagos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
     const totalIngresos = ingresos ? this.ingresos.find(yearlySaving => yearlySaving.anno === anno).total : 0;
-    return totalIngresos - totalGastos;
+    return (totalIngresos - totalGastos).toFixed(2);
   }
 
   getStatus(cantidad: number, anno: number) {

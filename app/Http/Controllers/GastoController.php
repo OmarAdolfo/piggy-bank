@@ -180,7 +180,7 @@ class GastoController extends Controller
                 $gasto_bd->save();
                 return response()->json([
                     'message' => 'Se ha actualizado el gasto',
-                    'data' => $gasto_bd
+                    'data' => $gasto_bd->load('pagos')
                 ], 200);
             } else {
                 return response()->json([

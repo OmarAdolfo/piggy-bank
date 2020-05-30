@@ -54,12 +54,14 @@
                                 </div>
                             </div>
                             <div *ngIf="isMonthly" class="col-12 col-md-6 form-group">
-                                <label for="fecha_fin">Fecha fin</label>
+                                <label for="fecha_fin">Fecha fin <a (click)="openInfoFechaFin()"><i
+                                            class="fas fa-question-circle"></i></a></label>
                                 <p-calendar formControlName="fecha_fin" [locale]="es" dateFormat="yy-mm-dd"
                                     [dataType]="'string'"></p-calendar>
                             </div>
                             <div *ngIf="isMonthly" class="col-12 col-md-6 form-group">
-                                <label for="flexible">Flexible</label>
+                                <label for="flexible">Flexible <a (click)="openInfoFlexible()"><i
+                                            class="fas fa-question-circle"></i></a></label>
                                 <div>
                                     <p-inputSwitch formControlName="flexible"></p-inputSwitch>
                                 </div>
@@ -143,3 +145,15 @@
         </div>
     </div>
 </div>
+
+<p-dialog header="Flexible" [(visible)]="displayFlexible" [modal]="true" [style]="{width: '75vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false">
+    Los gastos marcados como flexibles son aquellos que se realizan a lo largo del mes como puede ser la gasolina o la
+    comida y no queremos de esta forma que la aplicación nos recuerde su pago como si de un único pago se tratase
+</p-dialog>
+
+<p-dialog header="Fecha de fin" [(visible)]="displayFechaFin" [modal]="true" [style]="{width: '75vw'}"
+    [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    La fecha de fin de un gasto permite recordarnos cuando es el último pago de un gasto y de esta forma, ayudar a la
+    aplicación a no incluir dicho gasto en las plantillas posteriores a la fecha de fin
+</p-dialog>

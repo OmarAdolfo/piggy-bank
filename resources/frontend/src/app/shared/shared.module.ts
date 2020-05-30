@@ -24,6 +24,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { TwoDigitDecimaNumberDirective } from './directives/decimal.directive';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { LoaderComponent } from './components/loader/loader.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MenuComponent } from './components/menu/menu.component';
 
 @NgModule({
   imports: [
@@ -31,6 +35,9 @@ import { LoaderComponent } from './components/loader/loader.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
     TableModule,
     DialogModule,
     ButtonModule,
@@ -46,7 +53,8 @@ import { LoaderComponent } from './components/loader/loader.component';
     HomeComponent,
     SidebarComponent,
     TwoDigitDecimaNumberDirective,
-    LoaderComponent
+    LoaderComponent,
+    MenuComponent
   ],
   exports: [
     NavbarComponent,
@@ -70,7 +78,7 @@ import { LoaderComponent } from './components/loader/loader.component';
     InputSwitchModule,
     CalendarModule,
     TwoDigitDecimaNumberDirective,
-    RadioButtonModule,
+    RadioButtonModule
   ]
 })
 export class SharedModule {

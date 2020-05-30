@@ -33,7 +33,7 @@ export class ExpenseComponent implements OnInit {
     this.cols = [
       { field: 'nombre', header: 'Nombre', sortOrder: true },
       { field: 'fecha_fin', header: 'Fecha de fin', sortOrder: true },
-      { field: 'tipoGasto', header: 'Tipo Gasto', sortOrder: true },
+      { field: 'id_tipo_gasto', header: 'Tipo Gasto', sortOrder: true },
       { field: '', header: 'Opciones', sortOrder: false }
     ];
   }

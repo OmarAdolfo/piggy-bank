@@ -61,6 +61,18 @@ class EstadisticasController extends Controller
             ->take(7)
             ->get();
 
+        foreach ($pagosByYear as &$pagomes) {
+            $pagomes->total = round($pagomes->total, 2);
+        }
+
+        foreach ($ingresosByYear as &$ingresomes) {
+            $ingresomes->total = round($ingresomes->total, 2);
+        }
+
+        foreach ($gastos as &$gasto) {
+            $gasto->total = round($gasto->total, 2);
+        }
+
         return response()->json(array(
             'pagos' => round($pagos, 2),
             'ingresos' => round($ingresos, 2),

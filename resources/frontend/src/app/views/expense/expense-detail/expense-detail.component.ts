@@ -27,6 +27,8 @@ export class ExpenseDetailComponent implements OnInit {
   loading: boolean;
   isMonthly: boolean;
   es: any;
+  displayFlexible = false;
+  displayFechaFin = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -181,6 +183,14 @@ export class ExpenseDetailComponent implements OnInit {
     if (!this.expense.id) {
       this.isMonthly = eve.value.valor.includes('Mensuales');
     }
+  }
+
+  openInfoFlexible() {
+    this.displayFlexible = true;
+  }
+
+  openInfoFechaFin() {
+    this.displayFechaFin = true;
   }
 
 }

@@ -1,24 +1,44 @@
 <nav class="navbar navbar-expand-lg bg-primary text-uppercase text-white border-bottom border-secondary border-3">
-    <a *ngIf="authenticationService.isLogged()" class="link-menu px-3" (click)="collapseMenu()">
-        <i class="fas fa-bars fa-2x" aria-hidden="true"></i>
-    </a>
-    <a [routerLink]="[logoUrl]" class="m-0 navbar-brand">
+    <div class="d-block d-lg-none" *ngIf="authenticationService.isLogged()">
+        <app-menu></app-menu>
+    </div>
+    <a [routerLink]="['']" class="m-0 navbar-brand">
         <img src="./assets/logo.png" width="60" height="60" alt="Logo de la página">
     </a>
-    <h1 class="ml-3 mb-0 d-none d-md-block">PIGGYBANK</h1>
+    <h1 class="ml-3 mb-0 d-none d-lg-block">PIGGYBANK</h1>
     <div class="navbar-toggler navbar-toggler-right bg-primary text-white">
-        <ul class="navbar-nav flex-row ml-auto">
-            <li class="nav-item mx-0 mx-lg-1 px-2" *ngFor="let option of menuOptions">
-                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white" [routerLink]="[option.url]"><i class="{{option.icon}}" aria-hidden="true"></i></a>
-                <a *ngIf="option.logout" (click)="logout()" class="nav-link py-3 px-0 px-lg-3 rounded text-white"><i class="{{option.icon}}" aria-hidden="true"></i></a>
+        <ul *ngIf="this.authenticationService.isLogged()" class="navbar-nav flex-row ml-auto">
+            <li class="nav-item mx-0 mx-lg-1 px-2" *ngFor="let option of menuOptionsLogged">
+                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white"
+                    [routerLink]="[option.url]"><i class="{{option.icon}}" aria-hidden="true"></i></a>
+                <a *ngIf="option.logout" (click)="logout()" class="nav-link py-3 px-0 px-lg-3 rounded text-white"><i
+                        class="{{option.icon}}" aria-hidden="true"></i></a>
+            </li>
+        </ul>
+        <ul *ngIf="!this.authenticationService.isLogged()" class="navbar-nav flex-row ml-auto">
+            <li class="nav-item mx-0 mx-lg-1 px-2" *ngFor="let option of menuOptionsNoLogged">
+                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white"
+                    [routerLink]="[option.url]"><i class="{{option.icon}}" aria-hidden="true"></i></a>
+                <a *ngIf="option.logout" (click)="logout()" class="nav-link py-3 px-0 px-lg-3 rounded text-white"><i
+                        class="{{option.icon}}" aria-hidden="true"></i></a>
             </li>
         </ul>
     </div>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item mx-0 mx-lg-1" *ngFor="let option of menuOptions">
-                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white" [routerLink]="[option.url]">{{option.name}}</a>
-                <a *ngIf="option.logout" (click)="logout()" class="nav-link py-3 px-0 px-lg-3 rounded text-white">{{option.name}}</a>
+        <ul *ngIf="this.authenticationService.isLogged()" class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1" *ngFor="let option of menuOptionsLogged">
+                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white"
+                    [routerLink]="[option.url]">{{option.name}}</a>
+                <a *ngIf="option.logout" (click)="logout()"
+                    class="nav-link py-3 px-0 px-lg-3 rounded text-white">{{option.name}}</a>
+            </li>
+        </ul>
+        <ul *ngIf="!this.authenticationService.isLogged()" class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1" *ngFor="let option of menuOptionsNoLogged">
+                <a *ngIf="!option.logout" class="nav-link py-3 px-0 px-lg-3 rounded text-white"
+                    [routerLink]="[option.url]">{{option.name}}</a>
+                <a *ngIf="option.logout" (click)="logout()"
+                    class="nav-link py-3 px-0 px-lg-3 rounded text-white">{{option.name}}</a>
             </li>
         </ul>
     </div>

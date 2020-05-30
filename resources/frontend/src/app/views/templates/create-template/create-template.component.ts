@@ -138,6 +138,7 @@ export class CreateTemplateComponent implements OnInit {
         revenue.plantilla_id = this.template.id;
         revenue.id = this.selectedResource.id;
         this.template.ingresos.push(revenue);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha añadido el ingreso. Recuerda introducir un valor' });
       }
     } else {
       const exists = this.template.pagos.filter(pago => pago.id === this.selectedResource.id);
@@ -151,6 +152,7 @@ export class CreateTemplateComponent implements OnInit {
         payment.plantilla_id = this.template.id;
         payment.id = this.selectedResource.id;
         this.template.pagos.push(payment);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha añadido el pago. Recuerda introducir un valor' });
       }
     }
     this.calculateTips();

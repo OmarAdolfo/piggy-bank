@@ -117,7 +117,7 @@ class GananciaController extends Controller
                 $ganancia_bd->save();
                 return response()->json([
                     'message' => 'Se ha actualizado la ganancia',
-                    'data' => $ganancia_bd
+                    'data' => $ganancia_bd->load('ingresos')
                 ], 200);
             } else {
                 return response()->json([

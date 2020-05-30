@@ -65,19 +65,7 @@ td {
 }
 
 .wrapper {
-    margin: auto 50px;
-}
-
-@media screen and (max-width: 768px) {
-    .wrapper {
-        margin: auto 30px;
-    }
-}
-
-@media screen and (max-width: 425px) {
-    .wrapper {
-        margin: auto 8px;
-    }
+    margin: auto 5px;
 }
 
 .img-not-found {
@@ -88,3 +76,5 @@ td {
 td button {
     margin: 3px;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

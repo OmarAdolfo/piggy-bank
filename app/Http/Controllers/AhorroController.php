@@ -9,12 +9,14 @@ use Illuminate\Support\Str;
 use JWTAuth;
 use App\Gasto;
 use DB;
+use Carbon\Carbon;
 
 class AhorroController extends Controller
 {
 
     public function cuentaAhorro() 
     {
+        $start = new Carbon('last day of last month');
         $ingresosNoMensuales = DB::table('ingresos')
         ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
         ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
@@ -35,8 +37,7 @@ class AhorroController extends Controller
         ->join('tipos_ganancias', 'ganancias.id_tipo_ganancia', '=', 'tipos_ganancias.id')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
         ->where('tipos_ganancias.valor', 'like', '%' . 'Mensuales' . '%')
-        ->whereYear('fecha', '<>', date('Y'))
-        ->whereMonth('fecha', '<>', date('m'))
+        ->where('ingresos.fecha', '<=', $start)
         ->sum('ingresos.cantidad');
         $pagosMensuales = DB::table('pagos')
         ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
@@ -44,8 +45,7 @@ class AhorroController extends Controller
         ->join('tipos_gastos', 'gastos.id_tipo_gasto', '=', 'tipos_gastos.id')
         ->where('tipos_gastos.valor', 'like', '%' . 'Mensuales' . '%')
         ->where('usuarios.id', '=', JWTAuth::user()->id)
-        ->whereYear('fecha', '<>', date('Y'))
-        ->whereMonth('fecha', '<>', date('m'))
+        ->where('pagos.fecha', '<=', $start)
         ->sum('pagos.cantidad');
         $ingresos = $ingresosNoMensuales + $ingresosMensuales;
         $pagos = $pagosNoMensuales + $pagosMensuales;
@@ -91,6 +91,7 @@ class AhorroController extends Controller
             ->where('usuarios.id', '=', JWTAuth::user()->id)
             ->groupBy(DB::raw('YEAR(fecha)') )
             ->get();
+
         foreach ($pagosAmount as &$pago) {
             $pago->total = round($pago->total, 2);
         }

@@ -57,7 +57,10 @@
                                 <label for="fecha_fin">Fecha fin <a (click)="openInfoFechaFin()"><i
                                             class="fas fa-question-circle"></i></a></label>
                                 <p-calendar formControlName="fecha_fin" [locale]="es" dateFormat="yy-mm-dd"
-                                    [dataType]="'string'"></p-calendar>
+                                    [dataType]="'string'" [inline]="true" [monthNavigator]="true" [yearNavigator]="true"
+                                    yearRange="2015:2025"></p-calendar>
+                                <button class="btn btn-primary btn-sm mt-2" (click)="deleteFinalDate()">Eliminar fecha
+                                    fin</button>
                             </div>
                             <div *ngIf="isMonthly" class="col-12 col-md-6 form-group">
                                 <label for="flexible">Flexible <a (click)="openInfoFlexible()"><i
@@ -92,8 +95,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [rows]="5" [responsive]="true"
-                        [lazy]="true">
+                    <p-table [columns]="cols" [value]="expense.pagos" [paginator]="true" [scrollable]="true"
+                        [rows]="100" scrollHeight="250px" [responsive]="true" [lazy]="true">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th *ngFor="let col of columns">

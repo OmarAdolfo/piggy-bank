@@ -76,5 +76,14 @@ td {
 td button {
     margin: 3px;
 }
+
+.ui-datepicker {
+    width: 100%;
+}
+
+.ui-datepicker-calendar {
+    table-layout: fixed;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

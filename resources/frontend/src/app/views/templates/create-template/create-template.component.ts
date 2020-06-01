@@ -177,8 +177,6 @@ export class CreateTemplateComponent implements OnInit {
       if (pago || ingreso) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El campo valor no puede estar vacío o ser 0' });
       } else {
-        this.template.pagos.forEach(pago => pago.cantidad = +pago.cantidad);
-        this.template.ingresos.forEach(ingreso => ingreso.cantidad = +ingreso.cantidad);
         this.templateService.update(this.template).subscribe(
           (response: any) => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Se ha actualizado la plantilla' });
@@ -198,7 +196,11 @@ export class CreateTemplateComponent implements OnInit {
   }
 
   calculateTemplate() {
-    this.revenues = this.template.ingresos.length > 0 ? this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => a + b) : 0;
+
+    this.template.ingresos.forEach(ingreso => ingreso.cantidad = +ingreso.cantidad);
+    this.revenues = this.template.ingresos.length === 0 ? 0 : this.template.ingresos.map(ingreso => ingreso.cantidad).reduce((a, b) => parseFloat(a.toString()) + parseFloat(b.toString()));
+
+    this.template.pagos.forEach(pago => pago.cantidad = +pago.cantidad);
     const primaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Primarios');
     let primaryExpenses = 0;
     if (primaryExpensesFilter.length > 0) {
@@ -207,7 +209,7 @@ export class CreateTemplateComponent implements OnInit {
     const secondaryExpensesFilter = this.template.pagos.filter(pago => pago.gasto_id.id_tipo_gasto.valor === 'Mensuales Secundarios');
     let secondaryExpenses = 0;
     if (secondaryExpensesFilter.length > 0) {
-      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => parseFloat(a.toString()) + parseFloat(b.toString()));;
+      secondaryExpenses = secondaryExpensesFilter.map(pago => pago.cantidad).reduce((a, b) => parseFloat(a.toString()) + parseFloat(b.toString()));
     }
     this.primaryExpenses = Number((this.revenues * 0.5 - primaryExpenses).toFixed(2));
     this.secondaryExpenses = Number((this.revenues * 0.3 - secondaryExpenses).toFixed(2));

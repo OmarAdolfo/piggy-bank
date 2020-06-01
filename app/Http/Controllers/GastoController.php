@@ -24,7 +24,7 @@ class GastoController extends Controller
             ->where('usuarios.id', '=', JWTAuth::user()->id)
             ->where('tipos_gastos.valor', '=', 'Mensuales Primarios')
             ->where(static function ($query) use ($plantilla) {
-                $date = Carbon::createFromDate($plantilla->year, $plantilla->month, 1);
+                $date = Carbon::createMidnightDate($plantilla->anno, $plantilla->mes, 1);
                 $query->where('gastos.fecha_fin', '>=', $date)
                 ->orWhere('gastos.fecha_fin', '=', null);
             })
@@ -48,7 +48,7 @@ class GastoController extends Controller
             ->where('usuarios.id', '=', JWTAuth::user()->id)
             ->where('tipos_gastos.valor', '=', 'Mensuales Secundarios')
             ->where(static function ($query) use ($plantilla) {
-                $date = Carbon::createFromDate($plantilla->year, $plantilla->month, 1);
+                $date = Carbon::createMidnightDate($plantilla->anno, $plantilla->mes, 1);
                 $query->where('gastos.fecha_fin', '>=', $date)
                 ->orWhere('gastos.fecha_fin', '=', null);
             })

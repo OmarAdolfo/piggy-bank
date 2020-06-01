@@ -27,7 +27,6 @@ export class MenuComponent implements OnInit {
   }
 
   navigate(path: string) {
-    console.log(path);
     this.router.navigate(['home/' + path]);
   }
 

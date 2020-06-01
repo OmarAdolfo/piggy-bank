@@ -75,7 +75,8 @@ export class RevenueDetailComponent implements OnInit {
     if (!this.newRevenue) {
       const revenue: Revenue = Object.assign(this.revenue, this.form.value);
       this.revenueService.update(revenue).subscribe(
-        () => {
+        (response: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.loading = false;
           this.back();
         },
@@ -88,7 +89,8 @@ export class RevenueDetailComponent implements OnInit {
       const revenue: Revenue = Object.assign({}, this.form.value);
       revenue.ganancia_id = this.activatedRoute.snapshot.params.id;
       this.revenueService.add(revenue).subscribe(
-        () => {
+        (response: any) => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: response.message });
           this.loading = false;
           this.back();
         },

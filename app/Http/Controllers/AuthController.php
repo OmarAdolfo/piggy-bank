@@ -126,9 +126,11 @@ class AuthController extends Controller
             return response()->json(['message' => $validator->errors()], 500);
         }
 
-        $tokenData = PasswordReset::where('token', '=', $request['token'])->first();
+        $tokenData = PasswordReset::where('token', '=', $request['token'])
+        ->where('email', '=', $request['email'])
+        ->first();
         if (!$tokenData) { 
-            return response()->json(['message' => 'El token es inválido'], 500);
+            return response()->json(['message' => 'El token es inválido o no coincide con el correo'], 500);
         }
 
         $user = User::where('email', '=', $tokenData->email)->first();

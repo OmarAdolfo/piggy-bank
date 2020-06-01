@@ -79,8 +79,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
-                    <p-table [columns]="cols" [value]="profit.ingresos" [paginator]="true" [rows]="5"
-                        [responsive]="true" [lazy]="true">
+                    <p-table [columns]="cols" [value]="profit.ingresos" [paginator]="true" [scrollable]="true"
+                        [rows]="100" scrollHeight="250px" [responsive]="true" [lazy]="true">
                         <ng-template pTemplate="header" let-columns>
                             <tr>
                                 <th *ngFor="let col of columns">

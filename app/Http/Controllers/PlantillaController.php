@@ -97,12 +97,13 @@ class PlantillaController extends Controller
                 $new_plantilla->id_usuario = $plantilla_copy->id_usuario;
                 $new_plantilla->save();
 
-                $date = Carbon::createFromDate($request['newAnno'], $request['newMes'], 1);
+                $date = Carbon::createMidnightDate($request['newAnno'], $request['newMes'], 1);
     
                 foreach ($plantilla_copy->pagos as $pago) {
                     $newPago = $pago->replicate();
                     $gasto = Gasto::find($pago->gasto_id);
-                    if (is_null($gasto->fecha_fin) || $gasto->fecha_fin >= $date) {
+                    $dateExpense = Carbon::parse($gasto->fecha_fin);
+                    if (is_null($gasto->fecha_fin) || $dateExpense >= $date) {
                         $newPago->id = null;
                         $newPago->plantilla_id = $new_plantilla->id;
                         $newPago->fecha = new DateTime();

@@ -1,0 +1,1 @@
+<p>Se ha creado un nuevo usuario en la aplicación asignado a este correo</p>

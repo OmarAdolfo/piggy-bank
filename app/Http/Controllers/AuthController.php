@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
+use App\Mail\SendMailRegister;
 
 class AuthController extends Controller
 {
@@ -33,6 +34,7 @@ class AuthController extends Controller
             $postArray['password'] = Hash::make($postArray['password']); 
             $postArray['rol'] = 'USER';
             User::create($postArray);
+            Mail::to($request['email'])->send(new SendMailRegister());
             return response()->json(['message' =>'Se ha registrado correctamente el usuario'], 200); 
         } else {
             return response()->json(['message' => 'Usuario duplicado'], 500);

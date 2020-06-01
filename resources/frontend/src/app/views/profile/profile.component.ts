@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
   newPasswordForm: FormGroup;
   user: any;
+  passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -42,7 +43,7 @@ export class ProfileComponent implements OnInit {
     });
 
     this.newPasswordForm = this.formBuilder.group({
-      password: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
       repeatPassword: new FormControl('', Validators.required)
     });
 

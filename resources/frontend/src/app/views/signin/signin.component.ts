@@ -18,6 +18,7 @@ export class SigninComponent implements OnInit {
 
   signinForm: FormGroup;
   loading: boolean;
+  passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
 
   constructor(
     @Inject(DOCUMENT) private _document,
@@ -38,7 +39,7 @@ export class SigninComponent implements OnInit {
       nombre: new FormControl('', Validators.required),
       apellidos: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)]),
       repeatPassword: new FormControl('', Validators.required)
     });
 

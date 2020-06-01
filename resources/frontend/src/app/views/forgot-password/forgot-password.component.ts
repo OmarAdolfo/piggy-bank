@@ -19,6 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   isEmailSent = false;
   loading: boolean;
+  passwordRegex = /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
 
   constructor(
     @Inject(DOCUMENT) private _document,
@@ -41,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     this.resetPasswordForm = this.formBuilder.group({
       token: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required, Validators.pattern(this.passwordRegex)])
     });
   }
 

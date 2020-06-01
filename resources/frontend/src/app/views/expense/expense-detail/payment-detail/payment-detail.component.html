@@ -28,6 +28,9 @@
                                     <div *ngIf="form.controls.cantidad.errors.required">
                                         La cantidad es obligatoria
                                     </div>
+                                    <div *ngIf="form.controls.cantidad.errors.max">
+                                        La cantidad no puede ser superior a 100000
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 form-group">

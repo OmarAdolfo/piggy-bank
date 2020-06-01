@@ -51,7 +51,7 @@ export class MetaSavingDetailComponent implements OnInit {
   buildForm() {
     this.form = this.formBuilder.group({
       anno: new FormControl(this.metaSaving.anno, [Validators.required, Validators.pattern(this.annoRegex)]),
-      cantidad: new FormControl(this.metaSaving.cantidad, [Validators.required])
+      cantidad: new FormControl(this.metaSaving.cantidad, [Validators.required, Validators.max(100000)])
     });
   }
 

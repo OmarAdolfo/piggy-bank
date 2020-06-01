@@ -172,10 +172,14 @@ export class CreateTemplateComponent implements OnInit {
     if (this.template.pagos.length === 0 && this.template.ingresos.length === 0) {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Se debe añadir al menos un gasto o ingreso' });
     } else {
-      const pago = this.template.pagos.find(pago => pago.cantidad == null || pago.cantidad === 0);
-      const ingreso = this.template.ingresos.find(ingreso => ingreso.cantidad == null || ingreso.cantidad === 0);
-      if (pago || ingreso) {
+      const pagoZero = this.template.pagos.find(pago => pago.cantidad == null || pago.cantidad === 0);
+      const ingresoZero = this.template.ingresos.find(ingreso => ingreso.cantidad == null || ingreso.cantidad === 0);
+      const pagoCantidadMayor = this.template.pagos.find(pago => pago.cantidad == null || pago.cantidad > 100000);
+      const ingresoCantidadMayor = this.template.ingresos.find(ingreso => ingreso.cantidad == null || ingreso.cantidad > 100000);
+      if (pagoZero || ingresoZero) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El campo valor no puede estar vacío o ser 0' });
+      } else if (pagoCantidadMayor || ingresoCantidadMayor) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'El campo valor no puede ser mayor que 100000' });
       } else {
         this.templateService.update(this.template).subscribe(
           (response: any) => {

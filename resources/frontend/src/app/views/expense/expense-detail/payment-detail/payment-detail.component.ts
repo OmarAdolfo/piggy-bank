@@ -61,7 +61,7 @@ export class PaymentDetailComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      cantidad: new FormControl(this.payment.cantidad, Validators.required),
+      cantidad: new FormControl(this.payment.cantidad, [Validators.required, Validators.max(100000)]),
       fecha: new FormControl(this.payment.fecha, Validators.required)
     });
   }

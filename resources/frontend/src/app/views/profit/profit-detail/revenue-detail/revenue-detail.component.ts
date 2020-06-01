@@ -61,7 +61,7 @@ export class RevenueDetailComponent implements OnInit {
 
   buildForm() {
     this.form = this.formBuilder.group({
-      cantidad: new FormControl(this.revenue.cantidad, Validators.required),
+      cantidad: new FormControl(this.revenue.cantidad, [Validators.required, Validators.max(100000)]),
       fecha: new FormControl(this.revenue.fecha, Validators.required)
     });
   }

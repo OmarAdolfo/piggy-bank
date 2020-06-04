@@ -57,7 +57,7 @@ class PlantillaController extends Controller
         ->where('gastos.flexible', '!=', 1);;
         $pagosPagados = $pagosPagadosQuery->count();
         return response()->json(array(
-            'cuentaGastos' => $ingresos - $pagos,
+            'cuentaGastos' => round($ingresos - $pagos, 2),
             'noPagados' => $pagosNoPagadosQuery->get(),
             'porcentajePagados' => round($pagosPagados === 0 ? 0 : ($pagosPagados / $pagosTotales) * 100, 2)
         ), 200);

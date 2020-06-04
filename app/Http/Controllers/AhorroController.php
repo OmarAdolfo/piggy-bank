@@ -75,7 +75,6 @@ class AhorroController extends Controller
 
     public function savingsAndExpensesByYear() 
     {
-        $start = new Carbon('last day of last month');
         $pagosAmount = DB::table('pagos')
             ->select(DB::raw('YEAR(fecha) as anno'), DB::raw('sum(cantidad) as total'))
             ->join('gastos', 'pagos.gasto_id', '=', 'gastos.id')
@@ -83,7 +82,6 @@ class AhorroController extends Controller
             ->join('usuarios', 'gastos.id_usuario', '=', 'usuarios.id')
             ->where('tipos_gastos.valor', '<>', 'Importantes')
             ->where('usuarios.id', '=', JWTAuth::user()->id)
-            ->where('pagos.fecha', '<=', $start)
             ->groupBy(DB::raw('YEAR(fecha)') )
             ->get();
         $ingresosAmount = DB::table('ingresos')
@@ -91,7 +89,6 @@ class AhorroController extends Controller
             ->join('ganancias', 'ingresos.ganancia_id', '=', 'ganancias.id')
             ->join('usuarios', 'ganancias.id_usuario', '=', 'usuarios.id')
             ->where('usuarios.id', '=', JWTAuth::user()->id)
-            ->where('ingresos.fecha', '<=', $start)
             ->groupBy(DB::raw('YEAR(fecha)') )
             ->get();
 

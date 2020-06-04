@@ -108,6 +108,7 @@ class PlantillaController extends Controller
                         $newPago->plantilla_id = $new_plantilla->id;
                         $newPago->fecha = new DateTime();
                         $newPago->fecha->setDate($new_plantilla->anno, $new_plantilla->mes, 1);
+                        $newPago->pagado = 0;
                         $new_plantilla->pagos()->save($newPago);
                     }
                 }

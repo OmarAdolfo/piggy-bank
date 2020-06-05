@@ -66,7 +66,10 @@ class AhorroController extends Controller
         ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
         ->whereYear('fecha', $curYear - 1)
         ->whereMonth('fecha', $curMonth)
-        ->orWhere('fecha', $curMonth + 1)
+        ->orWhere('tipos_gastos.valor', '=', 'Anuales')
+        ->where('gastos.id_usuario', '=', JWTAuth::user()->id)
+        ->whereYear('fecha', $curYear - 1)
+        ->whereMonth('fecha', $curMonth + 1)
         ->get();
         return response()->json(array(
             'data' => $pagos

@@ -21,27 +21,19 @@ class UserController extends Controller
         $users = new User;
 
         if ($request->has('nombre')) {
-            $users = $users
-                ->where('nombre', $request['nombre'])
-                ->orWhere('nombre', 'like', '%' . $request['nombre'] . '%');
+            $users = $users->where('nombre', 'like', '%' . $request['nombre'] . '%');
         }
 
         if ($request->has('apellidos')) {
-            $users = $users
-                ->where('apellidos', $request['apellidos'])
-                ->orWhere('apellidos', 'like', '%' . $request['apellidos'] . '%');
+            $users = $users->where('apellidos', 'like', '%' . $request['apellidos'] . '%');
         }
 
         if ($request->has('email')) {
-            $users = $users
-                ->where('email', $request['email'])
-                ->orWhere('email', 'like', '%' . $request['email'] . '%');
+            $users = $users->where('email', 'like', '%' . $request['email'] . '%');
         }
 
         if ($request->has('rol')) {
-            $users = $users
-                ->where('rol', $request['rol'])
-                ->orWhere('rol', 'like', '%' . $request['rol'] . '%');
+            $users = $users->where('rol', 'like', '%' . $request['rol'] . '%');
         }
 
         $users = $users

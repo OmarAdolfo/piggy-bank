@@ -27,14 +27,11 @@ class BuenaPracticaController extends Controller
         $buenas_practicas = new BuenaPractica;
 
         if ($request->has('palabraClave')) {
-            $buenas_practicas = $buenas_practicas
-                ->where('palabra_clave', $request['palabraClave'])
-                ->orWhere('palabra_clave', 'like', '%' . $request['palabraClave'] . '%');
+            $buenas_practicas = $buenas_practicas->where('palabra_clave', 'like', '%' . $request['palabraClave'] . '%');
         }
 
         if ($request->has('porcentaje')) {
-            $buenas_practicas = $buenas_practicas
-                ->where('porcentaje', $request['porcentaje']);
+            $buenas_practicas = $buenas_practicas->where('porcentaje', $request['porcentaje']);
         }
 
         $buenas_practicas = $buenas_practicas

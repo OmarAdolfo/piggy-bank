@@ -27,8 +27,8 @@ export class ProfitService {
     if (form.nombre) {
       params.push('nombre=' + form.nombre);
     }
-    if (form.tipo_gasto) {
-      params.push('tipo_gasto=' + form.tipo_gasto.id);
+    if (form.id_tipo_ganancia) {
+      params.push('id_tipo_ganancia=' + form.id_tipo_ganancia.id);
     }
     if (sortable) {
       params.push('sortable=' + sortable);

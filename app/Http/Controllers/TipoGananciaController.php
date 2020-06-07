@@ -24,15 +24,11 @@ class TipoGananciaController extends Controller
         $tipos_ganancia = new TipoGanancia;
 
         if ($request->has('valor')) {
-            $tipos_ganancia = $tipos_ganancia
-                ->where('valor', $request['valor'])
-                ->orWhere('valor', 'like', '%' . $request['valor'] . '%');
+            $tipos_ganancia = $tipos_ganancia->where('valor', 'like', '%' . $request['valor'] . '%');
         }
 
         if ($request->has('descripcion')) {
-            $tipos_ganancia = $tipos_ganancia
-                ->where('descripcion', $request['descripcion'])
-                ->orWhere('descripcion', 'like', '%' . $request['descripcion'] . '%');
+            $tipos_ganancia = $tipos_ganancia->where('descripcion', 'like', '%' . $request['descripcion'] . '%');
         }
 
         $tipos_ganancia = $tipos_ganancia

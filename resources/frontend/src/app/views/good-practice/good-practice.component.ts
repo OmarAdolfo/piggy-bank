@@ -28,7 +28,7 @@ export class GoodPracticeComponent implements OnInit {
     this.cols = [
       { field: 'palabra_clave', header: 'Palabra clave', sortOrder: true },
       { field: 'porcentaje', header: 'Porcentaje', sortOrder: true },
-      { field: 'user', header: 'Creado/Actualizado por', sortOrder: true },
+      { field: '', header: 'Creado/Actualizado por', sortOrder: false },
       { field: '', header: 'Opciones', sortOrder: false }
     ];
   }

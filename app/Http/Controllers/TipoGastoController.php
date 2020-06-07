@@ -25,15 +25,11 @@ class TipoGastoController extends Controller
         $tipos_gasto = new TipoGasto;
 
         if ($request->has('valor')) {
-            $tipos_gasto = $tipos_gasto
-                ->where('valor', $request['valor'])
-                ->orWhere('valor', 'like', '%' . $request['valor'] . '%');
+            $tipos_gasto = $tipos_gasto->where('valor', 'like', '%' . $request['valor'] . '%');
         }
 
         if ($request->has('descripcion')) {
-            $tipos_gasto = $tipos_gasto
-                ->where('descripcion', $request['descripcion'])
-                ->orWhere('descripcion', 'like', '%' . $request['descripcion'] . '%');
+            $tipos_gasto = $tipos_gasto->where('descripcion', 'like', '%' . $request['descripcion'] . '%');
         }
 
         $tipos_gasto = $tipos_gasto

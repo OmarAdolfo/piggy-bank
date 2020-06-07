@@ -36,15 +36,13 @@ class GananciaController extends Controller
         if ($request->has('nombre')) {
             $ganancias = $ganancias
                 ->where('id_usuario', '=', JWTAuth::user()->id)
-                ->where('nombre', $request['nombre'])
-                ->orWhere('nombre', 'like', '%' . $request['nombre'] . '%');
+                ->where('nombre', 'like', '%' . $request['nombre'] . '%');
         }
 
         if ($request->has('id_tipo_ganancia')) {
             $ganancias = $ganancias
                 ->where('id_usuario', '=', JWTAuth::user()->id)
-                ->where('id_tipo_ganancia', $request['id_tipo_ganancia'])
-                ->orWhere('id_tipo_ganancia', 'like', '%' . $request['id_tipo_ganancia'] . '%');
+                ->where('id_tipo_ganancia', 'like', '%' . $request['id_tipo_ganancia'] . '%');
         }
 
         $ganancias = $ganancias

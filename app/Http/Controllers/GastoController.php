@@ -73,15 +73,13 @@ class GastoController extends Controller
         if ($request->has('nombre')) {
             $gastos = $gastos
                 ->where('id_usuario', '=', JWTAuth::user()->id)
-                ->where('nombre', $request['nombre'])
-                ->orWhere('nombre', 'like', '%' . $request['nombre'] . '%');
+                ->where('nombre', 'like', '%' . $request['nombre'] . '%');
         }
 
         if ($request->has('tipo_gasto')) {
             $gastos = $gastos
                 ->where('id_usuario', '=', JWTAuth::user()->id)
-                ->where('id_tipo_gasto', $request['tipo_gasto'])
-                ->orWhere('id_tipo_gasto', 'like', '%' . $request['tipo_gasto'] . '%');
+                ->where('id_tipo_gasto', 'like', '%' . $request['tipo_gasto'] . '%');
         }
 
         $gastos = $gastos
